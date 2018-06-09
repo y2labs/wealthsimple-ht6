@@ -1,0 +1,23 @@
+{
+  "name": "ws",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "got": "^8.3.1",
+    "graphql-yoga": "^1.14.7",
+    "merge-graphql-schemas": "^1.5.1",
+    "prisma-binding": "^2.0.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "dotenv-cli": "^1.4.0",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "prettier": "^1.13.5"
+  },
+  "scripts": {
+    "dev": "dotenv -e ./.env node ./src/index.js"
+  }
+}

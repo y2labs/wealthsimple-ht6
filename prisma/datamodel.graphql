@@ -1,0 +1,8 @@
+type User {
+  id: ID! @unique
+  name: String!
+
+  accessToken: String!
+  refreshToken: String!
+  expiresAt: Int!
+}
