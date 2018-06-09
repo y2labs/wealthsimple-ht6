@@ -1,8 +1,72 @@
 type User {
   id: ID! @unique
-  name: String!
 
+  userId: ID! @unique
   accessToken: String!
   refreshToken: String!
   expiresAt: Int!
+
+  phoneNumber: String
+  email: String
+  name: String
+
+  achievements: [UserAchievement]!
+  pet: Pet
+}
+
+type UserAchievement {
+  achievement: Achievement!
+  createdAt: DateTime!
+  id: ID! @unique
+}
+
+type Achievement {
+  name: String
+}
+
+type Pet {
+  id: ID! @unique
+  createdAt: DateTime!
+
+  owner: User!
+
+  name: String!
+  color: String!
+
+  status: String!
+
+  content: Int!
+  energy: Int!
+  hunger: Int!
+
+  # TODO: Figure out a way to turn daily returns on portfolio into some indicator of size,
+  # Taking into account of amount invested and growth
+  size: Int!
+}
+
+type Item {
+  id: ID! @unique
+  name: String!
+  description: String
+
+  singleUse: Boolean @default(value: "false")
+  effects: [ItemEffect]!
+}
+
+type PurchasedItem {
+  id: ID! @unique
+  createdAt: DateTime!
+  item: Item!
+  owner: User!
+}
+
+type PurchaseableItem {
+  id: ID! @unique
+  item: Item!
+  price: Int!
+}
+
+type ItemEffect {
+  description: String
+  type: String
 }

@@ -6,24 +6,20 @@ module.exports.createUser = async ({
   expiresAt,
   userId
 }) => {
-  const user = await prisma.query.user({
-    where: {
-      id: userId
-    }
-  });
-
-  if (user) {
-    return user;
-  }
-
-  const newUser = await prisma.mutation.createUser({
+  const user = await prisma.mutation.upsertUser({
+    where: { userId },
     data: {
-      id: user,
+      userId,
+      accessToken,
+      refreshToken,
+      expiresAt
+    },
+    update: {
       accessToken,
       refreshToken,
       expiresAt
     }
   });
 
-  return newUser;
+  return user;
 };

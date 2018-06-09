@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { Prisma } = require('prisma-binding');
 const { stringify } = require('querystring');
 const got = require('got');
-const { createUser } = require('../users/prisma');
+const { createUser } = require('../user/prisma');
 
 const apiRouter = Router();
 
@@ -17,7 +17,7 @@ apiRouter.get('/login', (req, res) => {
   res.redirect(`${process.env.WS_AUTH_ENDPOINT}?${qs}`);
 });
 
-apiRouter.get('/callback', async (req, res) => {
+apiRouter.get('/callback', async (req, res, next) => {
   const { code } = req.query;
 
   try {
@@ -32,7 +32,7 @@ apiRouter.get('/callback', async (req, res) => {
       }
     });
 
-    const user = createUser({
+    const user = await createUser({
       accessToken: body.access_token,
       refreshToken: body.refresh_token,
       userId: body.resource_owner_id,
@@ -41,9 +41,7 @@ apiRouter.get('/callback', async (req, res) => {
 
     res.json(user).status(200);
   } catch (err) {
-    console.log(err);
-
-    res.sendStatus(500);
+    next(err);
   }
 });
 
