@@ -1,34 +1,44 @@
-# import Pet from 'src/generated/prisma.graphql'
-# import Item from 'src/generated/prisma.graphql'
-# import UserAchievement from 'src/generated/prisma.graphql'
+# import {UserAchivement, Pet} from 'src/generated/prisma.graphql'
 
 type Viewer {
-  token: String
   me: User
 }
 
 type User {
   id: ID!
   token: String!
-
   phoneNumber: String
   email: String
   name: String
-
   achievements: [UserAchievement!]!
+  primaryBankAccount: UserBankAccount
+  bankAccounts: [UserBankAccount!]!
   pet: Pet
+}
+
+type UserBankAccount {
+  id: ID!
+  accountNumber: String
+  accountName: String
 }
 
 type PurchaseItemPayload {
   success: Boolean!
   error: String
-  item: Item!
+  item: Item
 }
 
 type Query {
+  purchaseableItems: [PurchaseableItem!]!
   viewer: Viewer
 }
 
+type MutationPayload {
+  success: Boolean!
+  error: String
+}
+
 type Mutation {
+  updatePrimaryBankAccount(accountId: ID!): MutationPayload!
   purchaseItem(id: ID!): PurchaseItemPayload!
 }

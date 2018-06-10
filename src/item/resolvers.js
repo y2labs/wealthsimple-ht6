@@ -1,5 +1,7 @@
+import pProps from 'p-props';
+import { findUser } from '~/user/prisma';
+import { getPurchaseableItem, getPurchaseableItems } from '~/item/prisma';
 import { extractFromCtx } from '~/utils/auth';
-import { getPurchaseableItem } from '~/item/prisma';
 
 export default {
   Mutation: {
@@ -10,7 +12,38 @@ export default {
         throw new Error('Authorization required');
       }
 
-      const purchaseableItem = await getPurchaseableItem({ id: args.id });
+      const { purchaseItem, user } = await pProps({
+        purchaseItem: getPurchaseableItem({ id: args.id }),
+        user: findUser({ userId })
+      });
+
+      if (!purchaseItem) {
+        return {
+          item: {},
+          success: false,
+          error: 'Item not found'
+        };
+      }
+
+      return {
+        error: '',
+        success: true,
+        item: {}
+      };
+    }
+  },
+
+  Query: {
+    purchaseableItems: async (_, args, context, info) => {
+      const userId = extractFromCtx(context);
+
+      if (!userId) {
+        throw new Error('Authorization required');
+      }
+
+      const items = await getPurchaseableItems({ userId });
+
+      return items;
     }
   }
 };

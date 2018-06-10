@@ -1,9 +1,14 @@
 type User {
   id: ID! @unique
   userId: ID! @unique
+  personId: ID! @unique
 
   createdAt: DateTime!
   updatedAt: DateTime!
+
+  primaryBankAccountId: ID
+  primaryBankAccountNumber: String
+  primaryBankAccountName: String
 
   accessTokenExpiresAt: DateTime!
   accessToken: String!
@@ -63,8 +68,8 @@ type PurchasedItem {
 }
 
 type PurchaseableItem {
-  expiresAt: DateTime!
   id: ID! @unique
+  expiresAt: DateTime!
   item: Item!
   price: Int!
 }

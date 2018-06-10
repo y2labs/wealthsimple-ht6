@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Sun Jun 10 2018 01:13:35 GMT-0400 (EDT)
+# timestamp: Sun Jun 10 2018 18:12:08 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -1292,8 +1292,8 @@ input PetWhereUniqueInput {
 }
 
 type PurchaseableItem implements Node {
-  expiresAt: DateTime!
   id: ID!
+  expiresAt: DateTime!
   item(where: ItemWhereInput): Item!
   price: Int!
 }
@@ -1324,10 +1324,10 @@ type PurchaseableItemEdge {
 }
 
 enum PurchaseableItemOrderByInput {
-  expiresAt_ASC
-  expiresAt_DESC
   id_ASC
   id_DESC
+  expiresAt_ASC
+  expiresAt_DESC
   price_ASC
   price_DESC
   updatedAt_ASC
@@ -1337,8 +1337,8 @@ enum PurchaseableItemOrderByInput {
 }
 
 type PurchaseableItemPreviousValues {
-  expiresAt: DateTime!
   id: ID!
+  expiresAt: DateTime!
   price: Int!
 }
 
@@ -1396,28 +1396,6 @@ input PurchaseableItemWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [PurchaseableItemWhereInput!]
-  expiresAt: DateTime
-
-  """All values that are not equal to given value."""
-  expiresAt_not: DateTime
-
-  """All values that are contained in given list."""
-  expiresAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  expiresAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  expiresAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  expiresAt_lte: DateTime
-
-  """All values greater than the given value."""
-  expiresAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  expiresAt_gte: DateTime
   id: ID
 
   """All values that are not equal to given value."""
@@ -1458,6 +1436,28 @@ input PurchaseableItemWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  expiresAt: DateTime
+
+  """All values that are not equal to given value."""
+  expiresAt_not: DateTime
+
+  """All values that are contained in given list."""
+  expiresAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  expiresAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  expiresAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  expiresAt_lte: DateTime
+
+  """All values greater than the given value."""
+  expiresAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  expiresAt_gte: DateTime
   price: Int
 
   """All values that are not equal to given value."""
@@ -1701,6 +1701,7 @@ type Subscription {
 type User implements Node {
   id: ID!
   userId: ID!
+  personId: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   accessTokenExpiresAt: DateTime!
@@ -1918,6 +1919,7 @@ type UserConnection {
 
 input UserCreateInput {
   userId: ID!
+  personId: ID!
   accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
@@ -1940,6 +1942,7 @@ input UserCreateOneWithoutPetInput {
 
 input UserCreateWithoutPetInput {
   userId: ID!
+  personId: ID!
   accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
@@ -1963,6 +1966,8 @@ enum UserOrderByInput {
   id_DESC
   userId_ASC
   userId_DESC
+  personId_ASC
+  personId_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1984,6 +1989,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   userId: ID!
+  personId: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   accessTokenExpiresAt: DateTime!
@@ -2035,6 +2041,7 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateDataInput {
   userId: ID
+  personId: ID
   accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
@@ -2047,6 +2054,7 @@ input UserUpdateDataInput {
 
 input UserUpdateInput {
   userId: ID
+  personId: ID
   accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
@@ -2075,6 +2083,7 @@ input UserUpdateOneWithoutPetInput {
 
 input UserUpdateWithoutPetDataInput {
   userId: ID
+  personId: ID
   accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
@@ -2183,6 +2192,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   userId_not_ends_with: ID
+  personId: ID
+
+  """All values that are not equal to given value."""
+  personId_not: ID
+
+  """All values that are contained in given list."""
+  personId_in: [ID!]
+
+  """All values that are not contained in given list."""
+  personId_not_in: [ID!]
+
+  """All values less than the given value."""
+  personId_lt: ID
+
+  """All values less than or equal the given value."""
+  personId_lte: ID
+
+  """All values greater than the given value."""
+  personId_gt: ID
+
+  """All values greater than or equal the given value."""
+  personId_gte: ID
+
+  """All values containing the given string."""
+  personId_contains: ID
+
+  """All values not containing the given string."""
+  personId_not_contains: ID
+
+  """All values starting with the given string."""
+  personId_starts_with: ID
+
+  """All values not starting with the given string."""
+  personId_not_starts_with: ID
+
+  """All values ending with the given string."""
+  personId_ends_with: ID
+
+  """All values not ending with the given string."""
+  personId_not_ends_with: ID
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -2458,4 +2507,5 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   userId: ID
+  personId: ID
 }
