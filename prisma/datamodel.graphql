@@ -1,40 +1,34 @@
 type User {
   id: ID! @unique
-
   userId: ID! @unique
   accessToken: String!
   refreshToken: String!
   expiresAt: Int!
-
   phoneNumber: String
   email: String
   name: String
-
   achievements: [UserAchievement]!
   pet: Pet
 }
 
 type UserAchievement {
+  id: ID! @unique
   achievement: Achievement!
   createdAt: DateTime!
-  id: ID! @unique
 }
 
 type Achievement {
+  id: ID! @unique
   name: String
 }
 
 type Pet {
   id: ID! @unique
   createdAt: DateTime!
-
   owner: User!
-
   name: String!
   color: String!
-
   status: String!
-
   content: Int!
   energy: Int!
   hunger: Int!
@@ -48,7 +42,6 @@ type Item {
   id: ID! @unique
   name: String!
   description: String
-
   singleUse: Boolean @default(value: "false")
   effects: [ItemEffect]!
 }
@@ -62,6 +55,7 @@ type PurchasedItem {
 
 type PurchaseableItem {
   id: ID! @unique
+  expiresAt: DateTime!
   item: Item!
   price: Int!
 }
