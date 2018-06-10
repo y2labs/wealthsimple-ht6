@@ -1,9 +1,6 @@
-# import Pet from './generated/prisma.graphql'
-# import UserAchievement from './generated/prisma.graphql'
-
-type Query {
-  viewer: Viewer
-}
+# import Pet from 'src/generated/prisma.graphql'
+# import Item from 'src/generated/prisma.graphql'
+# import UserAchievement from 'src/generated/prisma.graphql'
 
 type Viewer {
   token: String
@@ -20,4 +17,18 @@ type User {
 
   achievements: [UserAchievement!]!
   pet: Pet
+}
+
+type PurchaseItemPayload {
+  success: Boolean!
+  error: String
+  item: Item!
+}
+
+type Query {
+  viewer: Viewer
+}
+
+type Mutation {
+  purchaseItem(id: ID!): PurchaseItemPayload!
 }

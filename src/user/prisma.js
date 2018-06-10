@@ -1,7 +1,7 @@
-const _ = require('lodash');
-const prisma = require('../prisma');
+import _ from 'lodash';
+import prisma from '~/prisma';
 
-module.exports.createUser = async ({
+export const createUser = async ({
   accessToken,
   refreshToken,
   accessTokenExpiresAt,
@@ -25,7 +25,7 @@ module.exports.createUser = async ({
   return user;
 };
 
-module.exports.findUser = async ({ userId, id }) => {
+export const findUser = async ({ userId, id }) => {
   const where = _.omitBy(
     {
       userId,

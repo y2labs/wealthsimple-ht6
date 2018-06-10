@@ -1,21 +1,21 @@
-const { GraphQLServer } = require('graphql-yoga');
-const resolvers = require('./resolvers');
-const apiRouter = require('./api');
-const prisma = require('./prisma');
-const { start: startLoop, stop: stopLoop } = require('./loop');
+import { GraphQLServer } from 'graphql-yoga';
+import typeDefs from '~/schema.graphql';
+import resolvers from '~/resolvers';
+import prisma from '~/prisma';
+import api from '~/api';
+import { start as startLoop, stop as stopLoop } from '~/loop';
 
 const graphQLServer = new GraphQLServer({
-  typeDefs: 'src/schema.graphql',
   resolvers,
+  typeDefs,
 
-  context: req => {
-    req.prisma = prisma;
-
-    return req;
-  }
+  context: req => ({
+    ...req,
+    prisma
+  })
 });
 
-graphQLServer.use('/', apiRouter);
+graphQLServer.use('/', api);
 
 const server = graphQLServer.createHttpServer({
   port: process.env.PORT

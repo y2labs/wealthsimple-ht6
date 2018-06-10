@@ -1,24 +1,19 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const decodeJwt = token => {
-  const { userId } = jwt.decode(token, process.env.SECRET);
-
-  return userId;
-};
-
-module.exports.extractFromCtx = ctx => {
+export const extractFromCtx = ctx => {
   const header = ctx.request.get('Authorization');
 
   if (header) {
     const token = header.replace('Bearer ', '');
+    const { userId } = jwt.decode(token, process.env.SECRET);
 
-    return decodeJwt(token);
+    return userId;
   }
 
   return null;
 };
 
-module.exports.signJwt = ({ userId }) =>
+export const signJwt = ({ userId }) =>
   jwt.sign({ userId }, process.env.SECRET, {
     expiresIn: '7d'
   });

@@ -1,9 +1,9 @@
-const intervalPromise = require('interval-promise');
-const petsHandler = require('./pets');
+import intervalPromise from 'interval-promise';
+import petsHandler from '~/loop/pets';
 
 const props = { exited: false };
 
-module.exports.start = () => {
+const start = () => {
   intervalPromise(async (_, stop) => {
     if (props.exited) {
       stop();
@@ -15,6 +15,8 @@ module.exports.start = () => {
   }, 10000);
 };
 
-module.exports.stop = () => {
+const stop = () => {
   props.exited = true;
 };
+
+export { start, stop };

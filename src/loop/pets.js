@@ -1,9 +1,9 @@
-const moment = require('moment');
-const lodash = require('lodash');
-const prisma = require('../prisma');
-const { getStatus } = require('../pet/utils');
+import moment from 'moment';
+import _ from 'lodash';
+import prisma from '~/prisma';
+import { getStatus } from '~/pet/utils';
 
-module.exports = async () => {
+const handler = async () => {
   const pets = await prisma.query.pets({
     where: {
       eventLoopedAt_lte: moment()
@@ -18,9 +18,9 @@ module.exports = async () => {
       const updatedAttributes = {
         eventLoopedAt: moment().toDate(),
         statuses: pet.statuses,
-        hunger: lodash.random(pet.hunger - 10, pet.hunger),
-        content: lodash.random(pet.hunger - 10, pet.content),
-        energy: lodash.random(pet.hunger - 10, pet.energy)
+        hunger: _.random(pet.hunger - 10, pet.hunger),
+        content: _.random(pet.hunger - 10, pet.content),
+        energy: _.random(pet.hunger - 10, pet.energy)
       };
 
       // Get the updated status of the pet.
@@ -36,3 +36,5 @@ module.exports = async () => {
     })
   );
 };
+
+export default handler;

@@ -50,4 +50,4 @@ apiRouter.get('/callback', async (req, res, next) => {
   }
 });
 
-module.exports = apiRouter;
+export default apiRouter;

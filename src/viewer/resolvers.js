@@ -1,8 +1,7 @@
-const prisma = require('../prisma');
-const { findUser } = require('../user/prisma');
-const { extractFromCtx } = require('../utils/auth');
+import { findUser } from '~/user/prisma';
+import { extractFromCtx } from '~/utils/auth';
 
-module.exports = {
+export default {
   Query: {
     viewer: () => ({})
   },

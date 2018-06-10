@@ -34,7 +34,7 @@ const ATTRIBUTES = {
   }
 };
 
-module.exports.getStatus = petObj => {
+export const getStatus = petObj => {
   const statuses = Object.values(ATTRIBUTES).map(({ attr, status }) => {
     const currentValue = petObj[attr];
 

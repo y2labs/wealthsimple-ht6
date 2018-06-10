@@ -1,7 +1,6 @@
-const { findUser } = require('./prisma');
-const { signJwt } = require('../utils/auth');
+import { signJwt } from '~/utils/auth';
 
-module.exports = {
+export default {
   User: {
     token: (parent, args, context, info) =>
       signJwt({

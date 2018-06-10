@@ -1,9 +1,8 @@
-const path = require('path');
-const { mergeResolvers } = require('merge-graphql-schemas');
+import { mergeResolvers } from 'merge-graphql-schemas';
+import userResolvers from '~/user/resolvers';
+import itemResolvers from '~/item/resolvers'
+import viewerResolvers from '~/viewer/resolvers';
 
-const resolversArray = [
-  require('./user/resolvers'),
-  require('./viewer/resolvers')
-];
+const resolversArray = [userResolvers, viewerResolvers, itemResolvers];
 
-module.exports = mergeResolvers(resolversArray);
+export default mergeResolvers(resolversArray);
