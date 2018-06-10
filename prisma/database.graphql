@@ -2,9 +2,13 @@ type User {
   id: ID! @unique
   userId: ID! @unique
 
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
-  expiresAt: DateTime!
+
   phoneNumber: String
   email: String
   name: String

@@ -19,4 +19,6 @@ module.exports.extractFromCtx = ctx => {
 };
 
 module.exports.signJwt = ({ userId }) =>
-  jwt.sign({ userId }, process.env.SECRET);
+  jwt.sign({ userId }, process.env.SECRET, {
+    expiresIn: '7d'
+  });

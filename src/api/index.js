@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { Prisma } = require('prisma-binding');
 const { stringify } = require('querystring');
 const got = require('got');
+const { signJwt } = require('../utils/auth');
 const { createUser } = require('../user/prisma');
 
 const apiRouter = Router();
@@ -33,13 +34,17 @@ apiRouter.get('/callback', async (req, res, next) => {
     });
 
     const user = await createUser({
+      accessTokenExpiresAt: new Date(body.created_at + body.expires_in * 1000),
       accessToken: body.access_token,
       refreshToken: body.refresh_token,
-      userId: body.resource_owner_id,
-      expiresAt: body.created_at + body.expires_in
+      userId: body.resource_owner_id
     });
 
-    res.json(user).status(200);
+    res
+      .json({
+        token: signJwt({ userId: user.id })
+      })
+      .status(200);
   } catch (err) {
     next(err);
   }

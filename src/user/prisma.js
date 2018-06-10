@@ -4,7 +4,7 @@ const prisma = require('../prisma');
 module.exports.createUser = async ({
   accessToken,
   refreshToken,
-  expiresAt,
+  accessTokenExpiresAt,
   userId
 }) => {
   const user = await prisma.mutation.upsertUser({
@@ -13,12 +13,12 @@ module.exports.createUser = async ({
       userId,
       accessToken,
       refreshToken,
-      expiresAt
+      accessTokenExpiresAt
     },
     update: {
+      accessTokenExpiresAt,
       accessToken,
-      refreshToken,
-      expiresAt
+      refreshToken
     }
   });
 
@@ -31,8 +31,12 @@ module.exports.findUser = async ({ userId, id }) => {
       userId,
       id
     },
-    _.isUndefined
+    _.isNil
   );
+
+  if (!where.userId && !where.id) {
+    return null;
+  }
 
   const user = await prisma.query.user({ where });
 

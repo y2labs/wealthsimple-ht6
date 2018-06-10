@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Sun Jun 10 2018 00:17:48 GMT-0400 (EDT)
+# timestamp: Sun Jun 10 2018 01:13:35 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -1701,9 +1701,11 @@ type Subscription {
 type User implements Node {
   id: ID!
   userId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
-  expiresAt: DateTime!
   phoneNumber: String
   email: String
   name: String
@@ -1916,9 +1918,9 @@ type UserConnection {
 
 input UserCreateInput {
   userId: ID!
+  accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
-  expiresAt: DateTime!
   phoneNumber: String
   email: String
   name: String
@@ -1938,9 +1940,9 @@ input UserCreateOneWithoutPetInput {
 
 input UserCreateWithoutPetInput {
   userId: ID!
+  accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
-  expiresAt: DateTime!
   phoneNumber: String
   email: String
   name: String
@@ -1961,30 +1963,32 @@ enum UserOrderByInput {
   id_DESC
   userId_ASC
   userId_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  accessTokenExpiresAt_ASC
+  accessTokenExpiresAt_DESC
   accessToken_ASC
   accessToken_DESC
   refreshToken_ASC
   refreshToken_DESC
-  expiresAt_ASC
-  expiresAt_DESC
   phoneNumber_ASC
   phoneNumber_DESC
   email_ASC
   email_DESC
   name_ASC
   name_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   userId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
-  expiresAt: DateTime!
   phoneNumber: String
   email: String
   name: String
@@ -2031,9 +2035,9 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateDataInput {
   userId: ID
+  accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
-  expiresAt: DateTime
   phoneNumber: String
   email: String
   name: String
@@ -2043,9 +2047,9 @@ input UserUpdateDataInput {
 
 input UserUpdateInput {
   userId: ID
+  accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
-  expiresAt: DateTime
   phoneNumber: String
   email: String
   name: String
@@ -2071,9 +2075,9 @@ input UserUpdateOneWithoutPetInput {
 
 input UserUpdateWithoutPetDataInput {
   userId: ID
+  accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
-  expiresAt: DateTime
   phoneNumber: String
   email: String
   name: String
@@ -2179,6 +2183,72 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   userId_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  accessTokenExpiresAt: DateTime
+
+  """All values that are not equal to given value."""
+  accessTokenExpiresAt_not: DateTime
+
+  """All values that are contained in given list."""
+  accessTokenExpiresAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  accessTokenExpiresAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  accessTokenExpiresAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  accessTokenExpiresAt_lte: DateTime
+
+  """All values greater than the given value."""
+  accessTokenExpiresAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  accessTokenExpiresAt_gte: DateTime
   accessToken: String
 
   """All values that are not equal to given value."""
@@ -2259,28 +2329,6 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   refreshToken_not_ends_with: String
-  expiresAt: DateTime
-
-  """All values that are not equal to given value."""
-  expiresAt_not: DateTime
-
-  """All values that are contained in given list."""
-  expiresAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  expiresAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  expiresAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  expiresAt_lte: DateTime
-
-  """All values greater than the given value."""
-  expiresAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  expiresAt_gte: DateTime
   phoneNumber: String
 
   """All values that are not equal to given value."""

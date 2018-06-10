@@ -2,11 +2,17 @@
 # import UserAchievement from './generated/prisma.graphql'
 
 type Query {
-  user(id: ID, userId: ID): User
+  viewer: Viewer
+}
+
+type Viewer {
+  token: String
+  me: User
 }
 
 type User {
   id: ID!
+  token: String!
 
   phoneNumber: String
   email: String
