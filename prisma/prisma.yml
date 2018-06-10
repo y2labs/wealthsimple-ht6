@@ -1,6 +1,10 @@
 endpoint: https://us1.prisma.sh/paul-f17430/ws/dev
-datamodel: datamodel.graphql
+datamodel:
+  - database.graphql
 
 hooks:
   post-deploy:
     - graphql get-schema -p prisma
+
+seed:
+  import: seed.graphql

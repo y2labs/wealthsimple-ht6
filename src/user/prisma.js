@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const prisma = require('../prisma');
 
 module.exports.createUser = async ({
@@ -8,7 +9,7 @@ module.exports.createUser = async ({
 }) => {
   const user = await prisma.mutation.upsertUser({
     where: { userId },
-    data: {
+    create: {
       userId,
       accessToken,
       refreshToken,
@@ -20,6 +21,20 @@ module.exports.createUser = async ({
       expiresAt
     }
   });
+
+  return user;
+};
+
+module.exports.findUser = async ({ userId, id }) => {
+  const where = _.omitBy(
+    {
+      userId,
+      id
+    },
+    _.isUndefined
+  );
+
+  const user = await prisma.query.user({ where });
 
   return user;
 };

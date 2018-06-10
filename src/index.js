@@ -2,8 +2,9 @@ const { GraphQLServer } = require('graphql-yoga');
 const resolvers = require('./resolvers');
 const apiRouter = require('./api');
 const prisma = require('./prisma');
+const { start: startLoop, stop: stopLoop } = require('./loop');
 
-const server = new GraphQLServer({
+const graphQLServer = new GraphQLServer({
   typeDefs: 'src/schema.graphql',
   resolvers,
 
@@ -14,8 +15,20 @@ const server = new GraphQLServer({
   }
 });
 
-server.use('/', apiRouter);
+graphQLServer.use('/', apiRouter);
 
-server.start({
+const server = graphQLServer.createHttpServer({
   port: process.env.PORT
+});
+
+server.listen(process.env.PORT, () => {
+  startLoop();
+});
+
+['SIGTERM', 'SIGINT'].forEach(signal => {
+  process.on(signal, () => {
+    server.close(() => {
+      stopLoop();
+    });
+  });
 });

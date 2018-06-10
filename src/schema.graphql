@@ -1,5 +1,17 @@
-# import User from './generated/prisma.graphql'
+# import Pet from './generated/prisma.graphql'
+# import UserAchievement from './generated/prisma.graphql'
 
 type Query {
-  user(id: ID!): User!
+  user(id: ID, userId: ID): User
+}
+
+type User {
+  id: ID!
+
+  phoneNumber: String
+  email: String
+  name: String
+
+  achievements: [UserAchievement!]!
+  pet: Pet
 }
