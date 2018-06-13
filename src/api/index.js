@@ -2,7 +2,7 @@ import got from 'got';
 import { Router } from 'express';
 import { stringify } from 'querystring';
 import { signJwt } from '~/utils/auth';
-import { getPeople } from '~/utils/wealthsimple';
+import { getPerson as requestPerson } from '~/utils/wealthsimple';
 import { createUser } from '~/user/prisma';
 
 const router = Router();
@@ -18,8 +18,8 @@ router.get('/login', (req, res) => {
   res.redirect(`${process.env.WS_AUTH_ENDPOINT}?${qs}`);
 });
 
-const getPerson = async ({ accessToken }) => {
-  const [person] = await getPeople({ accessToken });
+const getPerson = async ({ accessToken, personId }) => {
+  const person = await requestPerson({ accessToken, personId });
 
   const phoneNumberObj = person.phone_numbers
     .sort((a, b) => {
@@ -58,7 +58,10 @@ router.get('/callback', async (req, res, next) => {
       }
     });
 
-    const person = await getPerson({ accessToken: body.access_token });
+    const person = await getPerson({
+      accessToken: body.access_token,
+      personId: body.client_canonical_id
+    });
 
     const user = await createUser({
       accessTokenExpiresAt: new Date(

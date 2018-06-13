@@ -1,5 +1,5 @@
 import { signJwt, extractFromCtx } from '~/utils/auth';
-import { getBankAccounts, withTokens } from '~/utils/wealthsimple';
+import { getBankAccounts, withTokens, getAccounts } from '~/utils/wealthsimple';
 
 export default {
   User: {
@@ -17,6 +17,29 @@ export default {
       }
 
       return null;
+    },
+
+    primaryAccount: parent => {
+      if (parent.primaryAccountId) {
+        return {
+          id: parent.primaryAccountId
+        };
+      }
+
+      return null;
+    },
+
+    accounts: async (parent, args, context, info) => {
+      const accounts = await withTokens(
+        { userId: parent.id },
+        ({ accessToken }) => {
+          return getAccounts({ accessToken, personId: parent.personId });
+        }
+      );
+
+      return accounts.map(({ id }) => ({
+        id
+      }));
     },
 
     bankAccounts: async (parent, args, context, info) => {

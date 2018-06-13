@@ -1,13 +1,7 @@
 import moment from 'moment';
 import prisma from '~/prisma';
 
-export const getPurchaseableItem = async ({ id }, info) => {
-  const item = await prisma.query.purchaseableItem({ where: { id } }, info);
-
-  return item;
-};
-
-export const getPurchaseableItems = async ({ userId }, info) => {
+export const getPreviouslyPurchasedItems = async ({ userId }) => {
   const previouslyPurchasedItems = await prisma.query.purchasedItems(
     {
       where: {
@@ -18,6 +12,14 @@ export const getPurchaseableItems = async ({ userId }, info) => {
     },
     ' { id }'
   );
+
+  return previouslyPurchasedItems;
+};
+
+export const getPurchaseableItems = async ({ userId }) => {
+  const previouslyPurchasedItems = await getPreviouslyPurchasedItems({
+    userId
+  });
 
   const purchaseableItems = await prisma.query.purchaseableItems(
     {

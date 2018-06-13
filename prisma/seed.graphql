@@ -1,32 +1,36 @@
 mutation {
-  user: createUser(
-    data: {
-      userId: "user-asdQCRERqx8"
-      accessTokenExpiresAt: "2018-01-01"
-      accessToken: "f4c735a95af8febcc5c9a113a70e9d367a114902950c65d3e87c1e5f141bcb77"
-      refreshToken: "f4c735a95af8febcc5c9a113a70e9d367a114902950c65d3e87c1e5f141bcb77"
-    }
-  ) {
-    id
-  }
-
-  pet: createPet(
-    data: {
-      eventLoopedAt: "2018-01-01"
-      name: "My First Pet"
-      color: "#000"
-      owner: { connect: { userId: "user-asdQCRERqx8" } }
-    }
-  ) {
-    id
-  }
-
   marketItemOne: createPurchaseableItem(
     data: {
       expiresAt: "9999-01-01"
       price: 1000
       item: {
         create: { name: "Common boot", description: "Just a common boot." }
+      }
+    }
+  ) {
+    id
+  }
+
+  marketItemTwo: createPurchaseableItem(
+    data: {
+      expiresAt: "9999-01-01"
+      price: 1000
+      item: {
+        create: {
+          name: "Small Snack"
+          description: "A small snack."
+          effects: {
+            create: [
+              {
+                type: HUNGER_INCREASE
+                value: "{\"value\": 100}"
+                name: "Eat snack"
+                description: "Eat the snack"
+              }
+            ]
+          }
+          singleUse: true
+        }
       }
     }
   ) {

@@ -4,6 +4,7 @@ import {
   updateUserTokens as updateUserTokensAsync,
   getUserTokens
 } from '~/user/prisma';
+import { stringify } from 'querystring';
 
 const baseUrl =
   process.env.NODE_ENV === 'development'
@@ -17,16 +18,17 @@ const request = async ({ path, method = 'GET', body, headers = {} }) => {
   };
 
   if (method !== 'GET' && body) {
-    params.json = true;
-    params.body = body;
+    params.body = typeof body === 'string' ? body : JSON.stringify(body);
+    params.headers['Content-Type'] = 'application/json';
   }
 
   const url = path.includes('://') ? path : `${baseUrl}${path}`;
 
   const res = await fetch(url, params);
+  const text = await res.text();
 
   return {
-    body: await res.json(),
+    body: text ? JSON.parse(text) : {},
     headers: res.headers
   };
 };
@@ -56,6 +58,17 @@ export const withTokens = async ({ userId }, fn) => {
   return result;
 };
 
+export const getPerson = async ({ accessToken, personId }) => {
+  const { body } = await request({
+    path: `/people/${personId}`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  return body;
+};
+
 export const getPeople = async ({ accessToken }) => {
   const { body } = await request({
     path: '/people',
@@ -78,9 +91,61 @@ export const getBankAccounts = async ({ accessToken }) => {
   return body.results;
 };
 
+export const getAccounts = async ({ accessToken, personId }) => {
+  // const qs = stringify({
+  //   client_ids: personId
+  // });
+
+  const { body } = await request({
+    path: `/accounts`,
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  return body.results;
+};
+
 export const getBankAccount = async ({ accessToken, id }) => {
   const { body } = await request({
     path: `/bank_accounts/${id}`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  return body;
+};
+
+export const getAccount = async ({ accessToken, id }) => {
+  const { body } = await request({
+    path: `/accounts/${id}`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  return body;
+};
+
+export const createDespoit = async ({
+  accessToken,
+  personId,
+  bankAccountId,
+  accountId,
+  depositAmount
+}) => {
+  const { body, headers } = await request({
+    body: {
+      bank_account_id: bankAccountId,
+      client_id: personId,
+      account_id: accountId,
+      amount: depositAmount,
+      currency: 'CAD'
+    },
+    path: '/deposits',
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`
     }

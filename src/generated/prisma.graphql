@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Sun Jun 10 2018 18:12:08 GMT-0400 (EDT)
+# timestamp: Tue Jun 12 2018 00:27:17 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -1704,6 +1704,10 @@ type User implements Node {
   personId: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  primaryBankAccountId: String
+  primaryBankAccountNumber: String
+  primaryBankAccountName: String
+  primaryAccountId: ID
   accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
@@ -1920,6 +1924,10 @@ type UserConnection {
 input UserCreateInput {
   userId: ID!
   personId: ID!
+  primaryBankAccountId: String
+  primaryBankAccountNumber: String
+  primaryBankAccountName: String
+  primaryAccountId: ID
   accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
@@ -1943,6 +1951,10 @@ input UserCreateOneWithoutPetInput {
 input UserCreateWithoutPetInput {
   userId: ID!
   personId: ID!
+  primaryBankAccountId: String
+  primaryBankAccountNumber: String
+  primaryBankAccountName: String
+  primaryAccountId: ID
   accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
@@ -1972,6 +1984,14 @@ enum UserOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  primaryBankAccountId_ASC
+  primaryBankAccountId_DESC
+  primaryBankAccountNumber_ASC
+  primaryBankAccountNumber_DESC
+  primaryBankAccountName_ASC
+  primaryBankAccountName_DESC
+  primaryAccountId_ASC
+  primaryAccountId_DESC
   accessTokenExpiresAt_ASC
   accessTokenExpiresAt_DESC
   accessToken_ASC
@@ -1992,6 +2012,10 @@ type UserPreviousValues {
   personId: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  primaryBankAccountId: String
+  primaryBankAccountNumber: String
+  primaryBankAccountName: String
+  primaryAccountId: ID
   accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
@@ -2042,6 +2066,10 @@ input UserSubscriptionWhereInput {
 input UserUpdateDataInput {
   userId: ID
   personId: ID
+  primaryBankAccountId: String
+  primaryBankAccountNumber: String
+  primaryBankAccountName: String
+  primaryAccountId: ID
   accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
@@ -2055,6 +2083,10 @@ input UserUpdateDataInput {
 input UserUpdateInput {
   userId: ID
   personId: ID
+  primaryBankAccountId: String
+  primaryBankAccountNumber: String
+  primaryBankAccountName: String
+  primaryAccountId: ID
   accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
@@ -2084,6 +2116,10 @@ input UserUpdateOneWithoutPetInput {
 input UserUpdateWithoutPetDataInput {
   userId: ID
   personId: ID
+  primaryBankAccountId: String
+  primaryBankAccountNumber: String
+  primaryBankAccountName: String
+  primaryAccountId: ID
   accessTokenExpiresAt: DateTime
   accessToken: String
   refreshToken: String
@@ -2276,6 +2312,166 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  primaryBankAccountId: String
+
+  """All values that are not equal to given value."""
+  primaryBankAccountId_not: String
+
+  """All values that are contained in given list."""
+  primaryBankAccountId_in: [String!]
+
+  """All values that are not contained in given list."""
+  primaryBankAccountId_not_in: [String!]
+
+  """All values less than the given value."""
+  primaryBankAccountId_lt: String
+
+  """All values less than or equal the given value."""
+  primaryBankAccountId_lte: String
+
+  """All values greater than the given value."""
+  primaryBankAccountId_gt: String
+
+  """All values greater than or equal the given value."""
+  primaryBankAccountId_gte: String
+
+  """All values containing the given string."""
+  primaryBankAccountId_contains: String
+
+  """All values not containing the given string."""
+  primaryBankAccountId_not_contains: String
+
+  """All values starting with the given string."""
+  primaryBankAccountId_starts_with: String
+
+  """All values not starting with the given string."""
+  primaryBankAccountId_not_starts_with: String
+
+  """All values ending with the given string."""
+  primaryBankAccountId_ends_with: String
+
+  """All values not ending with the given string."""
+  primaryBankAccountId_not_ends_with: String
+  primaryBankAccountNumber: String
+
+  """All values that are not equal to given value."""
+  primaryBankAccountNumber_not: String
+
+  """All values that are contained in given list."""
+  primaryBankAccountNumber_in: [String!]
+
+  """All values that are not contained in given list."""
+  primaryBankAccountNumber_not_in: [String!]
+
+  """All values less than the given value."""
+  primaryBankAccountNumber_lt: String
+
+  """All values less than or equal the given value."""
+  primaryBankAccountNumber_lte: String
+
+  """All values greater than the given value."""
+  primaryBankAccountNumber_gt: String
+
+  """All values greater than or equal the given value."""
+  primaryBankAccountNumber_gte: String
+
+  """All values containing the given string."""
+  primaryBankAccountNumber_contains: String
+
+  """All values not containing the given string."""
+  primaryBankAccountNumber_not_contains: String
+
+  """All values starting with the given string."""
+  primaryBankAccountNumber_starts_with: String
+
+  """All values not starting with the given string."""
+  primaryBankAccountNumber_not_starts_with: String
+
+  """All values ending with the given string."""
+  primaryBankAccountNumber_ends_with: String
+
+  """All values not ending with the given string."""
+  primaryBankAccountNumber_not_ends_with: String
+  primaryBankAccountName: String
+
+  """All values that are not equal to given value."""
+  primaryBankAccountName_not: String
+
+  """All values that are contained in given list."""
+  primaryBankAccountName_in: [String!]
+
+  """All values that are not contained in given list."""
+  primaryBankAccountName_not_in: [String!]
+
+  """All values less than the given value."""
+  primaryBankAccountName_lt: String
+
+  """All values less than or equal the given value."""
+  primaryBankAccountName_lte: String
+
+  """All values greater than the given value."""
+  primaryBankAccountName_gt: String
+
+  """All values greater than or equal the given value."""
+  primaryBankAccountName_gte: String
+
+  """All values containing the given string."""
+  primaryBankAccountName_contains: String
+
+  """All values not containing the given string."""
+  primaryBankAccountName_not_contains: String
+
+  """All values starting with the given string."""
+  primaryBankAccountName_starts_with: String
+
+  """All values not starting with the given string."""
+  primaryBankAccountName_not_starts_with: String
+
+  """All values ending with the given string."""
+  primaryBankAccountName_ends_with: String
+
+  """All values not ending with the given string."""
+  primaryBankAccountName_not_ends_with: String
+  primaryAccountId: ID
+
+  """All values that are not equal to given value."""
+  primaryAccountId_not: ID
+
+  """All values that are contained in given list."""
+  primaryAccountId_in: [ID!]
+
+  """All values that are not contained in given list."""
+  primaryAccountId_not_in: [ID!]
+
+  """All values less than the given value."""
+  primaryAccountId_lt: ID
+
+  """All values less than or equal the given value."""
+  primaryAccountId_lte: ID
+
+  """All values greater than the given value."""
+  primaryAccountId_gt: ID
+
+  """All values greater than or equal the given value."""
+  primaryAccountId_gte: ID
+
+  """All values containing the given string."""
+  primaryAccountId_contains: ID
+
+  """All values not containing the given string."""
+  primaryAccountId_not_contains: ID
+
+  """All values starting with the given string."""
+  primaryAccountId_starts_with: ID
+
+  """All values not starting with the given string."""
+  primaryAccountId_not_starts_with: ID
+
+  """All values ending with the given string."""
+  primaryAccountId_ends_with: ID
+
+  """All values not ending with the given string."""
+  primaryAccountId_not_ends_with: ID
   accessTokenExpiresAt: DateTime
 
   """All values that are not equal to given value."""

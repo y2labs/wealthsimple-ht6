@@ -1,4 +1,4 @@
-# import {UserAchivement, Pet} from 'src/generated/prisma.graphql'
+# import {UserAchivement, Pet, PurchasedItem} from 'src/generated/prisma.graphql'
 
 type Viewer {
   me: User
@@ -11,9 +11,17 @@ type User {
   email: String
   name: String
   achievements: [UserAchievement!]!
-  primaryBankAccount: UserBankAccount
-  bankAccounts: [UserBankAccount!]!
   pet: Pet
+
+  # Wealthsimple data
+  primaryBankAccount: UserBankAccount
+  primaryAccount: UserAccount
+  accounts: [UserAccount!]!
+  bankAccounts: [UserBankAccount!]!
+}
+
+type UserAccount {
+  id: ID!
 }
 
 type UserBankAccount {
@@ -23,9 +31,9 @@ type UserBankAccount {
 }
 
 type PurchaseItemPayload {
+  item: PurchasedItem
   success: Boolean!
   error: String
-  item: Item
 }
 
 type Query {
@@ -39,6 +47,7 @@ type MutationPayload {
 }
 
 type Mutation {
+  updatePrimaryAccount(accountId: ID!): MutationPayload!
   updatePrimaryBankAccount(accountId: ID!): MutationPayload!
   purchaseItem(id: ID!): PurchaseItemPayload!
 }

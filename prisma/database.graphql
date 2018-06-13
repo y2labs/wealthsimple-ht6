@@ -6,9 +6,11 @@ type User {
   createdAt: DateTime!
   updatedAt: DateTime!
 
-  primaryBankAccountId: ID
+  primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
+
+  primaryAccountId: ID
 
   accessTokenExpiresAt: DateTime!
   accessToken: String!

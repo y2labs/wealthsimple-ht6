@@ -63,6 +63,17 @@ export const createUser = async ({
   return user;
 };
 
+export const updateUserPrimaryAccount = async ({ userId, accountId }) => {
+  const res = await prisma.mutation.updateUser({
+    where: { id: userId },
+    data: {
+      primaryAccountId: accountId
+    }
+  });
+
+  return res;
+};
+
 export const updateUserPrimaryBankAccount = async ({
   userId,
   accountNumber,
