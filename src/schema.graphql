@@ -13,7 +13,6 @@ type User {
   achievements: [UserAchievement!]!
   pet: Pet
 
-  # Wealthsimple data
   primaryBankAccount: UserBankAccount
   primaryAccount: UserAccount
   accounts: [UserAccount!]!
@@ -30,12 +29,6 @@ type UserBankAccount {
   accountName: String
 }
 
-type PurchaseItemPayload {
-  item: PurchasedItem
-  success: Boolean!
-  error: String
-}
-
 type Query {
   purchaseableItems: [PurchaseableItem!]!
   viewer: Viewer
@@ -46,8 +39,15 @@ type MutationPayload {
   error: String
 }
 
+type CreatePetMutationPayload {
+  success: Boolean!
+  error: String
+  pet: Pet
+}
+
 type Mutation {
+  createPet(name: String!, color: String): CreatePetMutationPayload!
   updatePrimaryAccount(accountId: ID!): MutationPayload!
   updatePrimaryBankAccount(accountId: ID!): MutationPayload!
-  purchaseItem(id: ID!): PurchaseItemPayload!
+  purchaseItem(id: ID!): MutationPayload!
 }

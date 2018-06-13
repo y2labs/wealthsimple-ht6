@@ -1,18 +1,22 @@
 import intervalPromise from 'interval-promise';
 import petsHandler from '~/loop/pets';
 
+const HANDLERS = [petsHandler];
+
 const props = { exited: false };
 
 const start = () => {
-  intervalPromise(async (_, stop) => {
-    if (props.exited) {
-      stop();
+  HANDLERS.forEach(({ handler, interval }) => {
+    intervalPromise(async (_, stopFn) => {
+      if (props.exited) {
+        stopFn();
 
-      return;
-    }
+        return;
+      }
 
-    await petsHandler();
-  }, 10000);
+      await handler();
+    }, interval);
+  });
 };
 
 const stop = () => {

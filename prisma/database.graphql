@@ -9,8 +9,7 @@ type User {
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
-
-  primaryAccountId: ID
+  primaryAccountId: String
 
   accessTokenExpiresAt: DateTime!
   accessToken: String!
@@ -19,7 +18,9 @@ type User {
   phoneNumber: String
   email: String
   name: String
+
   achievements: [UserAchievement!]!
+
   pet: Pet
 }
 
@@ -36,11 +37,14 @@ type Achievement {
 
 type Pet {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
   owner: User!
+
   name: String!
   color: String! @default(value: "#000")
 
-  statuses: [String!]!
   content: Int! @default(value: "1000")
   energy: Int! @default(value: "1000")
   hunger: Int! @default(value: "1000")
@@ -50,8 +54,7 @@ type Pet {
   size: Int! @default(value: "1")
 
   eventLoopedAt: DateTime!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  lastInteractionAt: DateTime!
 }
 
 type Item {
