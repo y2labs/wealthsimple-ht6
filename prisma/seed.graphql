@@ -1,17 +1,5 @@
 mutation {
-  marketItemOne: createPurchaseableItem(
-    data: {
-      expiresAt: "9999-01-01"
-      price: 1000
-      item: {
-        create: { name: "Common boot", description: "Just a common boot." }
-      }
-    }
-  ) {
-    id
-  }
-
-  marketItemTwo: createPurchaseableItem(
+  marketItem1: createPurchaseableItem(
     data: {
       expiresAt: "9999-01-01"
       price: 1000
@@ -31,6 +19,44 @@ mutation {
           }
           singleUse: true
         }
+      }
+    }
+  ) {
+    id
+  }
+
+  marketItem2: createPurchaseableItem(
+    data: {
+      expiresAt: "9999-01-01"
+      price: 1000
+      item: {
+        create: {
+          name: "Small Snack"
+          description: "A small snack."
+          effects: {
+            create: [
+              {
+                type: HUNGER_INCREASE
+                value: "{\"value\": 100}"
+                name: "Eat snack"
+                description: "Eat the snack"
+              }
+            ]
+          }
+          singleUse: true
+        }
+      }
+    }
+  ) {
+    id
+  }
+
+  marketItem3: createPurchaseableItem(
+    data: {
+      expiresAt: "9999-01-01"
+      price: 1000
+      item: {
+        create: { name: "Common boot", description: "Just a common boot." }
       }
     }
   ) {

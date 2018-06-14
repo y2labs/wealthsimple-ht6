@@ -2,12 +2,80 @@ import pProps from 'p-props';
 import { findUser } from '~/user/prisma';
 import { fromPriceToAmount } from '~/utils/converters';
 import { createDespoit, withTokens } from '~/utils/wealthsimple';
-import { getPurchaseableItems } from '~/item/prisma';
+import {
+  getPurchaseableItems,
+  getPurchasedItems,
+  getPreviouslyPurchasedItems
+} from '~/item/prisma';
+import { useItem } from '~/item/use-item';
 import { extractFromCtx } from '~/utils/auth';
 import prisma from '~/prisma';
 
 export default {
   Mutation: {
+    useItem: async (_, args, context, info) => {
+      const userId = extractFromCtx(context);
+
+      if (!userId) {
+        throw new Error('Authorization required');
+      }
+
+      const { user, purchasedItem } = await pProps({
+        user: prisma.query.user(
+          {
+            where: {
+              id: userId
+            }
+          },
+          `
+          {
+            id
+            pet {
+              id
+            }
+          }
+        `
+        ),
+        purchasedItem: prisma.query.purchasedItem(
+          {
+            where: {
+              id: args.id
+            }
+          },
+          `
+          {
+            item {
+              singleUse
+              effects {
+                name
+                description
+                type
+                value
+              }
+            }
+          }
+        `
+        )
+      });
+
+      if (!purchasedItem) {
+        return {
+          error: 'Item not found',
+          success: false
+        };
+      }
+
+      await useItem(purchasedItem.item, {
+        petId: user.pet.id,
+        userId: user.id
+      });
+
+      return {
+        success: true,
+        error: ''
+      };
+    },
+
     purchaseItem: async (_, args, context, info) => {
       const userId = extractFromCtx(context);
 
@@ -56,25 +124,29 @@ export default {
         });
       });
 
-      const purchasedItem = await prisma.mutation.createPurchasedItem({
-        data: {
-          item: {
-            connect: {
-              id: purchaseableItem.item.id
-            }
-          },
-          owner: {
-            connect: {
-              id: userId
-            }
+      const { id } = await prisma.mutation.createPurchasedItem(
+        {
+          data: {
+            item: {
+              connect: {
+                id: purchaseableItem.item.id
+              }
+            },
+            owner: {
+              connect: {
+                id: userId
+              }
+            },
+            depositId: deposit.id
           }
-        }
-      });
+        },
+        `{ id }`
+      );
 
       return {
-        error: '',
+        purchasedItemId: id,
         success: true,
-        item: purchasedItem
+        error: ''
       };
     }
   },
@@ -88,6 +160,18 @@ export default {
       }
 
       const items = await getPurchaseableItems({ userId });
+
+      return items;
+    },
+
+    purchasedItems: async (_, args, context, info) => {
+      const userId = extractFromCtx(context);
+
+      if (!userId) {
+        throw new Error('Authorization required');
+      }
+
+      const items = await getPurchasedItems({ userId });
 
       return items;
     }

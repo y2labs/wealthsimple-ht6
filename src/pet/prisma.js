@@ -16,7 +16,6 @@ export const getPetFromUserId = async ({ userId }) => {
 export const createPet = async ({ name, color, ownerId }) => {
   const pet = await prisma.mutation.createPet({
     data: {
-      lastInteractionAt: new Date(),
       eventLoopedAt: new Date(),
       name,
       color,

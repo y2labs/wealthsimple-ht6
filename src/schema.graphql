@@ -29,11 +29,6 @@ type UserBankAccount {
   accountName: String
 }
 
-type Query {
-  purchaseableItems: [PurchaseableItem!]!
-  viewer: Viewer
-}
-
 type MutationPayload {
   success: Boolean!
   error: String
@@ -45,9 +40,22 @@ type CreatePetMutationPayload {
   pet: Pet
 }
 
+type Query {
+  purchaseableItems: [PurchaseableItem!]!
+  purchasedItems: [PurchasedItem!]!
+  viewer: Viewer
+}
+
+type PurchaseItemMutationPayload {
+  success: Boolean!
+  error: String
+  purchasedItemId: ID
+}
+
 type Mutation {
   createPet(name: String!, color: String): CreatePetMutationPayload!
   updatePrimaryAccount(accountId: ID!): MutationPayload!
   updatePrimaryBankAccount(accountId: ID!): MutationPayload!
-  purchaseItem(id: ID!): MutationPayload!
+  purchaseItem(id: ID!): PurchaseItemMutationPayload!
+  useItem(id: ID!): MutationPayload!
 }

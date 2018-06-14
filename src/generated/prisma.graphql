@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Wed Jun 13 2018 01:02:02 GMT-0400 (EDT)
+# timestamp: Wed Jun 13 2018 20:21:31 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -218,6 +218,10 @@ type AggregateItemEffect {
 }
 
 type AggregatePet {
+  count: Int!
+}
+
+type AggregatePetInteraction {
   count: Int!
 }
 
@@ -748,6 +752,7 @@ type Mutation {
   createUserAchievement(data: UserAchievementCreateInput!): UserAchievement!
   createAchievement(data: AchievementCreateInput!): Achievement!
   createPet(data: PetCreateInput!): Pet!
+  createPetInteraction(data: PetInteractionCreateInput!): PetInteraction!
   createItem(data: ItemCreateInput!): Item!
   createPurchasedItem(data: PurchasedItemCreateInput!): PurchasedItem!
   createPurchaseableItem(data: PurchaseableItemCreateInput!): PurchaseableItem!
@@ -756,6 +761,7 @@ type Mutation {
   updateUserAchievement(data: UserAchievementUpdateInput!, where: UserAchievementWhereUniqueInput!): UserAchievement
   updateAchievement(data: AchievementUpdateInput!, where: AchievementWhereUniqueInput!): Achievement
   updatePet(data: PetUpdateInput!, where: PetWhereUniqueInput!): Pet
+  updatePetInteraction(data: PetInteractionUpdateInput!, where: PetInteractionWhereUniqueInput!): PetInteraction
   updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
   updatePurchasedItem(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereUniqueInput!): PurchasedItem
   updatePurchaseableItem(data: PurchaseableItemUpdateInput!, where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
@@ -763,6 +769,7 @@ type Mutation {
   deleteUserAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
   deleteAchievement(where: AchievementWhereUniqueInput!): Achievement
   deletePet(where: PetWhereUniqueInput!): Pet
+  deletePetInteraction(where: PetInteractionWhereUniqueInput!): PetInteraction
   deleteItem(where: ItemWhereUniqueInput!): Item
   deletePurchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   deletePurchaseableItem(where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
@@ -770,6 +777,7 @@ type Mutation {
   upsertUserAchievement(where: UserAchievementWhereUniqueInput!, create: UserAchievementCreateInput!, update: UserAchievementUpdateInput!): UserAchievement!
   upsertAchievement(where: AchievementWhereUniqueInput!, create: AchievementCreateInput!, update: AchievementUpdateInput!): Achievement!
   upsertPet(where: PetWhereUniqueInput!, create: PetCreateInput!, update: PetUpdateInput!): Pet!
+  upsertPetInteraction(where: PetInteractionWhereUniqueInput!, create: PetInteractionCreateInput!, update: PetInteractionUpdateInput!): PetInteraction!
   upsertItem(where: ItemWhereUniqueInput!, create: ItemCreateInput!, update: ItemUpdateInput!): Item!
   upsertPurchasedItem(where: PurchasedItemWhereUniqueInput!, create: PurchasedItemCreateInput!, update: PurchasedItemUpdateInput!): PurchasedItem!
   upsertPurchaseableItem(where: PurchaseableItemWhereUniqueInput!, create: PurchaseableItemCreateInput!, update: PurchaseableItemUpdateInput!): PurchaseableItem!
@@ -777,6 +785,7 @@ type Mutation {
   updateManyUserAchievements(data: UserAchievementUpdateInput!, where: UserAchievementWhereInput): BatchPayload!
   updateManyAchievements(data: AchievementUpdateInput!, where: AchievementWhereInput): BatchPayload!
   updateManyPets(data: PetUpdateInput!, where: PetWhereInput): BatchPayload!
+  updateManyPetInteractions(data: PetInteractionUpdateInput!, where: PetInteractionWhereInput): BatchPayload!
   updateManyItems(data: ItemUpdateInput!, where: ItemWhereInput): BatchPayload!
   updateManyPurchasedItems(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereInput): BatchPayload!
   updateManyPurchaseableItems(data: PurchaseableItemUpdateInput!, where: PurchaseableItemWhereInput): BatchPayload!
@@ -785,6 +794,7 @@ type Mutation {
   deleteManyUserAchievements(where: UserAchievementWhereInput): BatchPayload!
   deleteManyAchievements(where: AchievementWhereInput): BatchPayload!
   deleteManyPets(where: PetWhereInput): BatchPayload!
+  deleteManyPetInteractions(where: PetInteractionWhereInput): BatchPayload!
   deleteManyItems(where: ItemWhereInput): BatchPayload!
   deleteManyPurchasedItems(where: PurchasedItemWhereInput): BatchPayload!
   deleteManyPurchaseableItems(where: PurchaseableItemWhereInput): BatchPayload!
@@ -830,7 +840,7 @@ type Pet implements Node {
   hunger: Int!
   size: Int!
   eventLoopedAt: DateTime!
-  lastInteractionAt: DateTime!
+  interactions(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PetInteraction!]
 }
 
 """A connection to a list of items."""
@@ -851,8 +861,8 @@ input PetCreateInput {
   hunger: Int
   size: Int
   eventLoopedAt: DateTime!
-  lastInteractionAt: DateTime!
   owner: UserCreateOneWithoutPetInput!
+  interactions: PetInteractionCreateManyInput
 }
 
 input PetCreateOneWithoutOwnerInput {
@@ -868,7 +878,7 @@ input PetCreateWithoutOwnerInput {
   hunger: Int
   size: Int
   eventLoopedAt: DateTime!
-  lastInteractionAt: DateTime!
+  interactions: PetInteractionCreateManyInput
 }
 
 """An edge in a connection."""
@@ -878,6 +888,215 @@ type PetEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
+}
+
+type PetInteraction implements Node {
+  id: ID!
+  createdAt: DateTime!
+  type: PetInteractionType!
+}
+
+"""A connection to a list of items."""
+type PetInteractionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PetInteractionEdge]!
+  aggregate: AggregatePetInteraction!
+}
+
+input PetInteractionCreateInput {
+  type: PetInteractionType!
+}
+
+input PetInteractionCreateManyInput {
+  create: [PetInteractionCreateInput!]
+  connect: [PetInteractionWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type PetInteractionEdge {
+  """The item at the end of the edge."""
+  node: PetInteraction!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PetInteractionOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  type_ASC
+  type_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PetInteractionPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  type: PetInteractionType!
+}
+
+type PetInteractionSubscriptionPayload {
+  mutation: MutationType!
+  node: PetInteraction
+  updatedFields: [String!]
+  previousValues: PetInteractionPreviousValues
+}
+
+input PetInteractionSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PetInteractionSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PetInteractionSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PetInteractionSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PetInteractionWhereInput
+}
+
+enum PetInteractionType {
+  NOOP
+}
+
+input PetInteractionUpdateDataInput {
+  type: PetInteractionType
+}
+
+input PetInteractionUpdateInput {
+  type: PetInteractionType
+}
+
+input PetInteractionUpdateManyInput {
+  create: [PetInteractionCreateInput!]
+  connect: [PetInteractionWhereUniqueInput!]
+  disconnect: [PetInteractionWhereUniqueInput!]
+  delete: [PetInteractionWhereUniqueInput!]
+  update: [PetInteractionUpdateWithWhereUniqueNestedInput!]
+  upsert: [PetInteractionUpsertWithWhereUniqueNestedInput!]
+}
+
+input PetInteractionUpdateWithWhereUniqueNestedInput {
+  where: PetInteractionWhereUniqueInput!
+  data: PetInteractionUpdateDataInput!
+}
+
+input PetInteractionUpsertWithWhereUniqueNestedInput {
+  where: PetInteractionWhereUniqueInput!
+  update: PetInteractionUpdateDataInput!
+  create: PetInteractionCreateInput!
+}
+
+input PetInteractionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PetInteractionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PetInteractionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PetInteractionWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  type: PetInteractionType
+
+  """All values that are not equal to given value."""
+  type_not: PetInteractionType
+
+  """All values that are contained in given list."""
+  type_in: [PetInteractionType!]
+
+  """All values that are not contained in given list."""
+  type_not_in: [PetInteractionType!]
+}
+
+input PetInteractionWhereUniqueInput {
+  id: ID
 }
 
 enum PetOrderByInput {
@@ -901,8 +1120,6 @@ enum PetOrderByInput {
   size_DESC
   eventLoopedAt_ASC
   eventLoopedAt_DESC
-  lastInteractionAt_ASC
-  lastInteractionAt_DESC
 }
 
 type PetPreviousValues {
@@ -916,7 +1133,6 @@ type PetPreviousValues {
   hunger: Int!
   size: Int!
   eventLoopedAt: DateTime!
-  lastInteractionAt: DateTime!
 }
 
 type PetSubscriptionPayload {
@@ -966,8 +1182,8 @@ input PetUpdateInput {
   hunger: Int
   size: Int
   eventLoopedAt: DateTime
-  lastInteractionAt: DateTime
   owner: UserUpdateOneWithoutPetInput
+  interactions: PetInteractionUpdateManyInput
 }
 
 input PetUpdateOneWithoutOwnerInput {
@@ -987,7 +1203,7 @@ input PetUpdateWithoutOwnerDataInput {
   hunger: Int
   size: Int
   eventLoopedAt: DateTime
-  lastInteractionAt: DateTime
+  interactions: PetInteractionUpdateManyInput
 }
 
 input PetUpsertWithoutOwnerInput {
@@ -1278,29 +1494,10 @@ input PetWhereInput {
 
   """All values greater than or equal the given value."""
   eventLoopedAt_gte: DateTime
-  lastInteractionAt: DateTime
-
-  """All values that are not equal to given value."""
-  lastInteractionAt_not: DateTime
-
-  """All values that are contained in given list."""
-  lastInteractionAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  lastInteractionAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  lastInteractionAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  lastInteractionAt_lte: DateTime
-
-  """All values greater than the given value."""
-  lastInteractionAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  lastInteractionAt_gte: DateTime
   owner: UserWhereInput
+  interactions_every: PetInteractionWhereInput
+  interactions_some: PetInteractionWhereInput
+  interactions_none: PetInteractionWhereInput
 }
 
 input PetWhereUniqueInput {
@@ -1505,6 +1702,7 @@ input PurchaseableItemWhereUniqueInput {
 
 type PurchasedItem implements Node {
   id: ID!
+  depositId: String!
   createdAt: DateTime!
   item(where: ItemWhereInput): Item!
   owner(where: UserWhereInput): User!
@@ -1521,6 +1719,7 @@ type PurchasedItemConnection {
 }
 
 input PurchasedItemCreateInput {
+  depositId: String!
   item: ItemCreateOneInput!
   owner: UserCreateOneInput!
 }
@@ -1537,6 +1736,8 @@ type PurchasedItemEdge {
 enum PurchasedItemOrderByInput {
   id_ASC
   id_DESC
+  depositId_ASC
+  depositId_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1545,6 +1746,7 @@ enum PurchasedItemOrderByInput {
 
 type PurchasedItemPreviousValues {
   id: ID!
+  depositId: String!
   createdAt: DateTime!
 }
 
@@ -1588,6 +1790,7 @@ input PurchasedItemSubscriptionWhereInput {
 }
 
 input PurchasedItemUpdateInput {
+  depositId: String
   item: ItemUpdateOneInput
   owner: UserUpdateOneInput
 }
@@ -1641,6 +1844,46 @@ input PurchasedItemWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  depositId: String
+
+  """All values that are not equal to given value."""
+  depositId_not: String
+
+  """All values that are contained in given list."""
+  depositId_in: [String!]
+
+  """All values that are not contained in given list."""
+  depositId_not_in: [String!]
+
+  """All values less than the given value."""
+  depositId_lt: String
+
+  """All values less than or equal the given value."""
+  depositId_lte: String
+
+  """All values greater than the given value."""
+  depositId_gt: String
+
+  """All values greater than or equal the given value."""
+  depositId_gte: String
+
+  """All values containing the given string."""
+  depositId_contains: String
+
+  """All values not containing the given string."""
+  depositId_not_contains: String
+
+  """All values starting with the given string."""
+  depositId_starts_with: String
+
+  """All values not starting with the given string."""
+  depositId_not_starts_with: String
+
+  """All values ending with the given string."""
+  depositId_ends_with: String
+
+  """All values not ending with the given string."""
+  depositId_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -1676,6 +1919,7 @@ type Query {
   userAchievements(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserAchievement]!
   achievements(where: AchievementWhereInput, orderBy: AchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Achievement]!
   pets(where: PetWhereInput, orderBy: PetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pet]!
+  petInteractions(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PetInteraction]!
   items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item]!
   purchasedItems(where: PurchasedItemWhereInput, orderBy: PurchasedItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchasedItem]!
   purchaseableItems(where: PurchaseableItemWhereInput, orderBy: PurchaseableItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchaseableItem]!
@@ -1684,6 +1928,7 @@ type Query {
   userAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
   achievement(where: AchievementWhereUniqueInput!): Achievement
   pet(where: PetWhereUniqueInput!): Pet
+  petInteraction(where: PetInteractionWhereUniqueInput!): PetInteraction
   item(where: ItemWhereUniqueInput!): Item
   purchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   purchaseableItem(where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
@@ -1691,6 +1936,7 @@ type Query {
   userAchievementsConnection(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserAchievementConnection!
   achievementsConnection(where: AchievementWhereInput, orderBy: AchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AchievementConnection!
   petsConnection(where: PetWhereInput, orderBy: PetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PetConnection!
+  petInteractionsConnection(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PetInteractionConnection!
   itemsConnection(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemConnection!
   purchasedItemsConnection(where: PurchasedItemWhereInput, orderBy: PurchasedItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchasedItemConnection!
   purchaseableItemsConnection(where: PurchaseableItemWhereInput, orderBy: PurchaseableItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchaseableItemConnection!
@@ -1708,6 +1954,7 @@ type Subscription {
   userAchievement(where: UserAchievementSubscriptionWhereInput): UserAchievementSubscriptionPayload
   achievement(where: AchievementSubscriptionWhereInput): AchievementSubscriptionPayload
   pet(where: PetSubscriptionWhereInput): PetSubscriptionPayload
+  petInteraction(where: PetInteractionSubscriptionWhereInput): PetInteractionSubscriptionPayload
   item(where: ItemSubscriptionWhereInput): ItemSubscriptionPayload
   purchasedItem(where: PurchasedItemSubscriptionWhereInput): PurchasedItemSubscriptionPayload
   purchaseableItem(where: PurchaseableItemSubscriptionWhereInput): PurchaseableItemSubscriptionPayload

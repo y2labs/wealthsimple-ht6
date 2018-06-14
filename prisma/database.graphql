@@ -54,7 +54,17 @@ type Pet {
   size: Int! @default(value: "1")
 
   eventLoopedAt: DateTime!
-  lastInteractionAt: DateTime!
+  interactions: [PetInteraction!]!
+}
+
+enum PetInteractionType {
+  NOOP
+}
+
+type PetInteraction {
+  id: ID! @unique
+  createdAt: DateTime!
+  type: PetInteractionType!
 }
 
 type Item {
@@ -67,7 +77,9 @@ type Item {
 
 type PurchasedItem {
   id: ID! @unique
+  depositId: String!
   createdAt: DateTime!
+  usedAt: DateTime!
   item: Item!
   owner: User!
 }

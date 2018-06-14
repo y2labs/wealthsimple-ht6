@@ -1,4 +1,3 @@
-import moment from 'moment';
 import prisma from '~/prisma';
 
 export const getPreviouslyPurchasedItems = async ({ userId }) => {
@@ -10,10 +9,43 @@ export const getPreviouslyPurchasedItems = async ({ userId }) => {
         }
       }
     },
-    ' { id }'
+    '{ id }'
   );
 
   return previouslyPurchasedItems;
+};
+
+export const getPurchasedItems = async ({ userId }) => {
+  const purchasedItems = await prisma.query.purchasedItems(
+    {
+      where: {
+        owner: {
+          id: userId
+        }
+      }
+    },
+    `
+    {
+      id
+      depositId
+      createdAt
+      item {
+        id
+        name
+        description
+        singleUse
+        effects {
+          name
+          description
+          type
+          value
+        }
+      }
+    }
+  `
+  );
+
+  return purchasedItems;
 };
 
 export const getPurchaseableItems = async ({ userId }) => {
@@ -26,7 +58,7 @@ export const getPurchaseableItems = async ({ userId }) => {
       where: {
         expiresAt_gt: new Date(),
         item: {
-          id_not_in: previouslyPurchasedItems
+          id_not_in: previouslyPurchasedItems.map(({ id }) => id)
         }
       }
     },
