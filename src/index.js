@@ -22,13 +22,13 @@ const server = graphQLServer.createHttpServer({
 });
 
 server.listen(process.env.PORT, () => {
-  // startLoop();
+  startLoop();
 });
 
 ['SIGTERM', 'SIGINT'].forEach(signal => {
   process.on(signal, () => {
     server.close(() => {
-      // stopLoop();
+      stopLoop();
     });
   });
 });

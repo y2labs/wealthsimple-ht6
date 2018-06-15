@@ -5,6 +5,7 @@ type User {
 
   createdAt: DateTime!
   updatedAt: DateTime!
+  eventLoopedAt: DateTime
 
   primaryBankAccountId: String
   primaryBankAccountNumber: String
@@ -79,7 +80,7 @@ type PurchasedItem {
   id: ID! @unique
   depositId: String!
   createdAt: DateTime!
-  usedAt: DateTime!
+  usedAt: DateTime
   item: Item!
   owner: User!
 }
@@ -87,18 +88,18 @@ type PurchasedItem {
 type PurchaseableItem {
   id: ID! @unique
   expiresAt: DateTime!
+  availableForUser: ID!
   item: Item!
   price: Int!
 }
 
 enum ItemEffectType {
-  DECREASED_ENERGY_CONSUMPTION
-  DECREASED_HUNGER_CONSUMPTION
-  DECREASED_CONTENT_CONSUMPTION
-
   ENERGY_INCREASE
   HUNGER_INCREASE
   CONTENT_INCREASE
+
+  PASSIVE_EARN_MANAGED_DOLLARS
+  NOOP
 }
 
 type ItemEffect {
