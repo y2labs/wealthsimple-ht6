@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Thu Jun 14 2018 10:15:33 GMT-0400 (EDT)
+# timestamp: Fri Jun 15 2018 03:11:09 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -291,7 +291,7 @@ type ItemEffect {
   name: String!
   description: String
   type: ItemEffectType!
-  value: Json!
+  value: String!
 }
 
 """A connection to a list of items."""
@@ -308,7 +308,7 @@ input ItemEffectCreateInput {
   name: String!
   description: String
   type: ItemEffectType!
-  value: Json!
+  value: String!
 }
 
 input ItemEffectCreateManyInput {
@@ -345,7 +345,7 @@ type ItemEffectPreviousValues {
   name: String!
   description: String
   type: ItemEffectType!
-  value: Json!
+  value: String!
 }
 
 type ItemEffectSubscriptionPayload {
@@ -388,19 +388,18 @@ input ItemEffectSubscriptionWhereInput {
 }
 
 enum ItemEffectType {
-  DECREASED_ENERGY_CONSUMPTION
-  DECREASED_HUNGER_CONSUMPTION
-  DECREASED_CONTENT_CONSUMPTION
   ENERGY_INCREASE
   HUNGER_INCREASE
   CONTENT_INCREASE
+  PASSIVE_EARN_MANAGED_DOLLARS
+  NOOP
 }
 
 input ItemEffectUpdateInput {
   name: String
   description: String
   type: ItemEffectType
-  value: Json
+  value: String
 }
 
 input ItemEffectUpdateManyInput {
@@ -506,6 +505,46 @@ input ItemEffectWhereInput {
 
   """All values that are not contained in given list."""
   type_not_in: [ItemEffectType!]
+  value: String
+
+  """All values that are not equal to given value."""
+  value_not: String
+
+  """All values that are contained in given list."""
+  value_in: [String!]
+
+  """All values that are not contained in given list."""
+  value_not_in: [String!]
+
+  """All values less than the given value."""
+  value_lt: String
+
+  """All values less than or equal the given value."""
+  value_lte: String
+
+  """All values greater than the given value."""
+  value_gt: String
+
+  """All values greater than or equal the given value."""
+  value_gte: String
+
+  """All values containing the given string."""
+  value_contains: String
+
+  """All values not containing the given string."""
+  value_not_contains: String
+
+  """All values starting with the given string."""
+  value_starts_with: String
+
+  """All values not starting with the given string."""
+  value_not_starts_with: String
+
+  """All values ending with the given string."""
+  value_ends_with: String
+
+  """All values not ending with the given string."""
+  value_not_ends_with: String
 }
 
 enum ItemOrderByInput {
@@ -737,9 +776,6 @@ input ItemWhereInput {
 input ItemWhereUniqueInput {
   id: ID
 }
-
-"""Raw JSON value"""
-scalar Json
 
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
@@ -1507,6 +1543,8 @@ input PetWhereUniqueInput {
 type PurchaseableItem implements Node {
   id: ID!
   expiresAt: DateTime!
+  purchasedAt: DateTime
+  availableForUser(where: UserWhereInput): User!
   item(where: ItemWhereInput): Item!
   price: Int!
 }
@@ -1523,7 +1561,9 @@ type PurchaseableItemConnection {
 
 input PurchaseableItemCreateInput {
   expiresAt: DateTime!
+  purchasedAt: DateTime
   price: Int!
+  availableForUser: UserCreateOneInput!
   item: ItemCreateOneInput!
 }
 
@@ -1541,6 +1581,8 @@ enum PurchaseableItemOrderByInput {
   id_DESC
   expiresAt_ASC
   expiresAt_DESC
+  purchasedAt_ASC
+  purchasedAt_DESC
   price_ASC
   price_DESC
   updatedAt_ASC
@@ -1552,6 +1594,7 @@ enum PurchaseableItemOrderByInput {
 type PurchaseableItemPreviousValues {
   id: ID!
   expiresAt: DateTime!
+  purchasedAt: DateTime
   price: Int!
 }
 
@@ -1596,7 +1639,9 @@ input PurchaseableItemSubscriptionWhereInput {
 
 input PurchaseableItemUpdateInput {
   expiresAt: DateTime
+  purchasedAt: DateTime
   price: Int
+  availableForUser: UserUpdateOneInput
   item: ItemUpdateOneInput
 }
 
@@ -1671,6 +1716,28 @@ input PurchaseableItemWhereInput {
 
   """All values greater than or equal the given value."""
   expiresAt_gte: DateTime
+  purchasedAt: DateTime
+
+  """All values that are not equal to given value."""
+  purchasedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  purchasedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  purchasedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  purchasedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  purchasedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  purchasedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  purchasedAt_gte: DateTime
   price: Int
 
   """All values that are not equal to given value."""
@@ -1693,6 +1760,7 @@ input PurchaseableItemWhereInput {
 
   """All values greater than or equal the given value."""
   price_gte: Int
+  availableForUser: UserWhereInput
   item: ItemWhereInput
 }
 

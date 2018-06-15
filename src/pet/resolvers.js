@@ -23,7 +23,7 @@ export default {
       });
 
       return {
-        success: false,
+        success: true,
         error: '',
         pet
       };

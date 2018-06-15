@@ -5,7 +5,7 @@ const ITEM_EFFECTS = {
   NOOP: {
     temporality: null,
     type: 'NOOP',
-    factory: ({ rarity }) => {
+    factory: ({ rarity } = {}) => {
       return {
         name: 'Does nothing',
         description: 'Nothing',
@@ -102,8 +102,8 @@ export const getItemEffects = ({ temporality, rarity }) => {
   const appliedEffects = validEffects.reduce((effects, validEffect) => {
     const applied = pickOption({
       options: {
-        yes: 80,
-        no: 20
+        yes: 20,
+        no: 80
       }
     });
 
@@ -113,7 +113,7 @@ export const getItemEffects = ({ temporality, rarity }) => {
   }, []);
 
   if (appliedEffects.length === 0) {
-    return [ITEM_EFFECTS.NOOP];
+    return [ITEM_EFFECTS.NOOP.factory()];
   }
 
   return appliedEffects;

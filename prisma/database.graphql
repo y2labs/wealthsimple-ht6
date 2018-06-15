@@ -5,7 +5,10 @@ type User {
 
   createdAt: DateTime!
   updatedAt: DateTime!
-  eventLoopedAt: DateTime
+
+  itemEventLoopedAt: DateTime
+  petGrowthEventLoopedAt: DateTime
+  purchasedItemsEventLoopedAt: DateTime
 
   primaryBankAccountId: String
   primaryBankAccountNumber: String
@@ -88,7 +91,8 @@ type PurchasedItem {
 type PurchaseableItem {
   id: ID! @unique
   expiresAt: DateTime!
-  availableForUser: ID!
+  purchasedAt: DateTime
+  availableForUser: User!
   item: Item!
   price: Int!
 }
@@ -107,5 +111,5 @@ type ItemEffect {
   description: String
 
   type: ItemEffectType!
-  value: Json!
+  value: String!
 }

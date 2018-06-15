@@ -14,7 +14,7 @@ const CONSTANTS = {
   raritySingleUseItem: 80
 };
 
-export const getCreatedItemPrice = ({ rarity, temporality }) => {
+export const getCreatedItemPrice = ({ rarity, temporality, item }) => {
   const isRare = rarity === 'rare';
   const isPassive = temporality === 'passive';
 
@@ -33,9 +33,10 @@ export const getCreatedItemPrice = ({ rarity, temporality }) => {
   return price.value;
 };
 
-export const getCreatedItemExpiresAt = ({ rarity, temporality }) => {
+export const getCreatedItemExpiresAt = ({ rarity, temporality, item }) => {
   const isRare = rarity === 'rare';
   const isPassive = temporality === 'passive';
+  const effectsLength = item.effects.length;
 
   const expiresAt = {
     date: moment().add(moment.duration(1, 'd'))
@@ -53,6 +54,8 @@ export const getCreatedItemExpiresAt = ({ rarity, temporality }) => {
     );
   }
 
+  expiresAt.date = expiresAt.date.subtract(moment.duration(effectsLength, 'h'));
+
   return expiresAt.date.toDate();
 };
 
@@ -60,14 +63,15 @@ export const createItem = ({ interactions }) => {
   const lastInteraction = last(interactions);
 
   const multipliers = {
-    lastInteraction:
-      round(
-        Math.min(
-          CONSTANTS.maxLastInteractionMultipler,
-          (moment().diff(moment(lastInteraction.createdAt), 'h') / 24) *
-            CONSTANTS.maxLastInteractionMultipler
-        )
-      ) * 10
+    lastInteraction: lastInteraction
+      ? round(
+          Math.min(
+            CONSTANTS.maxLastInteractionMultipler,
+            (moment().diff(moment(lastInteraction.createdAt), 'h') / 24) *
+              CONSTANTS.maxLastInteractionMultipler
+          )
+        ) * 10
+      : 1
   };
 
   const rarity = pickOption({
@@ -94,8 +98,8 @@ export const createItem = ({ interactions }) => {
   };
 
   return {
-    expiresAt: getCreatedItemExpiresAt({ rarity, temporality }),
-    price: getCreatedItemPrice({ rarity, temporality }),
+    expiresAt: getCreatedItemExpiresAt({ rarity, temporality, item }),
+    price: getCreatedItemPrice({ rarity, temporality, item }),
     item
   };
 };

@@ -86,7 +86,24 @@ export default {
 
       const { purchaseableItem, user } = await pProps({
         purchaseableItem: prisma.query.purchaseableItem(
-          { where: { id: args.id } },
+          {
+            where: {
+              AND: [
+                {
+                  id: args.id
+                },
+                {
+                  // XXX: Make sure the item is not already purchased.
+                  purchasedAt: null
+                },
+                {
+                  availableForUser: {
+                    id: userId
+                  }
+                }
+              ]
+            }
+          },
           `{ id price item { id }}`
         ),
         user: findUser({ id: userId })

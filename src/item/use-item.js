@@ -2,10 +2,11 @@ import prisma from '~/prisma';
 import { pick } from 'lodash';
 import { ITEM_EFFECT_TYPES } from '~/item/constants';
 import { MAX_ATTRIBUTE_VALUE } from '~/pet/constants';
+import { jsonParse } from '~/utils/json';
 
 const ITEM_EFFECT_TYPE_HANDLERS = {
   [ITEM_EFFECT_TYPES.HUNGER_INCREASE]: (effect, pet) => {
-    const { value } = effect.value;
+    const { value } = jsonParse(effect.value);
 
     return {
       ...pet,
@@ -14,7 +15,7 @@ const ITEM_EFFECT_TYPE_HANDLERS = {
   },
 
   [ITEM_EFFECT_TYPES.CONTENT_INCREASE]: (effect, pet) => {
-    const { value } = effect.value;
+    const { value } = jsonParse(effect.value);
 
     return {
       ...pet,
@@ -23,7 +24,7 @@ const ITEM_EFFECT_TYPE_HANDLERS = {
   },
 
   [ITEM_EFFECT_TYPES.ENERGY_INCREASE]: (effect, pet) => {
-    const { value } = effect.value;
+    const { value } = jsonParse(effect.value);
 
     return {
       ...pet,

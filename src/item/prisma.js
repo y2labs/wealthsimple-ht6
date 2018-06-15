@@ -58,7 +58,16 @@ export const getPurchaseableItems = async ({ userId }) => {
       where: {
         expiresAt_gt: new Date(),
         item: {
-          id_not_in: previouslyPurchasedItems.map(({ id }) => id)
+          AND: [
+            {
+              id_not_in: previouslyPurchasedItems.map(({ id }) => id)
+            },
+            {
+              availableForUser: {
+                id: userId
+              }
+            }
+          ]
         }
       }
     },
@@ -83,13 +92,43 @@ export const getPurchaseableItems = async ({ userId }) => {
   return purchaseableItems;
 };
 
-export const createPurchaseableItem = async ({ item, expiresAt }) => {
-  const purchaseableItem = await prisma.mutation.createPurchaseableItem({
-    data: {
-      item,
-      expiresAt
+export const createPurchaseableItem = async ({
+  item,
+  expiresAt,
+  price,
+  availableForUser
+}) => {
+  const purchaseableItem = await prisma.mutation.createPurchaseableItem(
+    {
+      data: {
+        availableForUser: {
+          connect: {
+            id: availableForUser
+          }
+        },
+        expiresAt,
+        price,
+        item: {
+          create: {
+            ...item,
+            effects: {
+              create: item.effects
+            }
+          }
+        }
+      }
+    },
+    `
+  {
+    id
+    price
+    expiresAt
+    item {
+      id
     }
-  });
+  }
+`
+  );
 
   return purchaseableItem;
 };

@@ -11,7 +11,7 @@ const handler = async () => {
       where: {
         OR: [
           {
-            eventLoopedAt_lte: moment()
+            itemEventLoopedAt_lte: moment()
               .subtract(1, 'minute')
               .toDate()
           },
@@ -47,14 +47,12 @@ const handler = async () => {
       if (itemData) {
         const { item, expiresAt, price } = itemData;
 
-        // const createdPurchasebleItem = await createPurchaseableItem({
-        //   item,
-        //   expiresAt,
-        //   price,
-        //   availableForUser: userId
-        // });
-
-        // await notifyUserAsync();
+        const assignedPurchasebleItem = await createPurchaseableItem({
+          availableForUser: userId,
+          expiresAt,
+          price,
+          item
+        });
       }
     })
   );
@@ -62,5 +60,5 @@ const handler = async () => {
 
 export default {
   handler,
-  interval: 10000
+  interval: 60000
 };
