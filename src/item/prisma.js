@@ -82,3 +82,14 @@ export const getPurchaseableItems = async ({ userId }) => {
 
   return purchaseableItems;
 };
+
+export const createPurchaseableItem = async ({ item, expiresAt }) => {
+  const purchaseableItem = await prisma.mutation.createPurchaseableItem({
+    data: {
+      item,
+      expiresAt
+    }
+  });
+
+  return purchaseableItem;
+};

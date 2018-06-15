@@ -65,6 +65,7 @@ export default {
         };
       }
 
+      // Maybe return the pet here :O
       await useItem(purchasedItem.item, {
         petId: user.pet.id,
         userId: user.id
