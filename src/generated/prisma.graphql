@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Fri Jun 15 2018 03:11:09 GMT-0400 (EDT)
+# timestamp: Sat Jun 16 2018 17:53:06 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -217,6 +217,10 @@ type AggregateItemEffect {
   count: Int!
 }
 
+type AggregatePassiveItemSync {
+  count: Int!
+}
+
 type AggregatePet {
   count: Int!
 }
@@ -291,7 +295,7 @@ type ItemEffect {
   name: String!
   description: String
   type: ItemEffectType!
-  value: String!
+  value: Json!
 }
 
 """A connection to a list of items."""
@@ -308,7 +312,7 @@ input ItemEffectCreateInput {
   name: String!
   description: String
   type: ItemEffectType!
-  value: String!
+  value: Json!
 }
 
 input ItemEffectCreateManyInput {
@@ -345,7 +349,7 @@ type ItemEffectPreviousValues {
   name: String!
   description: String
   type: ItemEffectType!
-  value: String!
+  value: Json!
 }
 
 type ItemEffectSubscriptionPayload {
@@ -399,7 +403,7 @@ input ItemEffectUpdateInput {
   name: String
   description: String
   type: ItemEffectType
-  value: String
+  value: Json
 }
 
 input ItemEffectUpdateManyInput {
@@ -505,46 +509,6 @@ input ItemEffectWhereInput {
 
   """All values that are not contained in given list."""
   type_not_in: [ItemEffectType!]
-  value: String
-
-  """All values that are not equal to given value."""
-  value_not: String
-
-  """All values that are contained in given list."""
-  value_in: [String!]
-
-  """All values that are not contained in given list."""
-  value_not_in: [String!]
-
-  """All values less than the given value."""
-  value_lt: String
-
-  """All values less than or equal the given value."""
-  value_lte: String
-
-  """All values greater than the given value."""
-  value_gt: String
-
-  """All values greater than or equal the given value."""
-  value_gte: String
-
-  """All values containing the given string."""
-  value_contains: String
-
-  """All values not containing the given string."""
-  value_not_contains: String
-
-  """All values starting with the given string."""
-  value_starts_with: String
-
-  """All values not starting with the given string."""
-  value_not_starts_with: String
-
-  """All values ending with the given string."""
-  value_ends_with: String
-
-  """All values not ending with the given string."""
-  value_not_ends_with: String
 }
 
 enum ItemOrderByInput {
@@ -777,6 +741,9 @@ input ItemWhereUniqueInput {
   id: ID
 }
 
+"""Raw JSON value"""
+scalar Json
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -793,6 +760,7 @@ type Mutation {
   createPurchasedItem(data: PurchasedItemCreateInput!): PurchasedItem!
   createPurchaseableItem(data: PurchaseableItemCreateInput!): PurchaseableItem!
   createItemEffect(data: ItemEffectCreateInput!): ItemEffect!
+  createPassiveItemSync(data: PassiveItemSyncCreateInput!): PassiveItemSync!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateUserAchievement(data: UserAchievementUpdateInput!, where: UserAchievementWhereUniqueInput!): UserAchievement
   updateAchievement(data: AchievementUpdateInput!, where: AchievementWhereUniqueInput!): Achievement
@@ -801,6 +769,7 @@ type Mutation {
   updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
   updatePurchasedItem(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereUniqueInput!): PurchasedItem
   updatePurchaseableItem(data: PurchaseableItemUpdateInput!, where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
+  updatePassiveItemSync(data: PassiveItemSyncUpdateInput!, where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUserAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
   deleteAchievement(where: AchievementWhereUniqueInput!): Achievement
@@ -809,6 +778,7 @@ type Mutation {
   deleteItem(where: ItemWhereUniqueInput!): Item
   deletePurchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   deletePurchaseableItem(where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
+  deletePassiveItemSync(where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertUserAchievement(where: UserAchievementWhereUniqueInput!, create: UserAchievementCreateInput!, update: UserAchievementUpdateInput!): UserAchievement!
   upsertAchievement(where: AchievementWhereUniqueInput!, create: AchievementCreateInput!, update: AchievementUpdateInput!): Achievement!
@@ -817,6 +787,7 @@ type Mutation {
   upsertItem(where: ItemWhereUniqueInput!, create: ItemCreateInput!, update: ItemUpdateInput!): Item!
   upsertPurchasedItem(where: PurchasedItemWhereUniqueInput!, create: PurchasedItemCreateInput!, update: PurchasedItemUpdateInput!): PurchasedItem!
   upsertPurchaseableItem(where: PurchaseableItemWhereUniqueInput!, create: PurchaseableItemCreateInput!, update: PurchaseableItemUpdateInput!): PurchaseableItem!
+  upsertPassiveItemSync(where: PassiveItemSyncWhereUniqueInput!, create: PassiveItemSyncCreateInput!, update: PassiveItemSyncUpdateInput!): PassiveItemSync!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyUserAchievements(data: UserAchievementUpdateInput!, where: UserAchievementWhereInput): BatchPayload!
   updateManyAchievements(data: AchievementUpdateInput!, where: AchievementWhereInput): BatchPayload!
@@ -826,6 +797,7 @@ type Mutation {
   updateManyPurchasedItems(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereInput): BatchPayload!
   updateManyPurchaseableItems(data: PurchaseableItemUpdateInput!, where: PurchaseableItemWhereInput): BatchPayload!
   updateManyItemEffects(data: ItemEffectUpdateInput!, where: ItemEffectWhereInput): BatchPayload!
+  updateManyPassiveItemSyncs(data: PassiveItemSyncUpdateInput!, where: PassiveItemSyncWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyUserAchievements(where: UserAchievementWhereInput): BatchPayload!
   deleteManyAchievements(where: AchievementWhereInput): BatchPayload!
@@ -835,6 +807,7 @@ type Mutation {
   deleteManyPurchasedItems(where: PurchasedItemWhereInput): BatchPayload!
   deleteManyPurchaseableItems(where: PurchaseableItemWhereInput): BatchPayload!
   deleteManyItemEffects(where: ItemEffectWhereInput): BatchPayload!
+  deleteManyPassiveItemSyncs(where: PassiveItemSyncWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -864,6 +837,254 @@ type PageInfo {
   endCursor: String
 }
 
+type PassiveItemSync implements Node {
+  id: ID!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  item(where: PurchasedItemWhereInput): PurchasedItem!
+  nextSyncAt: DateTime!
+  interval: Int!
+}
+
+"""A connection to a list of items."""
+type PassiveItemSyncConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PassiveItemSyncEdge]!
+  aggregate: AggregatePassiveItemSync!
+}
+
+input PassiveItemSyncCreateInput {
+  deletedAt: DateTime
+  nextSyncAt: DateTime!
+  interval: Int!
+  item: PurchasedItemCreateOneInput!
+}
+
+"""An edge in a connection."""
+type PassiveItemSyncEdge {
+  """The item at the end of the edge."""
+  node: PassiveItemSync!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PassiveItemSyncOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  nextSyncAt_ASC
+  nextSyncAt_DESC
+  interval_ASC
+  interval_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PassiveItemSyncPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  nextSyncAt: DateTime!
+  interval: Int!
+}
+
+type PassiveItemSyncSubscriptionPayload {
+  mutation: MutationType!
+  node: PassiveItemSync
+  updatedFields: [String!]
+  previousValues: PassiveItemSyncPreviousValues
+}
+
+input PassiveItemSyncSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PassiveItemSyncSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PassiveItemSyncSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PassiveItemSyncSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PassiveItemSyncWhereInput
+}
+
+input PassiveItemSyncUpdateInput {
+  deletedAt: DateTime
+  nextSyncAt: DateTime
+  interval: Int
+  item: PurchasedItemUpdateOneInput
+}
+
+input PassiveItemSyncWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PassiveItemSyncWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PassiveItemSyncWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PassiveItemSyncWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  deletedAt: DateTime
+
+  """All values that are not equal to given value."""
+  deletedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  deletedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  deletedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  deletedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  deletedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  deletedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  deletedAt_gte: DateTime
+  nextSyncAt: DateTime
+
+  """All values that are not equal to given value."""
+  nextSyncAt_not: DateTime
+
+  """All values that are contained in given list."""
+  nextSyncAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  nextSyncAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  nextSyncAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  nextSyncAt_lte: DateTime
+
+  """All values greater than the given value."""
+  nextSyncAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  nextSyncAt_gte: DateTime
+  interval: Int
+
+  """All values that are not equal to given value."""
+  interval_not: Int
+
+  """All values that are contained in given list."""
+  interval_in: [Int!]
+
+  """All values that are not contained in given list."""
+  interval_not_in: [Int!]
+
+  """All values less than the given value."""
+  interval_lt: Int
+
+  """All values less than or equal the given value."""
+  interval_lte: Int
+
+  """All values greater than the given value."""
+  interval_gt: Int
+
+  """All values greater than or equal the given value."""
+  interval_gte: Int
+  item: PurchasedItemWhereInput
+}
+
+input PassiveItemSyncWhereUniqueInput {
+  id: ID
+}
+
 type Pet implements Node {
   id: ID!
   createdAt: DateTime!
@@ -874,7 +1095,7 @@ type Pet implements Node {
   content: Int!
   energy: Int!
   hunger: Int!
-  size: Int!
+  size: Float!
   eventLoopedAt: DateTime!
   interactions(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PetInteraction!]
 }
@@ -895,7 +1116,7 @@ input PetCreateInput {
   content: Int
   energy: Int
   hunger: Int
-  size: Int
+  size: Float
   eventLoopedAt: DateTime!
   owner: UserCreateOneWithoutPetInput!
   interactions: PetInteractionCreateManyInput
@@ -912,7 +1133,7 @@ input PetCreateWithoutOwnerInput {
   content: Int
   energy: Int
   hunger: Int
-  size: Int
+  size: Float
   eventLoopedAt: DateTime!
   interactions: PetInteractionCreateManyInput
 }
@@ -1167,7 +1388,7 @@ type PetPreviousValues {
   content: Int!
   energy: Int!
   hunger: Int!
-  size: Int!
+  size: Float!
   eventLoopedAt: DateTime!
 }
 
@@ -1216,7 +1437,7 @@ input PetUpdateInput {
   content: Int
   energy: Int
   hunger: Int
-  size: Int
+  size: Float
   eventLoopedAt: DateTime
   owner: UserUpdateOneWithoutPetInput
   interactions: PetInteractionUpdateManyInput
@@ -1237,7 +1458,7 @@ input PetUpdateWithoutOwnerDataInput {
   content: Int
   energy: Int
   hunger: Int
-  size: Int
+  size: Float
   eventLoopedAt: DateTime
   interactions: PetInteractionUpdateManyInput
 }
@@ -1486,28 +1707,28 @@ input PetWhereInput {
 
   """All values greater than or equal the given value."""
   hunger_gte: Int
-  size: Int
+  size: Float
 
   """All values that are not equal to given value."""
-  size_not: Int
+  size_not: Float
 
   """All values that are contained in given list."""
-  size_in: [Int!]
+  size_in: [Float!]
 
   """All values that are not contained in given list."""
-  size_not_in: [Int!]
+  size_not_in: [Float!]
 
   """All values less than the given value."""
-  size_lt: Int
+  size_lt: Float
 
   """All values less than or equal the given value."""
-  size_lte: Int
+  size_lte: Float
 
   """All values greater than the given value."""
-  size_gt: Int
+  size_gt: Float
 
   """All values greater than or equal the given value."""
-  size_gte: Int
+  size_gte: Float
   eventLoopedAt: DateTime
 
   """All values that are not equal to given value."""
@@ -1794,6 +2015,11 @@ input PurchasedItemCreateInput {
   owner: UserCreateOneInput!
 }
 
+input PurchasedItemCreateOneInput {
+  create: PurchasedItemCreateInput
+  connect: PurchasedItemWhereUniqueInput
+}
+
 """An edge in a connection."""
 type PurchasedItemEdge {
   """The item at the end of the edge."""
@@ -1862,11 +2088,31 @@ input PurchasedItemSubscriptionWhereInput {
   node: PurchasedItemWhereInput
 }
 
+input PurchasedItemUpdateDataInput {
+  depositId: String
+  usedAt: DateTime
+  item: ItemUpdateOneInput
+  owner: UserUpdateOneInput
+}
+
 input PurchasedItemUpdateInput {
   depositId: String
   usedAt: DateTime
   item: ItemUpdateOneInput
   owner: UserUpdateOneInput
+}
+
+input PurchasedItemUpdateOneInput {
+  create: PurchasedItemCreateInput
+  connect: PurchasedItemWhereUniqueInput
+  delete: Boolean
+  update: PurchasedItemUpdateDataInput
+  upsert: PurchasedItemUpsertNestedInput
+}
+
+input PurchasedItemUpsertNestedInput {
+  update: PurchasedItemUpdateDataInput!
+  create: PurchasedItemCreateInput!
 }
 
 input PurchasedItemWhereInput {
@@ -2020,6 +2266,7 @@ type Query {
   purchasedItems(where: PurchasedItemWhereInput, orderBy: PurchasedItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchasedItem]!
   purchaseableItems(where: PurchaseableItemWhereInput, orderBy: PurchaseableItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchaseableItem]!
   itemEffects(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ItemEffect]!
+  passiveItemSyncs(where: PassiveItemSyncWhereInput, orderBy: PassiveItemSyncOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PassiveItemSync]!
   user(where: UserWhereUniqueInput!): User
   userAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
   achievement(where: AchievementWhereUniqueInput!): Achievement
@@ -2028,6 +2275,7 @@ type Query {
   item(where: ItemWhereUniqueInput!): Item
   purchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   purchaseableItem(where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
+  passiveItemSync(where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   userAchievementsConnection(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserAchievementConnection!
   achievementsConnection(where: AchievementWhereInput, orderBy: AchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AchievementConnection!
@@ -2037,6 +2285,7 @@ type Query {
   purchasedItemsConnection(where: PurchasedItemWhereInput, orderBy: PurchasedItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchasedItemConnection!
   purchaseableItemsConnection(where: PurchaseableItemWhereInput, orderBy: PurchaseableItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchaseableItemConnection!
   itemEffectsConnection(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemEffectConnection!
+  passiveItemSyncsConnection(where: PassiveItemSyncWhereInput, orderBy: PassiveItemSyncOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PassiveItemSyncConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -2055,6 +2304,7 @@ type Subscription {
   purchasedItem(where: PurchasedItemSubscriptionWhereInput): PurchasedItemSubscriptionPayload
   purchaseableItem(where: PurchaseableItemSubscriptionWhereInput): PurchaseableItemSubscriptionPayload
   itemEffect(where: ItemEffectSubscriptionWhereInput): ItemEffectSubscriptionPayload
+  passiveItemSync(where: PassiveItemSyncSubscriptionWhereInput): PassiveItemSyncSubscriptionPayload
 }
 
 type User implements Node {
@@ -2063,7 +2313,8 @@ type User implements Node {
   personId: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  eventLoopedAt: DateTime
+  itemEventLoopedAt: DateTime
+  petGrowthEventLoopedAt: DateTime
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
@@ -2075,6 +2326,7 @@ type User implements Node {
   email: String
   name: String
   achievements(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserAchievement!]
+  lifetimeDollarsManagedEarned: Int!
   pet(where: PetWhereInput): Pet
 }
 
@@ -2284,7 +2536,8 @@ type UserConnection {
 input UserCreateInput {
   userId: ID!
   personId: ID!
-  eventLoopedAt: DateTime
+  itemEventLoopedAt: DateTime
+  petGrowthEventLoopedAt: DateTime
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
@@ -2295,6 +2548,7 @@ input UserCreateInput {
   phoneNumber: String
   email: String
   name: String
+  lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementCreateManyInput
   pet: PetCreateOneWithoutOwnerInput
 }
@@ -2312,7 +2566,8 @@ input UserCreateOneWithoutPetInput {
 input UserCreateWithoutPetInput {
   userId: ID!
   personId: ID!
-  eventLoopedAt: DateTime
+  itemEventLoopedAt: DateTime
+  petGrowthEventLoopedAt: DateTime
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
@@ -2323,6 +2578,7 @@ input UserCreateWithoutPetInput {
   phoneNumber: String
   email: String
   name: String
+  lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementCreateManyInput
 }
 
@@ -2346,8 +2602,10 @@ enum UserOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  eventLoopedAt_ASC
-  eventLoopedAt_DESC
+  itemEventLoopedAt_ASC
+  itemEventLoopedAt_DESC
+  petGrowthEventLoopedAt_ASC
+  petGrowthEventLoopedAt_DESC
   primaryBankAccountId_ASC
   primaryBankAccountId_DESC
   primaryBankAccountNumber_ASC
@@ -2368,6 +2626,8 @@ enum UserOrderByInput {
   email_DESC
   name_ASC
   name_DESC
+  lifetimeDollarsManagedEarned_ASC
+  lifetimeDollarsManagedEarned_DESC
 }
 
 type UserPreviousValues {
@@ -2376,7 +2636,8 @@ type UserPreviousValues {
   personId: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  eventLoopedAt: DateTime
+  itemEventLoopedAt: DateTime
+  petGrowthEventLoopedAt: DateTime
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
@@ -2387,6 +2648,7 @@ type UserPreviousValues {
   phoneNumber: String
   email: String
   name: String
+  lifetimeDollarsManagedEarned: Int!
 }
 
 type UserSubscriptionPayload {
@@ -2431,7 +2693,8 @@ input UserSubscriptionWhereInput {
 input UserUpdateDataInput {
   userId: ID
   personId: ID
-  eventLoopedAt: DateTime
+  itemEventLoopedAt: DateTime
+  petGrowthEventLoopedAt: DateTime
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
@@ -2442,6 +2705,7 @@ input UserUpdateDataInput {
   phoneNumber: String
   email: String
   name: String
+  lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementUpdateManyInput
   pet: PetUpdateOneWithoutOwnerInput
 }
@@ -2449,7 +2713,8 @@ input UserUpdateDataInput {
 input UserUpdateInput {
   userId: ID
   personId: ID
-  eventLoopedAt: DateTime
+  itemEventLoopedAt: DateTime
+  petGrowthEventLoopedAt: DateTime
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
@@ -2460,6 +2725,7 @@ input UserUpdateInput {
   phoneNumber: String
   email: String
   name: String
+  lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementUpdateManyInput
   pet: PetUpdateOneWithoutOwnerInput
 }
@@ -2483,7 +2749,8 @@ input UserUpdateOneWithoutPetInput {
 input UserUpdateWithoutPetDataInput {
   userId: ID
   personId: ID
-  eventLoopedAt: DateTime
+  itemEventLoopedAt: DateTime
+  petGrowthEventLoopedAt: DateTime
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
@@ -2494,6 +2761,7 @@ input UserUpdateWithoutPetDataInput {
   phoneNumber: String
   email: String
   name: String
+  lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementUpdateManyInput
 }
 
@@ -2680,28 +2948,50 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
-  eventLoopedAt: DateTime
+  itemEventLoopedAt: DateTime
 
   """All values that are not equal to given value."""
-  eventLoopedAt_not: DateTime
+  itemEventLoopedAt_not: DateTime
 
   """All values that are contained in given list."""
-  eventLoopedAt_in: [DateTime!]
+  itemEventLoopedAt_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  eventLoopedAt_not_in: [DateTime!]
+  itemEventLoopedAt_not_in: [DateTime!]
 
   """All values less than the given value."""
-  eventLoopedAt_lt: DateTime
+  itemEventLoopedAt_lt: DateTime
 
   """All values less than or equal the given value."""
-  eventLoopedAt_lte: DateTime
+  itemEventLoopedAt_lte: DateTime
 
   """All values greater than the given value."""
-  eventLoopedAt_gt: DateTime
+  itemEventLoopedAt_gt: DateTime
 
   """All values greater than or equal the given value."""
-  eventLoopedAt_gte: DateTime
+  itemEventLoopedAt_gte: DateTime
+  petGrowthEventLoopedAt: DateTime
+
+  """All values that are not equal to given value."""
+  petGrowthEventLoopedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  petGrowthEventLoopedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  petGrowthEventLoopedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  petGrowthEventLoopedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  petGrowthEventLoopedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  petGrowthEventLoopedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  petGrowthEventLoopedAt_gte: DateTime
   primaryBankAccountId: String
 
   """All values that are not equal to given value."""
@@ -3084,6 +3374,28 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  lifetimeDollarsManagedEarned: Int
+
+  """All values that are not equal to given value."""
+  lifetimeDollarsManagedEarned_not: Int
+
+  """All values that are contained in given list."""
+  lifetimeDollarsManagedEarned_in: [Int!]
+
+  """All values that are not contained in given list."""
+  lifetimeDollarsManagedEarned_not_in: [Int!]
+
+  """All values less than the given value."""
+  lifetimeDollarsManagedEarned_lt: Int
+
+  """All values less than or equal the given value."""
+  lifetimeDollarsManagedEarned_lte: Int
+
+  """All values greater than the given value."""
+  lifetimeDollarsManagedEarned_gt: Int
+
+  """All values greater than or equal the given value."""
+  lifetimeDollarsManagedEarned_gte: Int
   achievements_every: UserAchievementWhereInput
   achievements_some: UserAchievementWhereInput
   achievements_none: UserAchievementWhereInput

@@ -1,10 +1,15 @@
 import intervalPromise from 'interval-promise';
 import petsHandler from '~/loop/pets';
+import petGrowthHandler from '~/loop/pet-growth';
+import passiveItemsHandler from '~/loop/passive-items';
 import itemsHandler from '~/loop/items';
-import usersHandler from '~/loop/users';
 
-// const HANDLERS = [petsHandler, itemsHandler, usersHandler];
-const HANDLERS = [itemsHandler];
+const HANDLERS = [
+  itemsHandler,
+  petsHandler,
+  petGrowthHandler,
+  passiveItemsHandler
+];
 
 const props = { exited: false };
 

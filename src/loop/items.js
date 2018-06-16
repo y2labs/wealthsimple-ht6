@@ -2,8 +2,7 @@ import moment from 'moment';
 import prisma from '~/prisma';
 import { createItem } from '~/item/create-item';
 import { createPurchaseableItem } from '~/item/prisma';
-
-const notifyUserAsync = async () => Promise.resolve('SEND');
+import { PERFORM_SYNC_INTERVAL } from '~/loop/constants';
 
 const handler = async () => {
   const users = await prisma.query.users(
@@ -12,11 +11,11 @@ const handler = async () => {
         OR: [
           {
             itemEventLoopedAt_lte: moment()
-              .subtract(1, 'minute')
+              .subtract(10, 'minute')
               .toDate()
           },
           {
-            eventLoopedAt: null
+            itemEventLoopedAt: null
           }
         ],
         AND: [
@@ -53,6 +52,17 @@ const handler = async () => {
           price,
           item
         });
+
+        // TODO: Notify user if a GOOD item is on the market.
+
+        await prisma.mutation.updateUser({
+          where: {
+            id: userId
+          },
+          data: {
+            itemEventLoopedAt: new Date()
+          }
+        });
       }
     })
   );
@@ -60,5 +70,5 @@ const handler = async () => {
 
 export default {
   handler,
-  interval: 60000
+  interval: PERFORM_SYNC_INTERVAL
 };

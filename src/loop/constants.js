@@ -1,0 +1,1 @@
+export const PERFORM_SYNC_INTERVAL = 20000;

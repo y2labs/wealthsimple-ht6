@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { getNextPetAttributes } from '~/pet/pet-attributes';
 import prisma from '~/prisma';
+import { PERFORM_SYNC_INTERVAL } from '~/loop/constants';
 
 const handler = async () => {
   const pets = await prisma.query.pets(
@@ -40,5 +41,5 @@ const handler = async () => {
 
 export default {
   handler,
-  interval: 10000
+  interval: PERFORM_SYNC_INTERVAL
 };

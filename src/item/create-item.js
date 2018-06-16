@@ -59,7 +59,11 @@ export const getCreatedItemExpiresAt = ({ rarity, temporality, item }) => {
   return expiresAt.date.toDate();
 };
 
-export const createItem = ({ interactions }) => {
+export const createItem = ({
+  interactions,
+  overrideRarity,
+  overrideTemporality
+} = {}) => {
   const lastInteraction = last(interactions);
 
   const multipliers = {
@@ -74,21 +78,23 @@ export const createItem = ({ interactions }) => {
       : 1
   };
 
-  const rarity = pickOption({
-    options: {
-      rare: multipliers.lastInteraction * CONSTANTS.rarityCommonItem,
-      common: CONSTANTS.rarityCommonItem
-    }
-  });
+  const rarity =
+    overrideRarity ||
+    pickOption({
+      options: {
+        rare: multipliers.lastInteraction * CONSTANTS.rarityCommonItem,
+        common: CONSTANTS.rarityCommonItem
+      }
+    });
 
-  const temporality = pickOption({
-    options: {
-      passive: multipliers.lastInteraction * CONSTANTS.rarityPassiveItem,
-      singleUse: CONSTANTS.raritySingleUseItem
-    }
-  });
-
-  const isRare = rarity === 'rare';
+  const temporality =
+    overrideTemporality ||
+    pickOption({
+      options: {
+        passive: multipliers.lastInteraction * CONSTANTS.rarityPassiveItem,
+        singleUse: CONSTANTS.raritySingleUseItem
+      }
+    });
 
   const item = {
     name: faker.commerce.productName(),

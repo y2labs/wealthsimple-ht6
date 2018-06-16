@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { random, round } from 'lodash';
 import { pickOption } from '~/item/utils';
 
@@ -10,7 +11,7 @@ const ITEM_EFFECTS = {
         name: 'Does nothing',
         description: 'Nothing',
         type: 'NOOP',
-        value: JSON.stringify({})
+        value: {}
       };
     }
   },
@@ -23,10 +24,10 @@ const ITEM_EFFECTS = {
       const value = round(random(min, max));
 
       return {
-        name: 'Eat snack',
+        value,
         description: 'Eat the snack.',
         type: 'HUNGER_INCREASE',
-        value: JSON.stringify({ value })
+        name: 'Eat snack'
       };
     }
   },
@@ -39,10 +40,10 @@ const ITEM_EFFECTS = {
       const value = round(random(min, max));
 
       return {
-        name: 'Play with toy',
         description: 'Play with the toy and increase happiness!',
+        value,
         type: 'CONTENT_INCREASE',
-        value: JSON.stringify({ value })
+        name: 'Play with toy'
       };
     }
   },
@@ -55,10 +56,10 @@ const ITEM_EFFECTS = {
       const value = round(random(min, max));
 
       return {
-        name: 'Energy boost',
         description: 'Boost energy by bringing happiness and energy!',
+        value: { value },
         type: 'ENERGY_INCREASE',
-        value: JSON.stringify({ value })
+        name: 'Energy boost'
       };
     }
   },
@@ -68,26 +69,28 @@ const ITEM_EFFECTS = {
     type: 'PASSIVE_EARN_MANAGED_DOLLARS',
     factory: ({ rarity }) => {
       const isRare = rarity === 'rare';
+      const interval = random(isRare ? 14 : 8, isRare ? 22 : 14);
 
       const value = {
         value: round(random(isRare ? 20 : 10, isRare ? 50 : 10)),
+        interval: moment.duration(interval, 'h').as('ms'),
+        amount: random(isRare ? 700 : 400, isRare ? 850 : 500),
         stat: pickOption({
           options: {
-            hunger: random(10, 20),
             content: random(10, 20),
+            hunger: random(10, 20),
             energy: random(10, 20)
           }
-        }),
-        amount: random(isRare ? 700 : 400, isRare ? 850 : 500)
+        })
       };
 
       return {
         name: 'Special properties',
         description: `Earning passive dollars managed while your pet's ${
           value.stat
-        } is above ${value.amount}`,
+        } is above ${value.amount} every ${interval} hours`,
         type: 'PASSIVE_EARN_MANAGED_DOLLARS',
-        value: JSON.stringify(value)
+        value
       };
     }
   }

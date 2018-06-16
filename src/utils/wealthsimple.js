@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import moment from 'moment';
+import { omitBy, isNil } from 'lodash';
 import {
   updateUserTokens as updateUserTokensAsync,
   getUserTokens
@@ -136,7 +137,7 @@ export const createDespoit = async ({
   accountId,
   depositAmount
 }) => {
-  const { body, headers } = await request({
+  const { body } = await request({
     body: {
       bank_account_id: bankAccountId,
       client_id: personId,
@@ -152,6 +153,34 @@ export const createDespoit = async ({
   });
 
   return body;
+};
+
+export const getDailyValues = async ({
+  accountId,
+  startDate,
+  endDate,
+  accessToken
+}) => {
+  const qs = stringify(
+    omitBy(
+      {
+        account_id: accountId,
+        summary_date_start: startDate,
+        summary_date_end: endDate
+      },
+      isNil
+    )
+  );
+
+  const { body } = await request({
+    path: `/daily_values?${qs}`,
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  return body.results;
 };
 
 export const postRefreshToken = async ({ refreshToken }) => {

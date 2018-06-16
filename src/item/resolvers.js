@@ -5,7 +5,9 @@ import { createDespoit, withTokens } from '~/utils/wealthsimple';
 import {
   getPurchaseableItems,
   getPurchasedItems,
-  getPreviouslyPurchasedItems
+  getPreviouslyPurchasedItems,
+  createPassiveItemSyncFromEffects,
+  updatePurchaseableItemAsPurchased
 } from '~/item/prisma';
 import { useItem } from '~/item/use-item';
 import { extractFromCtx } from '~/utils/auth';
@@ -60,7 +62,7 @@ export default {
 
       if (!purchasedItem) {
         return {
-          error: 'Item not found',
+          error: 'Item not found or has been purchased already',
           success: false
         };
       }
@@ -84,30 +86,34 @@ export default {
         throw new Error('Authorization required');
       }
 
-      const { purchaseableItem, user } = await pProps({
-        purchaseableItem: prisma.query.purchaseableItem(
+      const { purchaseableItems, user } = await pProps({
+        purchaseableItems: prisma.query.purchaseableItems(
           {
             where: {
-              AND: [
-                {
-                  id: args.id
-                },
-                {
-                  // XXX: Make sure the item is not already purchased.
-                  purchasedAt: null
-                },
-                {
-                  availableForUser: {
-                    id: userId
-                  }
-                }
-              ]
+              id: args.id,
+              purchasedAt: null,
+              availableForUser: {
+                id: userId
+              }
             }
           },
-          `{ id price item { id }}`
+          `{
+            id
+            price
+            item {
+              id
+              singleUse
+              effects {
+                type
+                value
+              }
+            }
+          }`
         ),
         user: findUser({ id: userId })
       });
+
+      const [purchaseableItem] = purchaseableItems;
 
       if (!purchaseableItem) {
         return {
@@ -160,6 +166,16 @@ export default {
         },
         `{ id }`
       );
+
+      // Create passive item sync record.
+      // ASYNC!
+      createPassiveItemSyncFromEffects({
+        effects: purchaseableItem.item.effects,
+        singleUse: purchaseableItem.item.singleUse,
+        purchasedItemId: id
+      });
+
+      updatePurchaseableItemAsPurchased({ id: args.id });
 
       return {
         purchasedItemId: id,

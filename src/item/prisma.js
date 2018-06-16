@@ -1,4 +1,5 @@
 import prisma from '~/prisma';
+import moment from 'moment';
 
 export const getPreviouslyPurchasedItems = async ({ userId }) => {
   const previouslyPurchasedItems = await prisma.query.purchasedItems(
@@ -57,17 +58,11 @@ export const getPurchaseableItems = async ({ userId }) => {
     {
       where: {
         expiresAt_gt: new Date(),
+        availableForUser: {
+          id: userId
+        },
         item: {
-          AND: [
-            {
-              id_not_in: previouslyPurchasedItems.map(({ id }) => id)
-            },
-            {
-              availableForUser: {
-                id: userId
-              }
-            }
-          ]
+          id_not_in: previouslyPurchasedItems.map(({ id }) => id)
         }
       }
     },
@@ -131,4 +126,43 @@ export const createPurchaseableItem = async ({
   );
 
   return purchaseableItem;
+};
+
+export const createPassiveItemSyncFromEffects = async ({
+  effects,
+  singleUse,
+  purchasedItemId
+}) => {
+  if (singleUse) {
+    return;
+  }
+
+  await Promise.all(
+    effects.map(async ({ value }) => {
+      const { interval } = value;
+
+      await prisma.mutation.createPassiveItemSync({
+        data: {
+          nextSyncAt: moment().add(moment.duration(interval, 'ms')),
+          interval,
+          item: {
+            connect: {
+              id: purchasedItemId
+            }
+          }
+        }
+      });
+    })
+  );
+};
+
+export const updatePurchaseableItemAsPurchased = async ({ id }) => {
+  await prisma.mutation.updatePurchaseableItem({
+    where: {
+      id
+    },
+    data: {
+      purchasedAt: new Date()
+    }
+  });
 };

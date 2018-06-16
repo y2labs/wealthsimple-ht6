@@ -5,6 +5,7 @@ import userResolvers from '~/user/resolvers';
 import itemResolvers from '~/item/resolvers';
 import viewerResolvers from '~/viewer/resolvers';
 import petResolvers from '~/pet/resolvers';
+import demoResolvers from '~/demo/resolvers';
 
 const resolversArray = [
   userResolvers,
@@ -12,7 +13,8 @@ const resolversArray = [
   itemResolvers,
   bankAccountsResolvers,
   accountResovers,
-  petResolvers
+  petResolvers,
+  demoResolvers
 ];
 
 export default mergeResolvers(resolversArray);
