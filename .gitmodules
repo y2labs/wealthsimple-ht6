@@ -1,0 +1,3 @@
+[submodule "WS-Referral-Front-end"]
+	path = WS-Referral-Front-end
+	url = https://github.com/y2labs/WS-Referral-Front-end
