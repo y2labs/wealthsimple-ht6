@@ -1,4 +1,5 @@
 import got from 'got';
+import { omitBy, isNil } from 'lodash';
 import { Router } from 'express';
 import { stringify } from 'querystring';
 import { signJwt } from '~/utils/auth';
@@ -12,7 +13,18 @@ router.get('/login', (req, res) => {
     client_id: process.env.WS_CLIENT_ID,
     redirect_uri: process.env.WS_CALLBACK_URI,
     response_type: 'code',
-    scope: 'read write'
+    scope: 'read write',
+    state: encodeURIComponent(
+      JSON.stringify(
+        omitBy(
+          {
+            type: req.query.type,
+            redirectUri: req.query.redirect_uri
+          },
+          isNil
+        )
+      )
+    )
   });
 
   res.redirect(`${process.env.WS_AUTH_ENDPOINT}?${qs}`);
@@ -44,7 +56,7 @@ const getPerson = async ({ accessToken, personId }) => {
 };
 
 router.get('/callback', async (req, res, next) => {
-  const { code } = req.query;
+  const { code, state } = req.query;
 
   try {
     const { body } = await got(process.env.WS_TOKEN_ENDPOINT, {
@@ -74,11 +86,19 @@ router.get('/callback', async (req, res, next) => {
       ...person
     });
 
-    res
-      .json({
-        token: signJwt({ userId: user.id })
-      })
-      .status(200);
+    const { type, redirectUri } = JSON.parse(decodeURIComponent(state));
+
+    const token = signJwt({ userId: user.id });
+
+    if (type === 'redirect' && redirectUri) {
+      const qs = stringify({ token });
+
+      res.redirect(`${redirectUri.replace('?', '')}?${qs}`);
+
+      return;
+    }
+
+    res.json({ token }).status(200);
   } catch (err) {
     next(err);
   }

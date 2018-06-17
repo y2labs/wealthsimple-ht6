@@ -18,7 +18,8 @@ const graphQLServer = new GraphQLServer({
 graphQLServer.use('/', api);
 
 const server = graphQLServer.createHttpServer({
-  port: process.env.PORT
+  port: process.env.PORT,
+  endpoint: '/api'
 });
 
 server.listen(process.env.PORT, () => {
