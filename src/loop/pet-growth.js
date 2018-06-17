@@ -1,5 +1,6 @@
 import moment from 'moment';
 import pProps from 'p-props';
+import pRetry from 'p-retry';
 import prisma from '~/prisma';
 import { PERFORM_SYNC_INTERVAL } from '~/loop/constants';
 import { withTokens, getDailyValues } from '~/utils/wealthsimple';
@@ -126,25 +127,29 @@ const handler = async () => {
 
         const nextSize = user.pet.size * (1 + finalGrowth / 100);
 
-        await pProps({
-          updatePet: prisma.mutation.updatePet({
-            where: {
-              id: user.pet.id
-            },
-            data: {
-              size: nextSize
-            }
-          }),
+        const run = async () => {
+          await pProps({
+            updatePet: prisma.mutation.updatePet({
+              where: {
+                id: user.pet.id
+              },
+              data: {
+                size: nextSize
+              }
+            }),
 
-          updateUser: prisma.mutation.updateUser({
-            where: {
-              id: user.id
-            },
-            data: {
-              petGrowthEventLoopedAt: new Date()
-            }
-          })
-        });
+            updateUser: prisma.mutation.updateUser({
+              where: {
+                id: user.id
+              },
+              data: {
+                petGrowthEventLoopedAt: new Date()
+              }
+            })
+          });
+        };
+
+        await pRetry(run);
       })
     );
   } catch (err) {

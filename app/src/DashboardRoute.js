@@ -2,6 +2,7 @@ import React from 'react';
 import AuthenticatedRoute from 'AuthenticatedRoute';
 import Sidebar from 'Sidebar';
 import Header from 'Header';
+import PetDisplay from 'PetDisplay';
 
 const DashboardPage = () => (
   <div className="dashboard--container">
@@ -10,7 +11,7 @@ const DashboardPage = () => (
     </div>
 
     <div className="dashboard--scroll-container">
-      <h1>Hello</h1>
+      <PetDisplay />
     </div>
   </div>
 );

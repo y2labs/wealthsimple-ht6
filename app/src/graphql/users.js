@@ -1,19 +1,5 @@
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
-
-export const getCurrentUserWithTokenQuery = gql`
-  query getCurrentUserWithToken {
-    viewer {
-      me {
-        name
-        email
-        phoneNumber
-        id
-        token
-      }
-    }
-  }
-`;
+import { petInfoFragment } from './pets';
 
 export const getCurrentUserQuery = gql`
   query getCurrentUser {
@@ -24,7 +10,23 @@ export const getCurrentUserQuery = gql`
         phoneNumber
         id
         token
+        lifetimeDollarsManagedEarned
       }
     }
   }
+`;
+
+export const getCurrentUserPetQuery = gql`
+  query getCurrentUserPet {
+    viewer {
+      me {
+        id
+        pet {
+          ...petInfoFragment
+        }
+      }
+    }
+  }
+
+  ${petInfoFragment}
 `;

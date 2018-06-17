@@ -1,24 +1,18 @@
 import React from 'react';
-import { Query } from 'react-apollo';
-import { getCurrentUserQuery } from 'graphql/users';
+import SidebarPetInfo from 'SidebarPetInfo';
+import SidebarUserInfo from 'SidebarUserInfo';
 
 const Sidebar = () => {
   return (
-    <Query query={getCurrentUserQuery}>
-      {props => {
-        if (props.loading) {
-          return null;
-        }
+    <div>
+      <div className="sidebar--wrapper">
+        <SidebarPetInfo />
+      </div>
 
-        const { me } = props.data.viewer;
-
-        return (
-          <div className="sidebar--container">
-            <p className="h4-sans">{me.name}</p>
-          </div>
-        );
-      }}
-    </Query>
+      <div className="sidebar--wrapper">
+        <SidebarUserInfo />
+      </div>
+    </div>
   );
 };
 

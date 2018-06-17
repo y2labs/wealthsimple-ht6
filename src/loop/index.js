@@ -15,15 +15,21 @@ const props = { exited: false };
 
 const start = () => {
   HANDLERS.forEach(({ handler, interval }) => {
-    intervalPromise(async (_, stopFn) => {
-      if (props.exited) {
-        stopFn();
+    intervalPromise(
+      async (_, stopFn) => {
+        if (props.exited) {
+          stopFn();
 
-        return;
+          return;
+        }
+
+        await handler();
+      },
+      interval,
+      {
+        stopOnError: false
       }
-
-      await handler();
-    }, interval);
+    );
   });
 };
 

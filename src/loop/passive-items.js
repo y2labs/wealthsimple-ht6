@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { get } from 'lodash';
+import pRetry from 'p-retry';
 import prisma from '~/prisma';
 import { PERFORM_SYNC_INTERVAL } from '~/loop/constants';
 import { issueFreeDollarsManaged } from '~/future/dollars-managed';
@@ -74,16 +75,20 @@ const handler = async () => {
                 )} free dollars managed with a pet size multiplier of ${petSize}`
               );
 
-              await issueFreeDollarsManaged();
+              const run = async () => {
+                await issueFreeDollarsManaged();
 
-              await prisma.mutation.updateUser({
-                where: {
-                  id: itemPetUserInfo.owner.id
-                },
-                data: {
-                  lifetimeDollarsManagedEarned: valueWithPetSizeMultiplier
-                }
-              });
+                await prisma.mutation.updateUser({
+                  where: {
+                    id: itemPetUserInfo.owner.id
+                  },
+                  data: {
+                    lifetimeDollarsManagedEarned: valueWithPetSizeMultiplier
+                  }
+                });
+              };
+
+              await pRetry(run);
             }
 
             // Bad!

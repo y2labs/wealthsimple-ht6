@@ -94,7 +94,7 @@ export const updateUserPrimaryBankAccount = async ({
   return res;
 };
 
-export const findUser = async ({ userId, id, personId }) => {
+export const findUser = async ({ userId, id, personId }, info) => {
   const where = _.omitBy(
     {
       personId,
@@ -108,7 +108,7 @@ export const findUser = async ({ userId, id, personId }) => {
     return null;
   }
 
-  const user = await prisma.query.user({ where });
+  const user = await prisma.query.user({ where }, info);
 
   return user;
 };

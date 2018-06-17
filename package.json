@@ -16,6 +16,7 @@
     "moment": "^2.22.2",
     "node-fetch": "^2.1.2",
     "p-props": "^1.2.0",
+    "p-retry": "^2.0.0",
     "prisma-binding": "^2.0.2"
   },
   "devDependencies": {

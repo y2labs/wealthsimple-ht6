@@ -1,4 +1,5 @@
 import moment from 'moment';
+import pRetry from 'p-retry';
 import { getNextPetAttributes } from '~/pet/pet-attributes';
 import prisma from '~/prisma';
 import { PERFORM_SYNC_INTERVAL } from '~/loop/constants';
@@ -29,12 +30,16 @@ const handler = async () => {
 
   await Promise.all(
     pets.map(async pet => {
-      const updatedAttributes = getNextPetAttributes(pet);
+      const run = async () => {
+        const updatedAttributes = getNextPetAttributes(pet);
 
-      await prisma.mutation.updatePet({
-        data: updatedAttributes,
-        where: { id: pet.id }
-      });
+        await prisma.mutation.updatePet({
+          data: updatedAttributes,
+          where: { id: pet.id }
+        });
+      };
+
+      await pRetry(run);
     })
   );
 };

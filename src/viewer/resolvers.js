@@ -10,7 +10,7 @@ export default {
     me: async (parent, args, context, info) => {
       const userId = extractFromCtx(context);
 
-      const user = await findUser({ id: userId });
+      const user = await findUser({ id: userId }, info);
 
       return user;
     }

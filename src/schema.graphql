@@ -17,6 +17,7 @@ type User {
   primaryAccount: UserAccount
   accounts: [UserAccount!]!
   bankAccounts: [UserBankAccount!]!
+  lifetimeDollarsManagedEarned: Int!
 }
 
 type UserAccount {
