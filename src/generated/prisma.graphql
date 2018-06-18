@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Sun Jun 17 2018 22:57:59 GMT-0400 (EDT)
+# timestamp: Mon Jun 18 2018 12:40:58 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -246,6 +246,14 @@ type AggregateUser {
 }
 
 type AggregateUserAchievement {
+  count: Int!
+}
+
+type AggregateWebPushSubscription {
+  count: Int!
+}
+
+type AggregateWebPushSubscriptionKeys {
   count: Int!
 }
 
@@ -976,6 +984,8 @@ type Mutation {
   createItemEffect(data: ItemEffectCreateInput!): ItemEffect!
   createPassiveItemSync(data: PassiveItemSyncCreateInput!): PassiveItemSync!
   createImage(data: ImageCreateInput!): Image!
+  createWebPushSubscriptionKeys(data: WebPushSubscriptionKeysCreateInput!): WebPushSubscriptionKeys!
+  createWebPushSubscription(data: WebPushSubscriptionCreateInput!): WebPushSubscription!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateUserAchievement(data: UserAchievementUpdateInput!, where: UserAchievementWhereUniqueInput!): UserAchievement
   updateAchievement(data: AchievementUpdateInput!, where: AchievementWhereUniqueInput!): Achievement
@@ -1017,6 +1027,8 @@ type Mutation {
   updateManyItemEffects(data: ItemEffectUpdateInput!, where: ItemEffectWhereInput): BatchPayload!
   updateManyPassiveItemSyncs(data: PassiveItemSyncUpdateInput!, where: PassiveItemSyncWhereInput): BatchPayload!
   updateManyImages(data: ImageUpdateInput!, where: ImageWhereInput): BatchPayload!
+  updateManyWebPushSubscriptionKeyses(data: WebPushSubscriptionKeysUpdateInput!, where: WebPushSubscriptionKeysWhereInput): BatchPayload!
+  updateManyWebPushSubscriptions(data: WebPushSubscriptionUpdateInput!, where: WebPushSubscriptionWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyUserAchievements(where: UserAchievementWhereInput): BatchPayload!
   deleteManyAchievements(where: AchievementWhereInput): BatchPayload!
@@ -1028,6 +1040,8 @@ type Mutation {
   deleteManyItemEffects(where: ItemEffectWhereInput): BatchPayload!
   deleteManyPassiveItemSyncs(where: PassiveItemSyncWhereInput): BatchPayload!
   deleteManyImages(where: ImageWhereInput): BatchPayload!
+  deleteManyWebPushSubscriptionKeyses(where: WebPushSubscriptionKeysWhereInput): BatchPayload!
+  deleteManyWebPushSubscriptions(where: WebPushSubscriptionWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1318,6 +1332,7 @@ type Pet implements Node {
   size: Float!
   eventLoopedAt: DateTime!
   interactions(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PetInteraction!]
+  webPushSubscription(where: WebPushSubscriptionWhereInput): WebPushSubscription
 }
 
 """A connection to a list of items."""
@@ -1340,6 +1355,7 @@ input PetCreateInput {
   eventLoopedAt: DateTime!
   owner: UserCreateOneWithoutPetInput!
   interactions: PetInteractionCreateManyInput
+  webPushSubscription: WebPushSubscriptionCreateOneInput
 }
 
 input PetCreateOneWithoutOwnerInput {
@@ -1356,6 +1372,7 @@ input PetCreateWithoutOwnerInput {
   size: Float
   eventLoopedAt: DateTime!
   interactions: PetInteractionCreateManyInput
+  webPushSubscription: WebPushSubscriptionCreateOneInput
 }
 
 """An edge in a connection."""
@@ -1661,6 +1678,7 @@ input PetUpdateInput {
   eventLoopedAt: DateTime
   owner: UserUpdateOneWithoutPetInput
   interactions: PetInteractionUpdateManyInput
+  webPushSubscription: WebPushSubscriptionUpdateOneInput
 }
 
 input PetUpdateOneWithoutOwnerInput {
@@ -1681,6 +1699,7 @@ input PetUpdateWithoutOwnerDataInput {
   size: Float
   eventLoopedAt: DateTime
   interactions: PetInteractionUpdateManyInput
+  webPushSubscription: WebPushSubscriptionUpdateOneInput
 }
 
 input PetUpsertWithoutOwnerInput {
@@ -1975,6 +1994,7 @@ input PetWhereInput {
   interactions_every: PetInteractionWhereInput
   interactions_some: PetInteractionWhereInput
   interactions_none: PetInteractionWhereInput
+  webPushSubscription: WebPushSubscriptionWhereInput
 }
 
 input PetWhereUniqueInput {
@@ -2488,6 +2508,8 @@ type Query {
   itemEffects(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ItemEffect]!
   passiveItemSyncs(where: PassiveItemSyncWhereInput, orderBy: PassiveItemSyncOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PassiveItemSync]!
   images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
+  webPushSubscriptionKeyses(where: WebPushSubscriptionKeysWhereInput, orderBy: WebPushSubscriptionKeysOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WebPushSubscriptionKeys]!
+  webPushSubscriptions(where: WebPushSubscriptionWhereInput, orderBy: WebPushSubscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WebPushSubscription]!
   user(where: UserWhereUniqueInput!): User
   userAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
   achievement(where: AchievementWhereUniqueInput!): Achievement
@@ -2509,6 +2531,8 @@ type Query {
   itemEffectsConnection(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemEffectConnection!
   passiveItemSyncsConnection(where: PassiveItemSyncWhereInput, orderBy: PassiveItemSyncOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PassiveItemSyncConnection!
   imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
+  webPushSubscriptionKeysesConnection(where: WebPushSubscriptionKeysWhereInput, orderBy: WebPushSubscriptionKeysOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WebPushSubscriptionKeysConnection!
+  webPushSubscriptionsConnection(where: WebPushSubscriptionWhereInput, orderBy: WebPushSubscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WebPushSubscriptionConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -2529,6 +2553,8 @@ type Subscription {
   itemEffect(where: ItemEffectSubscriptionWhereInput): ItemEffectSubscriptionPayload
   passiveItemSync(where: PassiveItemSyncSubscriptionWhereInput): PassiveItemSyncSubscriptionPayload
   image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
+  webPushSubscriptionKeys(where: WebPushSubscriptionKeysSubscriptionWhereInput): WebPushSubscriptionKeysSubscriptionPayload
+  webPushSubscription(where: WebPushSubscriptionSubscriptionWhereInput): WebPushSubscriptionSubscriptionPayload
 }
 
 type User implements Node {
@@ -3630,4 +3656,369 @@ input UserWhereUniqueInput {
   id: ID
   userId: ID
   personId: ID
+}
+
+type WebPushSubscription {
+  endpoint: String!
+  keys(where: WebPushSubscriptionKeysWhereInput): WebPushSubscriptionKeys!
+}
+
+"""A connection to a list of items."""
+type WebPushSubscriptionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [WebPushSubscriptionEdge]!
+  aggregate: AggregateWebPushSubscription!
+}
+
+input WebPushSubscriptionCreateInput {
+  endpoint: String!
+  keys: WebPushSubscriptionKeysCreateOneInput!
+}
+
+input WebPushSubscriptionCreateOneInput {
+  create: WebPushSubscriptionCreateInput
+}
+
+"""An edge in a connection."""
+type WebPushSubscriptionEdge {
+  """The item at the end of the edge."""
+  node: WebPushSubscription!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type WebPushSubscriptionKeys {
+  p256dh: String!
+  auth: String!
+}
+
+"""A connection to a list of items."""
+type WebPushSubscriptionKeysConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [WebPushSubscriptionKeysEdge]!
+  aggregate: AggregateWebPushSubscriptionKeys!
+}
+
+input WebPushSubscriptionKeysCreateInput {
+  p256dh: String!
+  auth: String!
+}
+
+input WebPushSubscriptionKeysCreateOneInput {
+  create: WebPushSubscriptionKeysCreateInput
+}
+
+"""An edge in a connection."""
+type WebPushSubscriptionKeysEdge {
+  """The item at the end of the edge."""
+  node: WebPushSubscriptionKeys!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum WebPushSubscriptionKeysOrderByInput {
+  p256dh_ASC
+  p256dh_DESC
+  auth_ASC
+  auth_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type WebPushSubscriptionKeysPreviousValues {
+  p256dh: String!
+  auth: String!
+}
+
+type WebPushSubscriptionKeysSubscriptionPayload {
+  mutation: MutationType!
+  node: WebPushSubscriptionKeys
+  updatedFields: [String!]
+  previousValues: WebPushSubscriptionKeysPreviousValues
+}
+
+input WebPushSubscriptionKeysSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WebPushSubscriptionKeysSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WebPushSubscriptionKeysSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WebPushSubscriptionKeysSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: WebPushSubscriptionKeysWhereInput
+}
+
+input WebPushSubscriptionKeysUpdateDataInput {
+  p256dh: String
+  auth: String
+}
+
+input WebPushSubscriptionKeysUpdateInput {
+  p256dh: String
+  auth: String
+}
+
+input WebPushSubscriptionKeysUpdateOneInput {
+  create: WebPushSubscriptionKeysCreateInput
+  delete: Boolean
+  update: WebPushSubscriptionKeysUpdateDataInput
+  upsert: WebPushSubscriptionKeysUpsertNestedInput
+}
+
+input WebPushSubscriptionKeysUpsertNestedInput {
+  update: WebPushSubscriptionKeysUpdateDataInput!
+  create: WebPushSubscriptionKeysCreateInput!
+}
+
+input WebPushSubscriptionKeysWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WebPushSubscriptionKeysWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WebPushSubscriptionKeysWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WebPushSubscriptionKeysWhereInput!]
+  p256dh: String
+
+  """All values that are not equal to given value."""
+  p256dh_not: String
+
+  """All values that are contained in given list."""
+  p256dh_in: [String!]
+
+  """All values that are not contained in given list."""
+  p256dh_not_in: [String!]
+
+  """All values less than the given value."""
+  p256dh_lt: String
+
+  """All values less than or equal the given value."""
+  p256dh_lte: String
+
+  """All values greater than the given value."""
+  p256dh_gt: String
+
+  """All values greater than or equal the given value."""
+  p256dh_gte: String
+
+  """All values containing the given string."""
+  p256dh_contains: String
+
+  """All values not containing the given string."""
+  p256dh_not_contains: String
+
+  """All values starting with the given string."""
+  p256dh_starts_with: String
+
+  """All values not starting with the given string."""
+  p256dh_not_starts_with: String
+
+  """All values ending with the given string."""
+  p256dh_ends_with: String
+
+  """All values not ending with the given string."""
+  p256dh_not_ends_with: String
+  auth: String
+
+  """All values that are not equal to given value."""
+  auth_not: String
+
+  """All values that are contained in given list."""
+  auth_in: [String!]
+
+  """All values that are not contained in given list."""
+  auth_not_in: [String!]
+
+  """All values less than the given value."""
+  auth_lt: String
+
+  """All values less than or equal the given value."""
+  auth_lte: String
+
+  """All values greater than the given value."""
+  auth_gt: String
+
+  """All values greater than or equal the given value."""
+  auth_gte: String
+
+  """All values containing the given string."""
+  auth_contains: String
+
+  """All values not containing the given string."""
+  auth_not_contains: String
+
+  """All values starting with the given string."""
+  auth_starts_with: String
+
+  """All values not starting with the given string."""
+  auth_not_starts_with: String
+
+  """All values ending with the given string."""
+  auth_ends_with: String
+
+  """All values not ending with the given string."""
+  auth_not_ends_with: String
+}
+
+enum WebPushSubscriptionOrderByInput {
+  endpoint_ASC
+  endpoint_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type WebPushSubscriptionPreviousValues {
+  endpoint: String!
+}
+
+type WebPushSubscriptionSubscriptionPayload {
+  mutation: MutationType!
+  node: WebPushSubscription
+  updatedFields: [String!]
+  previousValues: WebPushSubscriptionPreviousValues
+}
+
+input WebPushSubscriptionSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WebPushSubscriptionSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WebPushSubscriptionSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WebPushSubscriptionSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: WebPushSubscriptionWhereInput
+}
+
+input WebPushSubscriptionUpdateDataInput {
+  endpoint: String
+  keys: WebPushSubscriptionKeysUpdateOneInput
+}
+
+input WebPushSubscriptionUpdateInput {
+  endpoint: String
+  keys: WebPushSubscriptionKeysUpdateOneInput
+}
+
+input WebPushSubscriptionUpdateOneInput {
+  create: WebPushSubscriptionCreateInput
+  disconnect: Boolean
+  delete: Boolean
+  update: WebPushSubscriptionUpdateDataInput
+  upsert: WebPushSubscriptionUpsertNestedInput
+}
+
+input WebPushSubscriptionUpsertNestedInput {
+  update: WebPushSubscriptionUpdateDataInput!
+  create: WebPushSubscriptionCreateInput!
+}
+
+input WebPushSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WebPushSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WebPushSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WebPushSubscriptionWhereInput!]
+  endpoint: String
+
+  """All values that are not equal to given value."""
+  endpoint_not: String
+
+  """All values that are contained in given list."""
+  endpoint_in: [String!]
+
+  """All values that are not contained in given list."""
+  endpoint_not_in: [String!]
+
+  """All values less than the given value."""
+  endpoint_lt: String
+
+  """All values less than or equal the given value."""
+  endpoint_lte: String
+
+  """All values greater than the given value."""
+  endpoint_gt: String
+
+  """All values greater than or equal the given value."""
+  endpoint_gte: String
+
+  """All values containing the given string."""
+  endpoint_contains: String
+
+  """All values not containing the given string."""
+  endpoint_not_contains: String
+
+  """All values starting with the given string."""
+  endpoint_starts_with: String
+
+  """All values not starting with the given string."""
+  endpoint_not_starts_with: String
+
+  """All values ending with the given string."""
+  endpoint_ends_with: String
+
+  """All values not ending with the given string."""
+  endpoint_not_ends_with: String
+  keys: WebPushSubscriptionKeysWhereInput
 }

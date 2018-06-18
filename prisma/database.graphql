@@ -60,6 +60,7 @@ type Pet {
 
   eventLoopedAt: DateTime!
   interactions: [PetInteraction!]!
+  webPushSubscription: WebPushSubscription
 }
 
 enum PetInteractionType {
@@ -128,4 +129,14 @@ type PassiveItemSync {
 type Image {
   id: ID! @unique
   uri: String
+}
+
+type WebPushSubscriptionKeys {
+  p256dh: String!
+  auth: String!
+}
+
+type WebPushSubscription {
+  endpoint: String!
+  keys: WebPushSubscriptionKeys!
 }
