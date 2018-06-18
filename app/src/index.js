@@ -2,10 +2,11 @@ import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 import App from './App';
+import webPushManager from 'web-push-manager';
 
 const client = new ApolloClient({
   uri: `${process.env.REACT_APP_SERVER_URL}/api`,
@@ -29,4 +30,18 @@ const ApolloApp = () => (
 
 ReactDOM.render(<ApolloApp />, document.getElementById('root'));
 
-registerServiceWorker();
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+  navigator.serviceWorker.ready.then(registration => {
+    webPushManager.setManager(registration.pushManager);
+  });
+}
+
+OfflinePluginRuntime.install({
+  onUpdateReady: () => {
+    OfflinePluginRuntime.applyUpdate();
+  },
+
+  onUpdated: () => {
+    window.appUpdateAvailable = true;
+  }
+});

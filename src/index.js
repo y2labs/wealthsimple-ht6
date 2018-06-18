@@ -26,10 +26,10 @@ server.listen(process.env.PORT, () => {
   startLoop();
 });
 
-['SIGTERM', 'SIGINT'].forEach(signal => {
-  process.on(signal, () => {
-    server.close(() => {
-      stopLoop();
-    });
+process.on('SIGTERM', () => {
+  server.close(() => {
+    stopLoop();
+
+    process.exit(0);
   });
 });
