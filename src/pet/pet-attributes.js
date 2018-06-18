@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { random, round } from 'lodash';
+import { random, round, max } from 'lodash';
 import { MAX_ATTRIBUTE_VALUE } from '~/pet/constants';
 
 const CONSTANTS = {
@@ -16,27 +16,32 @@ export const getNextPetAttributes = pet => {
           CONSTANTS.maxNoUserInteraction +
         1
       : 1,
+
     hunger: 1,
     energy: 1
   };
 
-  const nextHunger = round(
-    random(
-      pet.hunger - 10 * Math.min(CONSTANTS.maxAttributeValue / pet.hunger, 2),
-      pet.hunger
-    )
-  );
+  const nextHunger = max([
+    round(
+      random(
+        pet.hunger - 10 * Math.min(CONSTANTS.maxAttributeValue / pet.hunger, 2),
+        pet.hunger
+      )
+    ),
+    0
+  ]);
 
   multipliers.hunger = Math.min(CONSTANTS.maxAttributeValue / nextHunger, 2);
 
-  const nextEnergy = round(
-    random(pet.content - 10 * multipliers.hunger, pet.content)
-  );
+  const nextEnergy = max([
+    round(random(pet.content - 10 * multipliers.hunger, pet.content)),
+    0
+  ]);
 
   multipliers.energy = Math.min(CONSTANTS.maxAttributeValue / nextEnergy, 2);
 
   const nextContent = round(
-    random(pet.content - 10 * multipliers.energy, pet.content)
+    max([random(pet.content - 10 * multipliers.energy, pet.content), 0])
   );
 
   const nextAttributes = {

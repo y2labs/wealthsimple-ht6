@@ -8,7 +8,7 @@ const handler = async () => {
   const pets = await prisma.query.pets(
     {
       where: {
-        eventLoopedAt_lte: moment()
+        eventLoopedAt_gte: moment()
           .subtract(1, 'm')
           .toDate()
       }

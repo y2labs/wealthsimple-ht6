@@ -6,7 +6,7 @@ const ITEM_EFFECTS = {
   NOOP: {
     temporality: null,
     type: 'NOOP',
-    factory: ({ rarity } = {}) => {
+    factory: () => {
       return {
         name: 'Does nothing',
         description: 'Nothing',
