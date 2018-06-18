@@ -3,11 +3,14 @@ import webPush from 'web-push';
 try {
   webPush.setVapidDetails(
     'mailto:paulxuca@gmail.com',
-    process.env.VALID_PUBLIC_KEY,
-    process.env.VALID_PRIVATE_KEY
+    process.env.VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY
   );
   console.log('Web push enabled!');
-} catch (err) {}
+} catch (err) {
+  console.log('Web push could not be enabled!');
+  console.log(err);
+}
 
 const sendWebPushNotification = (webPushSubscription, payload, options) => {
   if (!webPushSubscription || !payload) {

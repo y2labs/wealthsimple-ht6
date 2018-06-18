@@ -1,4 +1,4 @@
-# import {UserAchivement, Pet, PurchasedItem, WebPushSubscription} from 'src/generated/prisma.graphql'
+# import {UserAchivement, Pet, PurchasedItem} from 'src/generated/prisma.graphql'
 
 type Viewer {
   me: User
@@ -66,6 +66,16 @@ type DEMOcreatePassiveItemPizzaMutationPayload {
   purchaseableItemId: ID
 }
 
+input WebPushSubscriptionKeys {
+  p256dh: String!
+  auth: String!
+}
+
+input WebPushSubscription {
+  endpoint: String!
+  keys: WebPushSubscriptionKeys!
+}
+
 type Mutation {
   createPet(name: String!, color: String): CreatePetMutationPayload!
   updatePrimaryAccount(accountId: ID!): MutationPayload!
@@ -74,5 +84,7 @@ type Mutation {
   useItem(id: ID!): MutationPayload!
   DEMOcreatePassiveItem: DEMOcreatePassiveItemMutationPayload!
   DEMOcreatePassiveItemPizza: DEMOcreatePassiveItemPizzaMutationPayload!
-  subscribeWebPush(webPushSubscription: WebPushSubscription!): MutationPayload!
+  subscribeToWebPush(
+    webPushSubscription: WebPushSubscription!
+  ): MutationPayload!
 }

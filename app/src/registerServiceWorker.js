@@ -1,3 +1,5 @@
+import webPushManager from 'web-push-manager';
+
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
@@ -54,10 +56,12 @@ export default function register() {
 
 function registerValidSW(swUrl) {
   navigator.serviceWorker
-    .register(swUrl)
+    .register(swUrl, {
+      scope: '/'
+    })
     .then(registration => {
       if ('PushManager' in window) {
-        // registration.pushManager
+        webPushManager.setManager(registration.pushManager);
       }
 
       registration.onupdatefound = () => {

@@ -30,3 +30,12 @@ export const getCurrentUserPetQuery = gql`
 
   ${petInfoFragment}
 `;
+
+export const subscribeToWebPushMutation = gql`
+  mutation subscribeToWebPush($webPushSubscription: WebPushSubscription!) {
+    subscribeToWebPush(webPushSubscription: $webPushSubscription) {
+      error
+      success
+    }
+  }
+`;

@@ -2,30 +2,23 @@ type User {
   id: ID! @unique
   userId: ID! @unique
   personId: ID! @unique
-
   createdAt: DateTime!
   updatedAt: DateTime!
-
   itemEventLoopedAt: DateTime
   petGrowthEventLoopedAt: DateTime
-
   primaryBankAccountId: String
   primaryBankAccountNumber: String
   primaryBankAccountName: String
   primaryAccountId: String
-
   accessTokenExpiresAt: DateTime!
   accessToken: String!
   refreshToken: String!
-
   phoneNumber: String
   email: String
   name: String
-
   achievements: [UserAchievement!]!
-
   lifetimeDollarsManagedEarned: Int! @default(value: "0")
-
+  webPushSubscription: WebPushSubscription
   pet: Pet
 }
 
@@ -60,7 +53,6 @@ type Pet {
 
   eventLoopedAt: DateTime!
   interactions: [PetInteraction!]!
-  webPushSubscription: WebPushSubscription
 }
 
 enum PetInteractionType {

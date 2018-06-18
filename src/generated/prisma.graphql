@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Mon Jun 18 2018 12:40:58 GMT-0400 (EDT)
+# timestamp: Mon Jun 18 2018 13:02:25 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -1332,7 +1332,6 @@ type Pet implements Node {
   size: Float!
   eventLoopedAt: DateTime!
   interactions(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PetInteraction!]
-  webPushSubscription(where: WebPushSubscriptionWhereInput): WebPushSubscription
 }
 
 """A connection to a list of items."""
@@ -1355,7 +1354,6 @@ input PetCreateInput {
   eventLoopedAt: DateTime!
   owner: UserCreateOneWithoutPetInput!
   interactions: PetInteractionCreateManyInput
-  webPushSubscription: WebPushSubscriptionCreateOneInput
 }
 
 input PetCreateOneWithoutOwnerInput {
@@ -1372,7 +1370,6 @@ input PetCreateWithoutOwnerInput {
   size: Float
   eventLoopedAt: DateTime!
   interactions: PetInteractionCreateManyInput
-  webPushSubscription: WebPushSubscriptionCreateOneInput
 }
 
 """An edge in a connection."""
@@ -1678,7 +1675,6 @@ input PetUpdateInput {
   eventLoopedAt: DateTime
   owner: UserUpdateOneWithoutPetInput
   interactions: PetInteractionUpdateManyInput
-  webPushSubscription: WebPushSubscriptionUpdateOneInput
 }
 
 input PetUpdateOneWithoutOwnerInput {
@@ -1699,7 +1695,6 @@ input PetUpdateWithoutOwnerDataInput {
   size: Float
   eventLoopedAt: DateTime
   interactions: PetInteractionUpdateManyInput
-  webPushSubscription: WebPushSubscriptionUpdateOneInput
 }
 
 input PetUpsertWithoutOwnerInput {
@@ -1994,7 +1989,6 @@ input PetWhereInput {
   interactions_every: PetInteractionWhereInput
   interactions_some: PetInteractionWhereInput
   interactions_none: PetInteractionWhereInput
-  webPushSubscription: WebPushSubscriptionWhereInput
 }
 
 input PetWhereUniqueInput {
@@ -2577,6 +2571,7 @@ type User implements Node {
   name: String
   achievements(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserAchievement!]
   lifetimeDollarsManagedEarned: Int!
+  webPushSubscription(where: WebPushSubscriptionWhereInput): WebPushSubscription
   pet(where: PetWhereInput): Pet
 }
 
@@ -2800,6 +2795,7 @@ input UserCreateInput {
   name: String
   lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementCreateManyInput
+  webPushSubscription: WebPushSubscriptionCreateOneInput
   pet: PetCreateOneWithoutOwnerInput
 }
 
@@ -2830,6 +2826,7 @@ input UserCreateWithoutPetInput {
   name: String
   lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementCreateManyInput
+  webPushSubscription: WebPushSubscriptionCreateOneInput
 }
 
 """An edge in a connection."""
@@ -2957,6 +2954,7 @@ input UserUpdateDataInput {
   name: String
   lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementUpdateManyInput
+  webPushSubscription: WebPushSubscriptionUpdateOneInput
   pet: PetUpdateOneWithoutOwnerInput
 }
 
@@ -2977,6 +2975,7 @@ input UserUpdateInput {
   name: String
   lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementUpdateManyInput
+  webPushSubscription: WebPushSubscriptionUpdateOneInput
   pet: PetUpdateOneWithoutOwnerInput
 }
 
@@ -3013,6 +3012,7 @@ input UserUpdateWithoutPetDataInput {
   name: String
   lifetimeDollarsManagedEarned: Int
   achievements: UserAchievementUpdateManyInput
+  webPushSubscription: WebPushSubscriptionUpdateOneInput
 }
 
 input UserUpsertNestedInput {
@@ -3649,6 +3649,7 @@ input UserWhereInput {
   achievements_every: UserAchievementWhereInput
   achievements_some: UserAchievementWhereInput
   achievements_none: UserAchievementWhereInput
+  webPushSubscription: WebPushSubscriptionWhereInput
   pet: PetWhereInput
 }
 
