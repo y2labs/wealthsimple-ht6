@@ -51,7 +51,7 @@ const SetupPet = () => {
 };
 
 const SidebarPetInfo = () => (
-  <Query query={getCurrentUserPetQuery}>
+  <Query query={getCurrentUserPetQuery} pollInterval={15000}>
     {({ data, loading }) => {
       const pet = get(data, 'viewer.me.pet');
 

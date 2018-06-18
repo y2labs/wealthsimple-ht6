@@ -5,9 +5,9 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
+import { Consumer } from 'AuthenticationProvider';
 import Dashboard from 'DashboardRoute';
 import Login from 'LoginRoute';
-import { Consumer } from 'AuthenticationProvider';
 
 const AuthenticationCatchAll = () => (
   <Consumer>

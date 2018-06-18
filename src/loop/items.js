@@ -5,6 +5,8 @@ import { createPurchaseableItem } from '~/item/prisma';
 import { PERFORM_SYNC_INTERVAL } from '~/loop/constants';
 
 const handler = async () => {
+  console.log('Starting items sync');
+
   const users = await prisma.query.users(
     {
       where: {
@@ -38,6 +40,14 @@ const handler = async () => {
     }
   `
   );
+
+  if (users.length === 0) {
+    console.log(`No users can be synced at this time`);
+
+    return;
+  }
+
+  console.log(`Preparing to sync ${users.length} users`);
 
   await Promise.all(
     users.map(async ({ id: userId, pet }) => {

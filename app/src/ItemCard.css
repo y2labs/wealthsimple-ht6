@@ -3,13 +3,13 @@
   min-width: calc(25% - 40px);
   max-width: calc(25% - 40px);
   margin: 10px 20px 10px 0;
-  /* padding: 20px; */
   background-color: rgb(255, 222, 166);
   color: rgb(90, 97, 117);
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   min-height: 350px;
+  text-decoration: none;
 }
 
 .item-card--description {

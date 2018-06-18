@@ -5,9 +5,9 @@ import { createDespoit, withTokens } from '~/utils/wealthsimple';
 import {
   getPurchaseableItems,
   getPurchasedItems,
-  getPreviouslyPurchasedItems,
   createPassiveItemSyncFromEffects,
-  updatePurchaseableItemAsPurchased
+  updatePurchaseableItemAsPurchased,
+  getPurchaseableItem
 } from '~/item/prisma';
 import { useItem } from '~/item/use-item';
 import { extractFromCtx } from '~/utils/auth';
@@ -167,15 +167,15 @@ export default {
         `{ id }`
       );
 
-      // Create passive item sync record.
-      // ASYNC!
-      createPassiveItemSyncFromEffects({
-        effects: purchaseableItem.item.effects,
-        singleUse: purchaseableItem.item.singleUse,
-        purchasedItemId: id
-      });
+      await Promise.all([
+        createPassiveItemSyncFromEffects({
+          effects: purchaseableItem.item.effects,
+          singleUse: purchaseableItem.item.singleUse,
+          purchasedItemId: id
+        }),
 
-      updatePurchaseableItemAsPurchased({ id: args.id });
+        updatePurchaseableItemAsPurchased({ id: args.id })
+      ]);
 
       return {
         purchasedItemId: id,
@@ -208,6 +208,21 @@ export default {
       const items = await getPurchasedItems({ userId });
 
       return items;
+    },
+
+    purchaseableItem: async (_, args, context, info) => {
+      const userId = extractFromCtx(context);
+
+      if (!userId) {
+        throw new Error('Authorization required');
+      }
+
+      const item = await getPurchaseableItem({
+        id: args.id,
+        userId
+      });
+
+      return item;
     }
   }
 };

@@ -5,6 +5,10 @@ import { MAX_ATTRIBUTE_VALUE } from '../constants';
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export const animateMoveTo = (ref, { x, y, speed, prevX = 0, prevY = 0 }) => {
+  if (!ref) {
+    return;
+  }
+
   const distance = Math.sqrt(
     Math.abs(prevX - x) ** 2 + Math.abs(prevY - y) ** 2
   );

@@ -7,7 +7,7 @@ export default {
   },
 
   Viewer: {
-    me: async (parent, args, context, info) => {
+    me: async (_, args, context, info) => {
       const userId = extractFromCtx(context);
 
       const user = await findUser({ id: userId }, info);

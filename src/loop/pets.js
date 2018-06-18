@@ -33,6 +33,14 @@ const handler = async () => {
       const run = async () => {
         const updatedAttributes = getNextPetAttributes(pet);
 
+        console.log(
+          `Updating pet ${pet.id} with attributes enegy=${
+            updatedAttributes.energy
+          } content=${updatedAttributes.content} hunger=${
+            updatedAttributes.hunger
+          }`
+        );
+
         await prisma.mutation.updatePet({
           data: updatedAttributes,
           where: { id: pet.id }

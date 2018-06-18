@@ -1,21 +1,6 @@
 import prisma from '~/prisma';
 import moment from 'moment';
 
-export const getPreviouslyPurchasedItems = async ({ userId }) => {
-  const previouslyPurchasedItems = await prisma.query.purchasedItems(
-    {
-      where: {
-        owner: {
-          id: userId
-        }
-      }
-    },
-    '{ id }'
-  );
-
-  return previouslyPurchasedItems;
-};
-
 export const getPurchasedItems = async ({ userId }) => {
   const purchasedItems = await prisma.query.purchasedItems(
     {
@@ -53,10 +38,6 @@ export const getPurchasedItems = async ({ userId }) => {
 };
 
 export const getPurchaseableItems = async ({ userId }) => {
-  const previouslyPurchasedItems = await getPreviouslyPurchasedItems({
-    userId
-  });
-
   const purchaseableItems = await prisma.query.purchaseableItems(
     {
       where: {
@@ -64,9 +45,7 @@ export const getPurchaseableItems = async ({ userId }) => {
         availableForUser: {
           id: userId
         },
-        item: {
-          id_not_in: previouslyPurchasedItems.map(({ id }) => id)
-        }
+        purchasedAt: null
       }
     },
     `{
@@ -77,17 +56,19 @@ export const getPurchaseableItems = async ({ userId }) => {
         id
         name
         description
+        singleUse
+        image {
+          uri
+        }
         effects {
           name
           description
           type
           value
         }
-        image {
-          uri
-        }
       }
-    }`
+    }
+    `
   );
 
   return purchaseableItems;
@@ -183,4 +164,46 @@ export const updatePurchaseableItemAsPurchased = async ({ id }) => {
       purchasedAt: new Date()
     }
   });
+};
+
+export const getPurchaseableItem = async ({ id, userId }) => {
+  const item = await prisma.query.purchaseableItem(
+    {
+      where: {
+        id
+      }
+    },
+    `
+    {
+      
+      id
+      price
+      expiresAt
+      item {
+        id
+        name
+        description
+        singleUse
+        image {
+          uri
+        }
+        effects {
+          name
+          description
+          type
+          value
+        }
+      }
+      availableForUser {
+        id
+      }
+    }
+  `
+  );
+
+  if (item.availableForUser.id !== userId) {
+    return null;
+  }
+
+  return item;
 };

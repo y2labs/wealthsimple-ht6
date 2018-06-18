@@ -7,6 +7,8 @@ import { issueFreeDollarsManaged } from '~/future/dollars-managed';
 import { fromPriceToAmount } from '~/utils/converters';
 
 const handler = async () => {
+  console.log('Starting passive item sync');
+
   const itemsToSync = await prisma.query.passiveItemSyncs(
     {
       where: {
@@ -23,6 +25,14 @@ const handler = async () => {
     }
   `
   );
+
+  if (itemsToSync.length === 0) {
+    console.log(`No passive items can be synced, skipping`);
+
+    return;
+  }
+
+  console.log(`Preparing to sync ${itemsToSync.length} passive items`);
 
   await Promise.all(
     itemsToSync.map(

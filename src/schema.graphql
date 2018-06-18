@@ -42,6 +42,7 @@ type CreatePetMutationPayload {
 }
 
 type Query {
+  purchaseableItem(id: ID!): PurchaseableItem
   purchaseableItems: [PurchaseableItem!]!
   purchasedItems: [PurchasedItem!]!
   viewer: Viewer

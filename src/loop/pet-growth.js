@@ -120,10 +120,20 @@ const handler = async () => {
           });
         }
 
+        console.log(
+          `pet ${user.pet.id} multipliers: interactions=${
+            growthMultipliers.interactions
+          } peAttributes=${growthMultipliers.petAttributes} dayAccountGrowth=${
+            growthMultipliers.dayAccountGrowth
+          }`
+        );
+
         const finalGrowth = Object.values(growthMultipliers).reduce(
           (growth, multiplier) => growth + multiplier,
           0
         );
+
+        console.log(`${user.pet.id} growth - ${finalGrowth}%`);
 
         const nextSize = user.pet.size * (1 + finalGrowth / 100);
 

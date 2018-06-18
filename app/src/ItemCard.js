@@ -11,10 +11,11 @@ const ItemCard = ({
   purchasedOn,
   expiresAt,
   price,
-  image
+  image,
+  onClick
 }) => {
   return (
-    <div className="item-card--container">
+    <div className="item-card--container" onClick={onClick}>
       <div
         className="item-card--preview-image"
         style={{ backgroundImage: `url(${image})` }}

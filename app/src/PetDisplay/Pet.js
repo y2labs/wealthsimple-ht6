@@ -17,19 +17,23 @@ export default class PetDisplayPet extends Component {
 
     this.petX = 0;
     this.petY = 0;
+
+    this._isMounted = true;
   }
 
   componentDidMount() {
-    this.nextState();
+    this.raf = requestAnimationFrame(this.nextState);
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
+
     cancelAnimationFrame(this.raf);
   }
 
   render() {
     return (
-      <div className="pet-display--container">
+      <div>
         <div
           className="pet-display--pet-container"
           onMouseDown={this.handleMouseDown}
@@ -52,7 +56,7 @@ export default class PetDisplayPet extends Component {
   };
 
   nextStateThink = async () => {
-    this.setState({ petState: STATE_SITTING });
+    this.safeSetState({ petState: STATE_SITTING });
 
     const nextState = getNextState({
       energy: this.props.energy
@@ -60,7 +64,7 @@ export default class PetDisplayPet extends Component {
 
     await delay(1000);
 
-    this.setState({ petState: nextState });
+    this.safeSetState({ petState: nextState });
   };
 
   nextState = async () => {
@@ -80,6 +84,10 @@ export default class PetDisplayPet extends Component {
         speed: 5
       });
 
+      if (!this.moveAnimation) {
+        return;
+      }
+
       await this.moveAnimation.then();
 
       this.prevX = nextTargetX;
@@ -90,6 +98,12 @@ export default class PetDisplayPet extends Component {
       await delay(10000);
     }
 
-    this.nextState();
+    this.raf = requestAnimationFrame(this.nextState);
+  };
+
+  safeSetState = nextState => {
+    if (this._isMounted) {
+      this.setState(nextState);
+    }
   };
 }
