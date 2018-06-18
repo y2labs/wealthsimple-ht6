@@ -59,6 +59,12 @@ type DEMOcreatePassiveItemMutationPayload {
   purchaseableItemId: ID
 }
 
+type DEMOcreatePassiveItemPizzaMutationPayload {
+  success: Boolean!
+  error: String
+  purchaseableItemId: ID
+}
+
 type Mutation {
   createPet(name: String!, color: String): CreatePetMutationPayload!
   updatePrimaryAccount(accountId: ID!): MutationPayload!
@@ -66,4 +72,5 @@ type Mutation {
   purchaseItem(id: ID!): PurchaseItemMutationPayload!
   useItem(id: ID!): MutationPayload!
   DEMOcreatePassiveItem: DEMOcreatePassiveItemMutationPayload!
+  DEMOcreatePassiveItemPizza: DEMOcreatePassiveItemPizzaMutationPayload!
 }

@@ -3,9 +3,17 @@
   height: 300px;
   border-radius: 4px;
   position: relative;
-  background-image: url('../assets/background.png');
+  background-image: url('../assets/playground.png');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .pet-display--pet-container {
   position: relative;
+}
+
+.pet-display--props-asset {
+  position: absolute;
+  width: auto;
+  z-index: 2;
 }

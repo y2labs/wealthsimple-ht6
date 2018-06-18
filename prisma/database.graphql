@@ -78,6 +78,7 @@ type Item {
   description: String
   singleUse: Boolean! @default(value: "false")
   effects: [ItemEffect!]!
+  image: Image
 }
 
 type PurchasedItem {
@@ -122,4 +123,9 @@ type PassiveItemSync {
   item: PurchasedItem!
   nextSyncAt: DateTime!
   interval: Int!
+}
+
+type Image {
+  id: ID! @unique
+  uri: String
 }

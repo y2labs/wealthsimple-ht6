@@ -10,6 +10,9 @@ export const getCurrentUserPurchasedItemsQuery = gql`
         name
         description
         id
+        image {
+          uri
+        }
       }
     }
   }
@@ -25,6 +28,9 @@ export const getCurrentUserPurchaseableItemsQuery = gql`
         name
         description
         id
+        image {
+          uri
+        }
       }
     }
   }

@@ -2,6 +2,7 @@ import './Inventory.css';
 
 import React from 'react';
 import { Query } from 'react-apollo';
+import { get } from 'lodash';
 import { getCurrentUserPurchasedItemsQuery } from 'graphql/items';
 import ItemCard from 'ItemCard';
 
@@ -24,6 +25,7 @@ const Inventory = () => (
               description={purchasedItem.item.description}
               purchasedOn={purchasedItem.createdAt}
               name={purchasedItem.item.name}
+              image={get(purchasedItem.item, 'image.uri')}
             />
           );
         });

@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Sat Jun 16 2018 17:53:06 GMT-0400 (EDT)
+# timestamp: Sun Jun 17 2018 22:57:59 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -209,6 +209,10 @@ type AggregateAchievement {
   count: Int!
 }
 
+type AggregateImage {
+  count: Int!
+}
+
 type AggregateItem {
   count: Int!
 }
@@ -252,12 +256,218 @@ type BatchPayload {
 
 scalar DateTime
 
+type Image implements Node {
+  id: ID!
+  uri: String
+}
+
+"""A connection to a list of items."""
+type ImageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ImageEdge]!
+  aggregate: AggregateImage!
+}
+
+input ImageCreateInput {
+  uri: String
+}
+
+input ImageCreateOneInput {
+  create: ImageCreateInput
+  connect: ImageWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type ImageEdge {
+  """The item at the end of the edge."""
+  node: Image!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ImageOrderByInput {
+  id_ASC
+  id_DESC
+  uri_ASC
+  uri_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ImagePreviousValues {
+  id: ID!
+  uri: String
+}
+
+type ImageSubscriptionPayload {
+  mutation: MutationType!
+  node: Image
+  updatedFields: [String!]
+  previousValues: ImagePreviousValues
+}
+
+input ImageSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ImageSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ImageSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ImageSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ImageWhereInput
+}
+
+input ImageUpdateDataInput {
+  uri: String
+}
+
+input ImageUpdateInput {
+  uri: String
+}
+
+input ImageUpdateOneInput {
+  create: ImageCreateInput
+  connect: ImageWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ImageUpdateDataInput
+  upsert: ImageUpsertNestedInput
+}
+
+input ImageUpsertNestedInput {
+  update: ImageUpdateDataInput!
+  create: ImageCreateInput!
+}
+
+input ImageWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ImageWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ImageWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ImageWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  uri: String
+
+  """All values that are not equal to given value."""
+  uri_not: String
+
+  """All values that are contained in given list."""
+  uri_in: [String!]
+
+  """All values that are not contained in given list."""
+  uri_not_in: [String!]
+
+  """All values less than the given value."""
+  uri_lt: String
+
+  """All values less than or equal the given value."""
+  uri_lte: String
+
+  """All values greater than the given value."""
+  uri_gt: String
+
+  """All values greater than or equal the given value."""
+  uri_gte: String
+
+  """All values containing the given string."""
+  uri_contains: String
+
+  """All values not containing the given string."""
+  uri_not_contains: String
+
+  """All values starting with the given string."""
+  uri_starts_with: String
+
+  """All values not starting with the given string."""
+  uri_not_starts_with: String
+
+  """All values ending with the given string."""
+  uri_ends_with: String
+
+  """All values not ending with the given string."""
+  uri_not_ends_with: String
+}
+
+input ImageWhereUniqueInput {
+  id: ID
+}
+
 type Item implements Node {
   id: ID!
   name: String!
   description: String
   singleUse: Boolean!
   effects(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ItemEffect!]
+  image(where: ImageWhereInput): Image
 }
 
 """A connection to a list of items."""
@@ -275,6 +485,7 @@ input ItemCreateInput {
   description: String
   singleUse: Boolean
   effects: ItemEffectCreateManyInput
+  image: ImageCreateOneInput
 }
 
 input ItemCreateOneInput {
@@ -577,6 +788,7 @@ input ItemUpdateDataInput {
   description: String
   singleUse: Boolean
   effects: ItemEffectUpdateManyInput
+  image: ImageUpdateOneInput
 }
 
 input ItemUpdateInput {
@@ -584,6 +796,7 @@ input ItemUpdateInput {
   description: String
   singleUse: Boolean
   effects: ItemEffectUpdateManyInput
+  image: ImageUpdateOneInput
 }
 
 input ItemUpdateOneInput {
@@ -735,6 +948,7 @@ input ItemWhereInput {
   effects_every: ItemEffectWhereInput
   effects_some: ItemEffectWhereInput
   effects_none: ItemEffectWhereInput
+  image: ImageWhereInput
 }
 
 input ItemWhereUniqueInput {
@@ -761,6 +975,7 @@ type Mutation {
   createPurchaseableItem(data: PurchaseableItemCreateInput!): PurchaseableItem!
   createItemEffect(data: ItemEffectCreateInput!): ItemEffect!
   createPassiveItemSync(data: PassiveItemSyncCreateInput!): PassiveItemSync!
+  createImage(data: ImageCreateInput!): Image!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateUserAchievement(data: UserAchievementUpdateInput!, where: UserAchievementWhereUniqueInput!): UserAchievement
   updateAchievement(data: AchievementUpdateInput!, where: AchievementWhereUniqueInput!): Achievement
@@ -770,6 +985,7 @@ type Mutation {
   updatePurchasedItem(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereUniqueInput!): PurchasedItem
   updatePurchaseableItem(data: PurchaseableItemUpdateInput!, where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
   updatePassiveItemSync(data: PassiveItemSyncUpdateInput!, where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
+  updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUserAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
   deleteAchievement(where: AchievementWhereUniqueInput!): Achievement
@@ -779,6 +995,7 @@ type Mutation {
   deletePurchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   deletePurchaseableItem(where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
   deletePassiveItemSync(where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
+  deleteImage(where: ImageWhereUniqueInput!): Image
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertUserAchievement(where: UserAchievementWhereUniqueInput!, create: UserAchievementCreateInput!, update: UserAchievementUpdateInput!): UserAchievement!
   upsertAchievement(where: AchievementWhereUniqueInput!, create: AchievementCreateInput!, update: AchievementUpdateInput!): Achievement!
@@ -788,6 +1005,7 @@ type Mutation {
   upsertPurchasedItem(where: PurchasedItemWhereUniqueInput!, create: PurchasedItemCreateInput!, update: PurchasedItemUpdateInput!): PurchasedItem!
   upsertPurchaseableItem(where: PurchaseableItemWhereUniqueInput!, create: PurchaseableItemCreateInput!, update: PurchaseableItemUpdateInput!): PurchaseableItem!
   upsertPassiveItemSync(where: PassiveItemSyncWhereUniqueInput!, create: PassiveItemSyncCreateInput!, update: PassiveItemSyncUpdateInput!): PassiveItemSync!
+  upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyUserAchievements(data: UserAchievementUpdateInput!, where: UserAchievementWhereInput): BatchPayload!
   updateManyAchievements(data: AchievementUpdateInput!, where: AchievementWhereInput): BatchPayload!
@@ -798,6 +1016,7 @@ type Mutation {
   updateManyPurchaseableItems(data: PurchaseableItemUpdateInput!, where: PurchaseableItemWhereInput): BatchPayload!
   updateManyItemEffects(data: ItemEffectUpdateInput!, where: ItemEffectWhereInput): BatchPayload!
   updateManyPassiveItemSyncs(data: PassiveItemSyncUpdateInput!, where: PassiveItemSyncWhereInput): BatchPayload!
+  updateManyImages(data: ImageUpdateInput!, where: ImageWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyUserAchievements(where: UserAchievementWhereInput): BatchPayload!
   deleteManyAchievements(where: AchievementWhereInput): BatchPayload!
@@ -808,6 +1027,7 @@ type Mutation {
   deleteManyPurchaseableItems(where: PurchaseableItemWhereInput): BatchPayload!
   deleteManyItemEffects(where: ItemEffectWhereInput): BatchPayload!
   deleteManyPassiveItemSyncs(where: PassiveItemSyncWhereInput): BatchPayload!
+  deleteManyImages(where: ImageWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -2267,6 +2487,7 @@ type Query {
   purchaseableItems(where: PurchaseableItemWhereInput, orderBy: PurchaseableItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchaseableItem]!
   itemEffects(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ItemEffect]!
   passiveItemSyncs(where: PassiveItemSyncWhereInput, orderBy: PassiveItemSyncOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PassiveItemSync]!
+  images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
   user(where: UserWhereUniqueInput!): User
   userAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
   achievement(where: AchievementWhereUniqueInput!): Achievement
@@ -2276,6 +2497,7 @@ type Query {
   purchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   purchaseableItem(where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
   passiveItemSync(where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
+  image(where: ImageWhereUniqueInput!): Image
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   userAchievementsConnection(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserAchievementConnection!
   achievementsConnection(where: AchievementWhereInput, orderBy: AchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AchievementConnection!
@@ -2286,6 +2508,7 @@ type Query {
   purchaseableItemsConnection(where: PurchaseableItemWhereInput, orderBy: PurchaseableItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchaseableItemConnection!
   itemEffectsConnection(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemEffectConnection!
   passiveItemSyncsConnection(where: PassiveItemSyncWhereInput, orderBy: PassiveItemSyncOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PassiveItemSyncConnection!
+  imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -2305,6 +2528,7 @@ type Subscription {
   purchaseableItem(where: PurchaseableItemSubscriptionWhereInput): PurchaseableItemSubscriptionPayload
   itemEffect(where: ItemEffectSubscriptionWhereInput): ItemEffectSubscriptionPayload
   passiveItemSync(where: PassiveItemSyncSubscriptionWhereInput): PassiveItemSyncSubscriptionPayload
+  image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
 }
 
 type User implements Node {

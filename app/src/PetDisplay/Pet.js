@@ -1,20 +1,11 @@
 import './PetDisplay.css';
 
 import React, { Component, createRef } from 'react';
-import PropTypes from 'prop-types';
 import { random } from 'lodash';
 import Pet, { STATE_WALKING, STATE_SLEEPING, STATE_SITTING } from 'Pet';
 import { delay, animateHop, animateMoveTo, getNextState } from './util';
 
 export default class PetDisplayPet extends Component {
-  static defaultProps = {
-    pet: {}
-  };
-
-  static propTypes = {
-    pet: PropTypes.any
-  };
-
   state = {
     petState: STATE_SITTING
   };
@@ -64,7 +55,7 @@ export default class PetDisplayPet extends Component {
     this.setState({ petState: STATE_SITTING });
 
     const nextState = getNextState({
-      energy: this.props.pet.energy
+      energy: this.props.energy
     });
 
     await delay(1000);

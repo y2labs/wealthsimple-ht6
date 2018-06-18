@@ -35,6 +35,9 @@ export const getPurchasedItems = async ({ userId }) => {
         name
         description
         singleUse
+        image {
+          uri
+        }
         effects {
           name
           description
@@ -80,6 +83,9 @@ export const getPurchaseableItems = async ({ userId }) => {
           type
           value
         }
+        image {
+          uri
+        }
       }
     }`
   );
@@ -93,6 +99,25 @@ export const createPurchaseableItem = async ({
   price,
   availableForUser
 }) => {
+  const { image, ...toCreateItem } = item;
+
+  const createItemInput = {
+    create: {
+      ...toCreateItem,
+      effects: {
+        create: toCreateItem.effects
+      }
+    }
+  };
+
+  if (image) {
+    createItemInput.create.image = {
+      create: {
+        uri: image
+      }
+    };
+  }
+
   const purchaseableItem = await prisma.mutation.createPurchaseableItem(
     {
       data: {
@@ -103,14 +128,7 @@ export const createPurchaseableItem = async ({
         },
         expiresAt,
         price,
-        item: {
-          create: {
-            ...item,
-            effects: {
-              create: item.effects
-            }
-          }
-        }
+        item: createItemInput
       }
     },
     `

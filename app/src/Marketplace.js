@@ -3,6 +3,7 @@ import './Inventory.css';
 import React from 'react';
 import { Query } from 'react-apollo';
 import moment from 'moment';
+import { get } from 'lodash';
 import { getCurrentUserPurchaseableItemsQuery } from 'graphql/items';
 import ItemCard from 'ItemCard';
 
@@ -29,6 +30,7 @@ const MarketPlace = () => (
               description={purchaseableItem.item.description}
               expiresAt={purchaseableItem.expiresAt}
               price={purchaseableItem.price}
+              image={get(purchaseableItem.item, 'image.uri')}
             />
           );
         });
