@@ -3,6 +3,7 @@ import './SidebarUserInfo.css';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
+import accounting from 'accounting';
 import { getCurrentUserQuery } from 'graphql/users';
 
 const SidebarUserInfo = () => {
@@ -25,7 +26,9 @@ const SidebarUserInfo = () => {
                   <Fragment>
                     <span className="sidebar-user-info--dollar-sign">$</span>
                     <span className="sidebar-user-info--dollar">
-                      {(user.lifetimeDollarsManagedEarned / 100).toFixed(2)}
+                      {accounting.formatNumber(
+                        user.lifetimeDollarsManagedEarned / 100
+                      )}
                     </span>
                   </Fragment>
                 )}

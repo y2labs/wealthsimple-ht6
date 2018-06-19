@@ -33,14 +33,12 @@ export default class PetDisplayPet extends Component {
 
   render() {
     return (
-      <div>
-        <div
-          className="pet-display--pet-container"
-          onMouseDown={this.handleMouseDown}
-          ref={this.petRef}
-        >
-          <Pet state={this.state.petState} />
-        </div>
+      <div
+        className="pet-display--pet-container"
+        onMouseDown={this.handleMouseDown}
+        ref={this.petRef}
+      >
+        <Pet state={this.state.petState} />
       </div>
     );
   }

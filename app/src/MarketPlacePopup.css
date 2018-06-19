@@ -1,0 +1,57 @@
+.marketplace-modal--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.marketplace-modal--root {
+  width: 600px;
+  position: relative;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 40px 40px 20px 40px;
+  min-height: 200px;
+}
+
+.marketplace-modal--header {
+  margin: 10px 0;
+}
+
+.marketplace-modal--effect {
+}
+
+.marketplace-modal--effect-name {
+}
+
+.marketplace-modal--effect-description {
+}
+
+.marketplace-modal--dismiss-button {
+  border: 0;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.marketplace-modal--dismiss-button > span {
+  font-size: 18px;
+}
+
+.marketplace-modal--dismiss-button > svg {
+  color: #fff;
+}
+
+.marketplace-modal--purchase-button {
+  width: 100%;
+}

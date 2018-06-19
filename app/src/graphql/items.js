@@ -18,19 +18,28 @@ export const itemInfoFragment = gql`
   }
 `;
 
-export const getCurrentUserPurchasedItemsQuery = gql`
-  query getCurrentUserPurchasedItemsQuery {
-    purchasedItems {
-      id
-      createdAt
-      usedAt
-      item {
-        ...itemInfoFragment
-      }
+export const purchasedItemInfoFragment = gql`
+  fragment purchasedItemInfoFragment on PurchasedItem {
+    id
+    depositId
+    createdAt
+    usedAt
+    item {
+      ...itemInfoFragment
     }
   }
 
   ${itemInfoFragment}
+`;
+
+export const getCurrentUserPurchasedItemsQuery = gql`
+  query getCurrentUserPurchasedItemsQuery {
+    purchasedItems {
+      ...purchasedItemInfoFragment
+    }
+  }
+
+  ${purchasedItemInfoFragment}
 `;
 
 export const getCurrentUserPurchaseableItemsQuery = gql`
@@ -53,9 +62,13 @@ export const purchaseItemMutation = gql`
     purchaseItem(id: $id) {
       success
       error
-      purchasedItemId
+      purchasedItem {
+        ...purchasedItemInfoFragment
+      }
     }
   }
+
+  ${purchasedItemInfoFragment}
 `;
 
 export const getPurchaseableItemByIdQuery = gql`

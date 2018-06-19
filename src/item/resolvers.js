@@ -138,50 +138,78 @@ export default {
         };
       }
 
-      const deposit = await withTokens({ userId }, ({ accessToken }) => {
-        return createDespoit({
-          depositAmount: fromPriceToAmount(purchaseableItem.price),
-          bankAccountId: user.primaryBankAccountId,
-          accountId: user.primaryAccountId,
-          personId: user.personId,
-          accessToken
+      try {
+        const deposit = await withTokens({ userId }, ({ accessToken }) => {
+          return createDespoit({
+            depositAmount: fromPriceToAmount(purchaseableItem.price),
+            bankAccountId: user.primaryBankAccountId,
+            accountId: user.primaryAccountId,
+            personId: user.personId,
+            accessToken
+          });
         });
-      });
 
-      const { id } = await prisma.mutation.createPurchasedItem(
-        {
-          data: {
-            item: {
-              connect: {
-                id: purchaseableItem.item.id
+        const purchasedItem = await prisma.mutation.createPurchasedItem(
+          {
+            data: {
+              item: {
+                connect: {
+                  id: purchaseableItem.item.id
+                }
+              },
+              owner: {
+                connect: {
+                  id: userId
+                }
+              },
+              depositId: deposit.id
+            }
+          },
+          `{
+            id
+            depositId
+            createdAt
+            usedAt
+            item {
+              id
+              name
+              description
+              singleUse
+              image {
+                uri
               }
-            },
-            owner: {
-              connect: {
-                id: userId
+              effects {
+                name
+                description
+                type
+                value
               }
-            },
-            depositId: deposit.id
-          }
-        },
-        `{ id }`
-      );
+            }
+          }`
+        );
 
-      await Promise.all([
-        createPassiveItemSyncFromEffects({
-          effects: purchaseableItem.item.effects,
-          singleUse: purchaseableItem.item.singleUse,
-          purchasedItemId: id
-        }),
+        await Promise.all([
+          createPassiveItemSyncFromEffects({
+            effects: purchaseableItem.item.effects,
+            singleUse: purchaseableItem.item.singleUse,
+            purchasedItemId: purchasedItem.id
+          }),
 
-        updatePurchaseableItemAsPurchased({ id: args.id })
-      ]);
+          updatePurchaseableItemAsPurchased({ id: args.id })
+        ]);
 
-      return {
-        purchasedItemId: id,
-        success: true,
-        error: ''
-      };
+        return {
+          purchasedItem,
+          success: true,
+          error: ''
+        };
+      } catch (err) {
+        console.log(err);
+
+        return {
+          success: false
+        };
+      }
     }
   },
 

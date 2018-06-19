@@ -137,8 +137,12 @@ export const createPassiveItemSyncFromEffects = async ({
   }
 
   await Promise.all(
-    effects.map(async ({ value }) => {
+    effects.map(async ({ value, type }) => {
       const { interval } = value;
+
+      if (type === 'NOOP') {
+        return;
+      }
 
       await prisma.mutation.createPassiveItemSync({
         data: {

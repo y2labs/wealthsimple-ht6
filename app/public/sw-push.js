@@ -33,8 +33,8 @@ self.addEventListener('push', event => {
 
         return self.registration.showNotification(notificationData.title, {
           vibrate: [200],
-          icon: '/img/apple-icon-144x144-precomposed.png',
-          badge: '/img/badge.png',
+          icon: notificationData.icon,
+          // badge: '/img/ht6-logo.png',
           body: notificationData.body,
           title: notificationData.title,
           timestamp: notificationData.timestamp,
@@ -44,6 +44,38 @@ self.addEventListener('push', event => {
           // If we don't set a tag and set renotify to true this'll throw an error
           // renotify: notificationData.renotify || !!notificationData.tag,
         });
+      })
+  );
+});
+
+// eslint-disable-next-line
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+
+  const urlToOpen =
+    event.notification.data && event.notification.data.href
+      ? // eslint-disable-next-line
+        new URL(event.notification.data.href, self.location.origin).href
+      : '/';
+
+  // see if the current is open and if it is focus it
+  event.waitUntil(
+    // eslint-disable-next-line
+    self.clients
+      .matchAll({
+        type: 'window',
+        includeUncontrolled: true
+      })
+      .then(function(clientList) {
+        // If there is an open Spectrum.chat window navigate to the notification href
+        if (clientList.length > 0) {
+          return clientList[0]
+            .focus()
+            .then(client => client.navigate(urlToOpen));
+        }
+        // If there's no open Spectrum.chat window open a new one
+        // eslint-disable-next-line
+        return self.clients.openWindow(urlToOpen);
       })
   );
 });

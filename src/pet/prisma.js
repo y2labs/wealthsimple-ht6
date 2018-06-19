@@ -14,18 +14,23 @@ export const getPetFromUserId = async ({ userId }) => {
 };
 
 export const createPet = async ({ name, color, ownerId }) => {
-  const pet = await prisma.mutation.createPet({
-    data: {
-      eventLoopedAt: new Date(),
-      name,
-      color,
-      owner: {
-        connect: {
-          id: ownerId
+  const { pet } = await prisma.mutation.updateUser(
+    {
+      where: {
+        id: ownerId
+      },
+      data: {
+        pet: {
+          create: {
+            eventLoopedAt: new Date(),
+            name,
+            color
+          }
         }
       }
-    }
-  });
+    },
+    `{ pet { id } }`
+  );
 
   return pet;
 };

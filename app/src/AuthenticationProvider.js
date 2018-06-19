@@ -9,9 +9,15 @@ const { Provider, Consumer } = createContext({
 });
 
 export default class AuthenticationProvider extends Component {
-  state = {
-    token: null
-  };
+  constructor() {
+    super();
+
+    const token = localStorage.getItem('token');
+
+    this.state = {
+      token
+    };
+  }
 
   // Handle parsing query string
   componentDidMount() {
@@ -22,14 +28,6 @@ export default class AuthenticationProvider extends Component {
 
       localStorage.setItem('token', token);
 
-      this.setState({ token });
-
-      return;
-    }
-
-    const token = localStorage.getItem('token');
-
-    if (token) {
       this.setState({ token });
     }
   }

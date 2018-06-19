@@ -112,3 +112,26 @@ export const findUser = async ({ userId, id, personId }, info) => {
 
   return user;
 };
+
+export const getUserWebPushSubcription = async ({ userId }) => {
+  const { webPushSubscription } = await prisma.query.user(
+    {
+      where: {
+        id: userId
+      }
+    },
+    `
+    {
+      webPushSubscription {
+        keys {
+          auth
+          p256dh
+        }
+        endpoint
+      }
+    }
+  `
+  );
+
+  return webPushSubscription;
+};

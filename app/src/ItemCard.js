@@ -1,9 +1,17 @@
 import './ItemCard.css';
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import moment from 'moment';
+import accounting from 'accounting';
+import { Link } from 'react-router-dom';
 
-const getPrice = price => (parseInt(price, 10) / 100).toPrecision(2);
+const truncate = text => {
+  if (text.length >= 100) {
+    return `${text.substr(0, 100)}...`;
+  }
+
+  return text;
+};
 
 const ItemCard = ({
   name,
@@ -12,24 +20,38 @@ const ItemCard = ({
   expiresAt,
   price,
   image,
-  onClick
+  href
 }) => {
-  return (
-    <div className="item-card--container" onClick={onClick}>
+  const Parent = href ? Link : 'div';
+
+  const props = {
+    className: 'item-card--container'
+  };
+
+  if (Parent === Link) {
+    props.to = href;
+  }
+
+  return React.createElement(
+    Parent,
+    props,
+    <Fragment>
       <div
         className="item-card--preview-image"
-        style={{ backgroundImage: `url(${image})` }}
+        style={{ backgroundImage: image && `url(${image})` }}
       />
 
       <div className="item-card--content">
         <p className="h4-sans">{name}</p>
-        <p className="item-card--description">{description}</p>
+        <p className="item-card--description">{truncate(description)}</p>
 
         <div className="item-card--footer">
           {expiresAt &&
             price && (
               <div className="item-card--footer-price">
-                <p className="number-title">For sale ${getPrice(price)}</p>
+                <p className="number-title">
+                  For sale ${accounting.formatNumber(price / 100, '2')}
+                </p>
               </div>
             )}
 
@@ -39,7 +61,7 @@ const ItemCard = ({
           </p>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

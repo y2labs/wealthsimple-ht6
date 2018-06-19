@@ -37,20 +37,13 @@ type Pet {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
-
   owner: User!
-
   name: String!
   color: String! @default(value: "#000")
-
   content: Int! @default(value: "1000")
   energy: Int! @default(value: "1000")
   hunger: Int! @default(value: "1000")
-
-  # TODO: Figure out a way to turn daily returns on portfolio into some indicator of size,
-  # Taking into account of amount invested and growth
   size: Float! @default(value: "1")
-
   eventLoopedAt: DateTime!
   interactions: [PetInteraction!]!
 }

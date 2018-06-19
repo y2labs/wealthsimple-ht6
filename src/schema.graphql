@@ -51,7 +51,7 @@ type Query {
 type PurchaseItemMutationPayload {
   success: Boolean!
   error: String
-  purchasedItemId: ID
+  purchasedItem: PurchasedItem
 }
 
 type DEMOcreatePassiveItemMutationPayload {
@@ -76,6 +76,12 @@ input WebPushSubscription {
   keys: WebPushSubscriptionKeys!
 }
 
+type DEMOcreatePassiveItemHT6MutationPayload {
+  success: Boolean!
+  error: String
+  purchaseableItemId: ID
+}
+
 type Mutation {
   createPet(name: String!, color: String): CreatePetMutationPayload!
   updatePrimaryAccount(accountId: ID!): MutationPayload!
@@ -84,6 +90,8 @@ type Mutation {
   useItem(id: ID!): MutationPayload!
   DEMOcreatePassiveItem: DEMOcreatePassiveItemMutationPayload!
   DEMOcreatePassiveItemPizza: DEMOcreatePassiveItemPizzaMutationPayload!
+  DEMOcreatePassiveItemHT6: DEMOcreatePassiveItemHT6MutationPayload!
+  DEMOtriggerHungerWarning: MutationPayload!
   subscribeToWebPush(
     webPushSubscription: WebPushSubscription!
   ): MutationPayload!

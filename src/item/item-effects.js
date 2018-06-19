@@ -105,8 +105,8 @@ export const getItemEffects = ({ temporality, rarity }) => {
   const appliedEffects = validEffects.reduce((effects, validEffect) => {
     const applied = pickOption({
       options: {
-        yes: 20,
-        no: 80
+        yes: 40,
+        no: 100
       }
     });
 
