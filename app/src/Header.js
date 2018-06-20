@@ -10,6 +10,10 @@ const Header = () => (
 
       return (
         <div className="header--container">
+          <div className="header--left-section">
+            <p className="uppercase-sans header--title h5-sans">Lancelot</p>
+          </div>
+
           <a href={process.env.REACT_APP_WEALTHSIMPLE_URL}>
             <p className="header--link">See your portfolio</p>
           </a>

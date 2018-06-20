@@ -1,8 +1,12 @@
 import moment from 'moment';
+import pProps from 'p-props';
+import pRetry from 'p-retry';
 import prisma from '~/prisma';
 import { createItem } from '~/item/create-item';
 import { createPurchaseableItem } from '~/item/prisma';
 import { PERFORM_SYNC_INTERVAL } from '~/loop/constants';
+import sendWebPushNotification from '~/web-push/send-web-push-notifiication';
+import { getUserWebPushSubcription } from '~/user/prisma';
 
 const handler = async () => {
   console.log('Starting items sync');
@@ -51,27 +55,50 @@ const handler = async () => {
 
   await Promise.all(
     users.map(async ({ id: userId, pet }) => {
-      const itemData = createItem(pet);
+      const { temporality, rarity, ...itemData } = createItem(pet);
 
       if (itemData) {
         const { item, expiresAt, price } = itemData;
 
-        const assignedPurchasebleItem = await createPurchaseableItem({
-          availableForUser: userId,
-          expiresAt,
-          price,
-          item
-        });
-
-        // TODO: Notify user if a GOOD item is on the market.
-
-        await prisma.mutation.updateUser({
-          where: {
-            id: userId
+        const assignedPurchasebleItem = await pRetry(
+          async () => {
+            await createPurchaseableItem({
+              availableForUser: userId,
+              expiresAt,
+              price,
+              item
+            });
           },
-          data: {
-            itemEventLoopedAt: new Date()
+          { retries: 3 }
+        );
+
+        // Notify user if a GOOD item is on the market.
+        const sendUserNotification = async () => {
+          if (temporality === 'passive' && rarity === 'rare') {
+            const webPushSubscription = await getUserWebPushSubcription({
+              userId
+            });
+
+            await sendWebPushNotification(webPushSubscription, {
+              title: 'A new item has been released on the marketplace!',
+              body: 'Check it out and purchase before it expires!',
+              data: {
+                href: `/dashboard/market/${assignedPurchasebleItem.id}`
+              }
+            });
           }
+        };
+
+        await pProps({
+          sendUserNotification,
+          updateUser: prisma.mutation.updateUser({
+            where: {
+              id: userId
+            },
+            data: {
+              itemEventLoopedAt: new Date()
+            }
+          })
         });
       }
     })

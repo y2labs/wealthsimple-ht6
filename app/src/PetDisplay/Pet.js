@@ -66,9 +66,9 @@ export default class PetDisplayPet extends Component {
   };
 
   nextState = async () => {
-    await this.nextStateThink();
-
     this.moveAnimation = null;
+
+    await this.nextStateThink();
 
     if (this.state.petState === STATE_WALKING) {
       const nextTargetX = random(0, 95);

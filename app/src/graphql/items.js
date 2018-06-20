@@ -85,3 +85,27 @@ export const getPurchaseableItemByIdQuery = gql`
 
   ${itemInfoFragment}
 `;
+
+export const getPurchasedItemByIdQuery = gql`
+  query getPurchasedItemByIdQuery($id: ID!) {
+    purchasedItem(id: $id) {
+      id
+      createdAt
+      usedAt
+      item {
+        ...itemInfoFragment
+      }
+    }
+  }
+
+  ${itemInfoFragment}
+`;
+
+export const useItemMutation = gql`
+  mutation useItem($id: ID!) {
+    useItem(id: $id) {
+      success
+      error
+    }
+  }
+`;

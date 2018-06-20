@@ -106,6 +106,8 @@ export const createItem = ({
   return {
     expiresAt: getCreatedItemExpiresAt({ rarity, temporality, item }),
     price: getCreatedItemPrice({ rarity, temporality, item }),
-    item
+    item,
+    rarity,
+    temporality
   };
 };

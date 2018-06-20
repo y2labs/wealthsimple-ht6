@@ -2,6 +2,8 @@
 
 type Viewer {
   me: User
+  accounts: [UserAccount!]!
+  bankAccounts: [UserBankAccount!]!
 }
 
 type User {
@@ -12,11 +14,8 @@ type User {
   name: String
   achievements: [UserAchievement!]!
   pet: Pet
-
   primaryBankAccount: UserBankAccount
   primaryAccount: UserAccount
-  accounts: [UserAccount!]!
-  bankAccounts: [UserBankAccount!]!
   lifetimeDollarsManagedEarned: Int!
 }
 
@@ -43,6 +42,7 @@ type CreatePetMutationPayload {
 
 type Query {
   purchaseableItem(id: ID!): PurchaseableItem
+  purchasedItem(id: ID!): PurchasedItem
   purchaseableItems: [PurchaseableItem!]!
   purchasedItems: [PurchasedItem!]!
   viewer: Viewer
@@ -95,4 +95,5 @@ type Mutation {
   subscribeToWebPush(
     webPushSubscription: WebPushSubscription!
   ): MutationPayload!
+  DEMOTriggerPetEarnSync: MutationPayload!
 }

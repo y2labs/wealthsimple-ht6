@@ -1,7 +1,7 @@
 .item-card--container {
   flex: 1;
-  min-width: calc(25% - 40px);
-  max-width: calc(25% - 40px);
+  min-width: calc(33% - 40px);
+  max-width: calc(33% - 40px);
   margin: 10px 20px 10px 0;
   background-color: rgb(255, 222, 166);
   color: rgb(90, 97, 117);
@@ -47,6 +47,7 @@
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  margin: 15px 10px;
 }
 
 .item-card--content {
@@ -54,4 +55,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.marketplace-modal--list {
+  margin-bottom: 20px;
 }

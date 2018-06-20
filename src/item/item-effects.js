@@ -25,7 +25,7 @@ const ITEM_EFFECTS = {
 
       return {
         value,
-        description: 'Eat the snack.',
+        description: `Eat the snack. (Recovers your pet\'s hunger by ${value})`,
         type: 'HUNGER_INCREASE',
         name: 'Eat snack'
       };
@@ -40,7 +40,7 @@ const ITEM_EFFECTS = {
       const value = round(random(min, max));
 
       return {
-        description: 'Play with the toy and increase happiness!',
+        description: `Play with the toy and increase happiness! (Recovers your pet\'s happiness by ${value})`,
         value,
         type: 'CONTENT_INCREASE',
         name: 'Play with toy'
@@ -56,7 +56,7 @@ const ITEM_EFFECTS = {
       const value = round(random(min, max));
 
       return {
-        description: 'Boost energy by bringing happiness and energy!',
+        description: `Boost energy by bringing happiness and energy! (Recovers your pet\'s energy by ${value})`,
         value: { value },
         type: 'ENERGY_INCREASE',
         name: 'Energy boost'
@@ -106,7 +106,7 @@ export const getItemEffects = ({ temporality, rarity }) => {
     const applied = pickOption({
       options: {
         yes: 40,
-        no: 100
+        no: 80
       }
     });
 

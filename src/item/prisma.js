@@ -15,6 +15,7 @@ export const getPurchasedItems = async ({ userId }) => {
       id
       depositId
       createdAt
+      usedAt
       item {
         id
         name
@@ -168,6 +169,19 @@ export const updatePurchaseableItemAsPurchased = async ({ id }) => {
       purchasedAt: new Date()
     }
   });
+};
+
+export const getPurchasedItem = async ({ id }, info) => {
+  const item = await prisma.query.purchasedItem(
+    {
+      where: {
+        id
+      }
+    },
+    info
+  );
+
+  return item;
 };
 
 export const getPurchaseableItem = async ({ id, userId }) => {

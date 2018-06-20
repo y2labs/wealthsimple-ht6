@@ -1,20 +1,43 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+
+const waitForElementOffscreen = selector => {
+  return new Promise(resolve => {
+    const el = document.querySelector(selector);
+
+    if (el) {
+      const isElOffscreen = el.offsetTop >= window.innerHeight;
+
+      if (isElOffscreen) {
+        resolve(el);
+
+        return;
+      }
+    }
+
+    setTimeout(() => {
+      resolve(waitForElementOffscreen(selector));
+    }, 400);
+  });
+};
 
 class NotificationsHandler extends Component {
   componentDidMount() {
-    const { hash } = window.location;
-
-    if (hash) {
-      // const a = document.createElement('a');
-      // a.href = hash;
-      // a.click();
-      // console.log(a);
-    }
+    this.goToHash();
   }
 
   render() {
     return null;
   }
+
+  goToHash = async () => {
+    const hash = window.location.hash.substr(1);
+
+    if (hash) {
+      const anchor = await waitForElementOffscreen(`[href="#${hash}"]`);
+
+      anchor.dispatchEvent(new MouseEvent('click'));
+    }
+  };
 }
 
 export default NotificationsHandler;

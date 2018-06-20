@@ -1,5 +1,5 @@
 import got from 'got';
-import { omitBy, isNil } from 'lodash';
+import { omitBy, isNil, get } from 'lodash';
 import { Router } from 'express';
 import { stringify } from 'querystring';
 import { signJwt } from '~/utils/auth';
@@ -47,11 +47,13 @@ const getPerson = async ({ accessToken, personId }) => {
     })
     .shift();
 
+  const name = get(person, 'full_legal_name.first_name', 'Sir Lancelot');
+
   return {
     phoneNumber: phoneNumberObj && phoneNumberObj.number,
-    name: person.preferred_first_name,
     email: person.email,
-    personId: person.id
+    personId: person.id,
+    name
   };
 };
 

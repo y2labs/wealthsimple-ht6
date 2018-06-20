@@ -1,11 +1,14 @@
 import moment from 'moment';
 import pProps from 'p-props';
+import { get } from 'lodash';
 import { createItem } from '~/item/create-item';
 import { createPurchaseableItem } from '~/item/prisma';
 import { extractFromCtx } from '~/utils/auth';
 import prisma from '~/prisma';
 import sendWebPushNotification from '~/web-push/send-web-push-notifiication';
 import { getUserWebPushSubcription } from '~/user/prisma';
+import { getUserItemsToSync } from '~/demo/prisma';
+import { batchUpdateEarnings } from '~/loop/batch-update-earnings';
 
 export default {
   Mutation: {
@@ -139,10 +142,10 @@ export default {
       const purchaseableItem = await createPurchaseableItem({
         availableForUser: userId,
         expiresAt: moment().add(1, 'hour'),
-        price: 500,
+        price: 600,
         item: {
           image: 'https://i.imgur.com/Go4O8uE.png',
-          name: 'CN Tower plushie',
+          name: 'CN Tower Toy',
           description: `Special item for Hack the 6ix!. Available only for a limited amount of time and quantity, cop a special Hack The 6ix CN Tower Toy for ${petName}!`,
           effects: [
             {
@@ -209,6 +212,37 @@ export default {
         purchaseableItemId: purchaseableItem.id,
         success: true
       };
+    },
+
+    DEMOTriggerPetEarnSync: async (_, args, context) => {
+      const userId = extractFromCtx(context);
+
+      if (!userId) {
+        throw new Error('Demo error - no user in context');
+      }
+
+      console.log('Starting manual passive item sync');
+
+      const itemsToSync = await getUserItemsToSync({ userId });
+
+      if (itemsToSync.length === 0) {
+        console.log('No passive items can be manually synced, skipping');
+
+        return { success: true };
+      }
+
+      console.log(`Syncing ${itemsToSync.length} passive items manually`);
+
+      await batchUpdateEarnings(
+        { itemsToSync },
+        {
+          ignoreConstraints: true,
+          sendNotifications: false,
+          updateNextSyncAt: false
+        }
+      );
+
+      return { success: true };
     }
   }
 };

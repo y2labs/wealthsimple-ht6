@@ -7,7 +7,8 @@ import {
   getPurchasedItems,
   createPassiveItemSyncFromEffects,
   updatePurchaseableItemAsPurchased,
-  getPurchaseableItem
+  getPurchaseableItem,
+  getPurchasedItem
 } from '~/item/prisma';
 import { useItem } from '~/item/use-item';
 import { extractFromCtx } from '~/utils/auth';
@@ -46,6 +47,8 @@ export default {
           },
           `
           {
+            createdAt
+            usedAt
             item {
               singleUse
               effects {
@@ -60,17 +63,23 @@ export default {
         )
       });
 
-      if (!purchasedItem) {
+      if (!purchasedItem || purchasedItem.usedAt) {
         return {
-          error: 'Item not found or has been purchased already',
+          error: 'Item not found or has been used already',
           success: false
         };
       }
 
-      // Maybe return the pet here :O
-      await useItem(purchasedItem.item, {
-        petId: user.pet.id,
-        userId: user.id
+      await pProps({
+        useItem: useItem(purchasedItem.item, {
+          petId: user.pet.id,
+          userId: user.id
+        }),
+
+        markPurchasedItemAsUsed: prisma.mutation.updatePurchasedItem({
+          where: { id: args.id },
+          data: { usedAt: new Date() }
+        })
       });
 
       return {
@@ -249,6 +258,18 @@ export default {
         id: args.id,
         userId
       });
+
+      return item;
+    },
+
+    purchasedItem: async (_, args, context, info) => {
+      const userId = extractFromCtx(context);
+
+      if (!userId) {
+        throw new Error('Authorization required');
+      }
+
+      const item = await getPurchasedItem({ id: args.id }, info);
 
       return item;
     }

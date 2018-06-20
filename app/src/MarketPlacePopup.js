@@ -1,104 +1,25 @@
 import './MarketPlacePopup.css';
 
-import React, { Component, createRef, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query, Mutation } from 'react-apollo';
-import accounting from 'accounting';
 import {
   getPurchaseableItemByIdQuery,
   purchaseItemMutation,
   getCurrentUserPurchasedItemsQuery,
   getCurrentUserPurchaseableItemsQuery
 } from 'graphql/items';
-
-const Effect = ({ type, value, name, description }) => (
-  <li>
-    <div className="marketplace-modal--effect">
-      <p className="marketplace-modal--effect-name">{name}</p>
-      <p className="marketplace-modal--effect-description number-title">
-        {description}
-      </p>
-    </div>
-  </li>
-);
-
-class MarketPlacePopup extends Component {
-  modalRef = createRef();
-
-  static defaultProps = {
-    onClose() {},
-    onPurchase() {}
-  };
-
-  static propTypes = {
-    onClose: PropTypes.func,
-    onPurchase: PropTypes.func
-  };
-
-  render() {
-    const { purchaseable, isLoading, item } = this.props;
-
-    return (
-      <div onClick={this.handleClick} className="marketplace-modal--overlay">
-        <div ref={this.modalRef} className="marketplace-modal--root">
-          <button className="marketplace-modal--dismiss-button">
-            <span>✕</span>
-          </button>
-
-          <div>
-            {item && (
-              <Fragment>
-                <p className="number-value size-md uppercase-sans-bold base-margin-bottom">
-                  {item.name}
-                </p>
-                <p className="number-title">{item.description}</p>
-
-                <p className="p2 base-margin-top base-margin-bottom">
-                  Item effects
-                </p>
-
-                <ul>
-                  {item.effects.map((effect, index) => (
-                    <Effect key={`${index}`} {...effect} />
-                  ))}
-                </ul>
-              </Fragment>
-            )}
-
-            {purchaseable && (
-              <button
-                onClick={this.props.onPurchase}
-                className="button primary-action marketplace-modal--purchase-button size-md"
-              >
-                {isLoading ? (
-                  <svg className="ws-icon-three-dot-spinner color-white" />
-                ) : (
-                  `Purchase for $${accounting.formatNumber(
-                    this.props.price / 100
-                  )}`
-                )}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  handleClick = e => {
-    e.preventDefault();
-
-    if (!this.modalRef.current.contains(e.target)) {
-      this.props.onClose();
-    }
-  };
-}
+import ItemPopup from 'ItemPopup';
 
 const purchaseItemMutationUpdate = ({ id }) => (
   cache,
   { data: { purchaseItem } }
 ) => {
+  // If we had an error or did not succeed, we can't update the state.
+  if (purchaseItem.error || !purchaseItem.success) {
+    return;
+  }
+
   const { purchasedItems } = cache.readQuery({
     query: getCurrentUserPurchasedItemsQuery
   });
@@ -136,6 +57,16 @@ const WithQueryMarketPlacePopup = ({
     {(purchaseItem, { loading: purchasing }) => (
       <Query skip={!id} query={getPurchaseableItemByIdQuery} variables={{ id }}>
         {({ loading, data }) => {
+          const handleClose = () => {
+            if (history.length === 1) {
+              history.replace('/dashboard');
+
+              return;
+            }
+
+            history.goBack();
+          };
+
           const props = {
             onPurchase: async () => {
               await purchaseItem({
@@ -144,19 +75,11 @@ const WithQueryMarketPlacePopup = ({
                 }
               });
 
-              history.goBack();
+              handleClose();
             },
 
-            onClose: () => {
-              if (history.length === 1) {
-                history.replace('/dashboard');
-
-                return;
-              }
-
-              history.goBack();
-            },
             isLoading: purchasing || loading,
+            onClose: handleClose,
             purchaseable: true
           };
 
@@ -166,7 +89,7 @@ const WithQueryMarketPlacePopup = ({
             props.expiresAt = data.purchaseableItem.expiresAt;
           }
 
-          return <MarketPlacePopup {...props} />;
+          return <ItemPopup {...props} />;
         }}
       </Query>
     )}

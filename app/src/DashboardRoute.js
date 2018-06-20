@@ -7,6 +7,7 @@ import PetDisplay from 'PetDisplay';
 import Inventory from 'Inventory';
 import MarketPlace from 'Marketplace';
 import MarketPlacePopup from 'MarketPlacePopup';
+import InventoryPopup from 'InventoryPopup';
 
 const DashboardPage = () => (
   <div className="dashboard--container">
@@ -28,6 +29,10 @@ const DashboardPage = () => (
         </div>
 
         <div className="dashboard--scroll-section">
+          <a href="#marketplace" className="dashboard--hidden-anchor">
+            HIDEME
+          </a>
+
           <p id="marketplace" className="h3-sans dashboard--scroll-title">
             Marketplace
           </p>
@@ -49,7 +54,7 @@ const DashboardRoute = () => (
     <DashboardPage />
 
     <Route path="/dashboard/market/:id" component={MarketPlacePopup} />
-    <Route path="/dashboard/inventory/:id" />
+    <Route path="/dashboard/inventory/:id" component={InventoryPopup} />
   </AuthenticatedRoute>
 );
 

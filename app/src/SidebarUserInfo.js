@@ -16,7 +16,7 @@ const SidebarUserInfo = () => {
           <div className="">
             <div>
               <p className="sidebar-pet-info--attr-title">
-                Lifetime free dollars earned
+                Total earned from caring for pet
               </p>
 
               <p className="h4-sans-normal">
@@ -27,11 +27,18 @@ const SidebarUserInfo = () => {
                     <span className="sidebar-user-info--dollar-sign">$</span>
                     <span className="sidebar-user-info--dollar">
                       {accounting.formatNumber(
-                        user.lifetimeDollarsManagedEarned / 100
+                        user.lifetimeDollarsManagedEarned / 100,
+                        '2'
                       )}
                     </span>
                   </Fragment>
                 )}
+              </p>
+            </div>
+
+            <div>
+              <p className="sidebar-pet-info--attr-title">
+                Total earned from referrals
               </p>
             </div>
           </div>
