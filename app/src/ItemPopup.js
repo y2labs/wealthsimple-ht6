@@ -34,7 +34,10 @@ export default class ItemPopup extends Component {
     return (
       <div onClick={this.handleClick} className="marketplace-modal--overlay">
         <div ref={this.modalRef} className="marketplace-modal--root">
-          <button className="marketplace-modal--dismiss-button">
+          <button
+            onClick={this.props.onClose}
+            className="marketplace-modal--dismiss-button"
+          >
             <span>✕</span>
           </button>
 

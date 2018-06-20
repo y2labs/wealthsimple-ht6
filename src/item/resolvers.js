@@ -1,7 +1,11 @@
 import pProps from 'p-props';
+import pRetry from 'p-retry';
+import prisma from '~/prisma';
 import { findUser } from '~/user/prisma';
 import { fromPriceToAmount } from '~/utils/converters';
 import { createDespoit, withTokens } from '~/utils/wealthsimple';
+import { useItem } from '~/item/use-item';
+import { extractFromCtx } from '~/utils/auth';
 import {
   getPurchaseableItems,
   getPurchasedItems,
@@ -10,9 +14,6 @@ import {
   getPurchaseableItem,
   getPurchasedItem
 } from '~/item/prisma';
-import { useItem } from '~/item/use-item';
-import { extractFromCtx } from '~/utils/auth';
-import prisma from '~/prisma';
 
 export default {
   Mutation: {
@@ -148,15 +149,35 @@ export default {
       }
 
       try {
-        const deposit = await withTokens({ userId }, ({ accessToken }) => {
-          return createDespoit({
-            depositAmount: fromPriceToAmount(purchaseableItem.price),
-            bankAccountId: user.primaryBankAccountId,
-            accountId: user.primaryAccountId,
-            personId: user.personId,
-            accessToken
-          });
-        });
+        const deposit = await pRetry(
+          async () => {
+            const createDepositResponse = await withTokens(
+              { userId },
+              ({ accessToken }) => {
+                return createDespoit({
+                  depositAmount: fromPriceToAmount(purchaseableItem.price),
+                  bankAccountId: user.primaryBankAccountId,
+                  accountId: user.primaryAccountId,
+                  personId: user.personId,
+                  accessToken
+                });
+              }
+            );
+
+            console.log(
+              'Creating response - maybe success or fail',
+              JSON.stringify(createDepositResponse, null, 2)
+            );
+
+            // Random unprocessible entity error
+            if (createDepositResponse.code === 422) {
+              throw new Error(createDepositResponse.status);
+            }
+
+            return createDepositResponse;
+          },
+          { retries: 3 }
+        );
 
         const purchasedItem = await prisma.mutation.createPurchasedItem(
           {

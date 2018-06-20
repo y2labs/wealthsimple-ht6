@@ -19,15 +19,15 @@ export const getCreatedItemPrice = ({ rarity, temporality, item }) => {
   const isPassive = temporality === 'passive';
 
   const price = {
-    value: random(50, 100)
+    value: random(100, 150)
   };
 
   if (isRare) {
-    price.value += random(200, 400);
+    price.value += random(200, 350);
   }
 
   if (isPassive) {
-    price.value += random(300, 600);
+    price.value += random(300, 500);
   }
 
   return price.value;
@@ -96,11 +96,17 @@ export const createItem = ({
       }
     });
 
+  const itemEffects = getItemEffects({ temporality, rarity });
+
+  if (itemEffects.length === 0) {
+    return null;
+  }
+
   const item = {
     name: faker.commerce.productName(),
     description: faker.company.bs(),
     singleUse: temporality === 'singleUse',
-    effects: getItemEffects({ temporality, rarity })
+    effects: itemEffects
   };
 
   return {

@@ -115,9 +115,5 @@ export const getItemEffects = ({ temporality, rarity }) => {
       : effects;
   }, []);
 
-  if (appliedEffects.length === 0) {
-    return [ITEM_EFFECTS.NOOP.factory()];
-  }
-
   return appliedEffects;
 };

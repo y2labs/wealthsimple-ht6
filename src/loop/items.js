@@ -55,7 +55,13 @@ const handler = async () => {
 
   await Promise.all(
     users.map(async ({ id: userId, pet }) => {
-      const { temporality, rarity, ...itemData } = createItem(pet);
+      const createdItem = createItem(pet);
+
+      if (createdItem) {
+        return;
+      }
+
+      const { temporality, rarity, ...itemData } = createdItem;
 
       if (itemData) {
         const { item, expiresAt, price } = itemData;

@@ -92,18 +92,13 @@ export default {
             'https://s1.piq.land/2014/11/23/MraNnPdcfWTL5lb2tHOCVEC0_400x400.png',
           name: 'Cheesy Pizza',
           description: 'The worlds most cheesy pizza.',
+          singleUse: true,
           effects: [
             {
-              name: 'Cheesiest Pizza',
-              description:
-                "Earning passive dollars managed while your pet's content is above 765 every 18 hours",
-              type: 'PASSIVE_EARN_MANAGED_DOLLARS',
-              value: {
-                value: 47,
-                interval: 64800000,
-                amount: 765,
-                stat: 'content'
-              }
+              name: 'Delicious Pizza!',
+              description: 'Eat to recover hunger.',
+              type: 'HUNGER_INCREASE',
+              value: { value: 300 }
             }
           ]
         }
@@ -199,6 +194,10 @@ export default {
         overrideTemporality: 'passive'
       });
 
+      if (!itemData) {
+        return { success: true };
+      }
+
       const { item, expiresAt, price } = itemData;
 
       const purchaseableItem = await createPurchaseableItem({
@@ -210,6 +209,22 @@ export default {
 
       return {
         purchaseableItemId: purchaseableItem.id,
+        success: true
+      };
+    },
+
+    DEMORemoveAllPurchaseableItems: async () => {
+      await prisma.mutation.deleteManyPurchaseableItems({
+        where: {
+          NOT: [
+            {
+              id: null
+            }
+          ]
+        }
+      });
+
+      return {
         success: true
       };
     },
