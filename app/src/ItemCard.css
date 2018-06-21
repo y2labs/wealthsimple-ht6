@@ -30,16 +30,17 @@
 }
 
 .item-card--footer-price {
-  background-color: #fff;
+  background-color: #f7f7f7;
   border-radius: 16px;
-  padding: 5px 10px;
   display: flex;
+  padding: 10px;
   justify-content: center;
   align-items: center;
 }
 
 .item-card--footer-price > p {
   padding-bottom: 0;
+  font-size: 12px;
 }
 
 .item-card--preview-image {

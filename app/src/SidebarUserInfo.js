@@ -45,7 +45,7 @@ const SidebarUserInfo = () => {
               <span className="sidebar-user-info--dollar">
                 {accounting.formatNumber(20000, '2')}
               </span>
-              <a href="#" className="sidebar-pet-info--visit-profile">
+              <a href="/" className="sidebar-pet-info--visit-profile">
                 Visit your public profile
               </a>
             </div>

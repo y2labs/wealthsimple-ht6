@@ -7,7 +7,7 @@ import {
   getCurrentUserPurchasedItemsQuery
 } from 'graphql/items';
 import ItemPopup from 'ItemPopup';
-import { getCurrentUserQuery } from 'graphql/users';
+import { getCurrentUserQuery, getCurrentUserPetQuery } from 'graphql/users';
 
 const createUseItemMutationUpdate = ({ itemId }) => (
   cache,
@@ -69,7 +69,7 @@ const WithQueryInventoryPopup = ({
                 variables: { id },
                 refetchQueries: [
                   {
-                    query: getCurrentUserQuery
+                    query: getCurrentUserPetQuery
                   }
                 ]
               });

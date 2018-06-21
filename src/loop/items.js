@@ -57,7 +57,7 @@ const handler = async () => {
     users.map(async ({ id: userId, pet }) => {
       const createdItem = createItem(pet);
 
-      if (createdItem) {
+      if (!createdItem) {
         return;
       }
 

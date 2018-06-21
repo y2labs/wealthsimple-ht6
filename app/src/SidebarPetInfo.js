@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 import { getCurrentUserPetQuery } from 'graphql/users';
 import { createPetMutation } from 'graphql/pets';
-import { MAX_ATTRIBUTE_VALUE } from './constants';
+import SidebarPetInfoAttribute from 'SidebarPetInfoAttribute';
 
 const SetupPet = () => {
   const handleSubmit = mutation => e => {
@@ -80,41 +80,20 @@ const SidebarPetInfo = () => (
                 <p className="h4-sans-normal">{pet.size}</p>
 
                 <div className="sidebar-pet-info--attr-section">
-                  <div className="sidebar-pet-info-stat-container">
-                    <p className="sidebar-pet-info--attr-title">Hunger</p>
-                    <div className="sidebar-pet-info--progress-bar-root">
-                      <div
-                        className="inner"
-                        style={{
-                          width: `${(pet.hunger / MAX_ATTRIBUTE_VALUE) * 100}%`
-                        }}
-                      />
-                    </div>
-                  </div>
+                  <SidebarPetInfoAttribute
+                    label="Hunger"
+                    attribute={pet.hunger}
+                  />
 
-                  <div className="sidebar-pet-info-stat-container">
-                    <p className="sidebar-pet-info--attr-title">Happiness</p>
-                    <div className="sidebar-pet-info--progress-bar-root">
-                      <div
-                        className="inner"
-                        style={{
-                          width: `${(pet.content / MAX_ATTRIBUTE_VALUE) * 100}%`
-                        }}
-                      />
-                    </div>
-                  </div>
+                  <SidebarPetInfoAttribute
+                    label="Happiness"
+                    attribute={pet.content}
+                  />
 
-                  <div className="sidebar-pet-info-stat-container">
-                    <p className="sidebar-pet-info--attr-title">Energy</p>
-                    <div className="sidebar-pet-info--progress-bar-root">
-                      <div
-                        className="inner"
-                        style={{
-                          width: `${(pet.energy / MAX_ATTRIBUTE_VALUE) * 100}%`
-                        }}
-                      />
-                    </div>
-                  </div>
+                  <SidebarPetInfoAttribute
+                    label="Energy"
+                    attribute={pet.energy}
+                  />
                 </div>
               </div>
             )}

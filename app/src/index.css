@@ -83,6 +83,18 @@ p {
   margin: 10px 0 5px 0;
 }
 
+.sidebar-pet-info--attr-title.green {
+  color: #7cb7b6;
+}
+
+.sidebar-pet-info--attr-title.yellow {
+  color: #fab131;
+}
+
+.sidebar-pet-info--attr-title.red {
+  color: #f27c5e;
+}
+
 .sidebar-pet-info--section {
   padding: 5px 0;
 }
@@ -121,8 +133,19 @@ p {
 
 .sidebar-pet-info--progress-bar-root > .inner {
   height: 100%;
-  background-color: #fab131;
   transition: all 0.3s ease;
+}
+
+.sidebar-pet-info--progress-bar-root > .inner.green {
+  background-color: #7cb7b6;
+}
+
+.sidebar-pet-info--progress-bar-root > .inner.yellow {
+  background-color: #fab131;
+}
+
+.sidebar-pet-info--progress-bar-root > .inner.red {
+  background-color: #f27c5e;
 }
 
 .sidebar-pet-info-stat-container {
@@ -150,4 +173,8 @@ p {
   flex: 1;
   display: flex;
   align-items: center;
+}
+
+.marketplace-modal--effect-not-earning-warning-container {
+  padding: 10px 0;
 }

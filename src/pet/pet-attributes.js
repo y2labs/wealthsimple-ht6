@@ -34,7 +34,7 @@ export const getNextPetAttributes = pet => {
   multipliers.hunger = Math.min(CONSTANTS.maxAttributeValue / nextHunger, 2);
 
   const nextEnergy = max([
-    round(random(pet.content - 10 * multipliers.hunger, pet.content)),
+    round(random(pet.energy - 10 * multipliers.hunger, pet.energy)),
     0
   ]);
 
