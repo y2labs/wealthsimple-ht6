@@ -7,22 +7,24 @@ import { createPetMutation } from 'graphql/pets';
 import SidebarPetInfoAttribute from 'SidebarPetInfoAttribute';
 
 const SetupPet = () => {
-  const handleSubmit = mutation => e => {
+  const handleSubmit = mutation => async e => {
     e.preventDefault();
 
     const { name, color } = e.target.elements;
 
-    mutation({
+    await mutation({
       variables: {
         name: name.value,
-        color: '#000'
+        color: get(color, 'value', '#000')
       }
     });
+
+    window.location.reload();
   };
 
   return (
     <Mutation mutation={createPetMutation}>
-      {(createPet, { data }) => {
+      {createPet => {
         return (
           <div className="setup-pet--container">
             <p className="setup-pet--title">Create your pet!</p>
