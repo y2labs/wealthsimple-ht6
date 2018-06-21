@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/paul-f17430/ws/dev
-# timestamp: Mon Jun 18 2018 13:02:25 GMT-0400 (EDT)
+# timestamp: Thu Jun 21 2018 10:32:19 GMT-0400 (EDT)
 
 type Achievement implements Node {
   id: ID!
@@ -199,6 +199,9 @@ input AchievementWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  _MagicalBackRelation_AchievementToUserAchievement_every: UserAchievementWhereInput
+  _MagicalBackRelation_AchievementToUserAchievement_some: UserAchievementWhereInput
+  _MagicalBackRelation_AchievementToUserAchievement_none: UserAchievementWhereInput
 }
 
 input AchievementWhereUniqueInput {
@@ -463,6 +466,9 @@ input ImageWhereInput {
 
   """All values not ending with the given string."""
   uri_not_ends_with: String
+  _MagicalBackRelation_ImageToItem_every: ItemWhereInput
+  _MagicalBackRelation_ImageToItem_some: ItemWhereInput
+  _MagicalBackRelation_ImageToItem_none: ItemWhereInput
 }
 
 input ImageWhereUniqueInput {
@@ -728,6 +734,9 @@ input ItemEffectWhereInput {
 
   """All values that are not contained in given list."""
   type_not_in: [ItemEffectType!]
+  _MagicalBackRelation_ItemToItemEffect_every: ItemWhereInput
+  _MagicalBackRelation_ItemToItemEffect_some: ItemWhereInput
+  _MagicalBackRelation_ItemToItemEffect_none: ItemWhereInput
 }
 
 enum ItemOrderByInput {
@@ -957,6 +966,12 @@ input ItemWhereInput {
   effects_some: ItemEffectWhereInput
   effects_none: ItemEffectWhereInput
   image: ImageWhereInput
+  _MagicalBackRelation_ItemToPurchasedItem_every: PurchasedItemWhereInput
+  _MagicalBackRelation_ItemToPurchasedItem_some: PurchasedItemWhereInput
+  _MagicalBackRelation_ItemToPurchasedItem_none: PurchasedItemWhereInput
+  _MagicalBackRelation_ItemToPurchaseableItem_every: PurchaseableItemWhereInput
+  _MagicalBackRelation_ItemToPurchaseableItem_some: PurchaseableItemWhereInput
+  _MagicalBackRelation_ItemToPurchaseableItem_none: PurchaseableItemWhereInput
 }
 
 input ItemWhereUniqueInput {
@@ -973,75 +988,75 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
-  createUserAchievement(data: UserAchievementCreateInput!): UserAchievement!
-  createAchievement(data: AchievementCreateInput!): Achievement!
   createPet(data: PetCreateInput!): Pet!
-  createPetInteraction(data: PetInteractionCreateInput!): PetInteraction!
-  createItem(data: ItemCreateInput!): Item!
-  createPurchasedItem(data: PurchasedItemCreateInput!): PurchasedItem!
   createPurchaseableItem(data: PurchaseableItemCreateInput!): PurchaseableItem!
-  createItemEffect(data: ItemEffectCreateInput!): ItemEffect!
   createPassiveItemSync(data: PassiveItemSyncCreateInput!): PassiveItemSync!
+  createAchievement(data: AchievementCreateInput!): Achievement!
+  createPurchasedItem(data: PurchasedItemCreateInput!): PurchasedItem!
   createImage(data: ImageCreateInput!): Image!
+  createPetInteraction(data: PetInteractionCreateInput!): PetInteraction!
+  createUserAchievement(data: UserAchievementCreateInput!): UserAchievement!
+  createItemEffect(data: ItemEffectCreateInput!): ItemEffect!
+  createUser(data: UserCreateInput!): User!
   createWebPushSubscriptionKeys(data: WebPushSubscriptionKeysCreateInput!): WebPushSubscriptionKeys!
   createWebPushSubscription(data: WebPushSubscriptionCreateInput!): WebPushSubscription!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateUserAchievement(data: UserAchievementUpdateInput!, where: UserAchievementWhereUniqueInput!): UserAchievement
-  updateAchievement(data: AchievementUpdateInput!, where: AchievementWhereUniqueInput!): Achievement
+  createItem(data: ItemCreateInput!): Item!
   updatePet(data: PetUpdateInput!, where: PetWhereUniqueInput!): Pet
-  updatePetInteraction(data: PetInteractionUpdateInput!, where: PetInteractionWhereUniqueInput!): PetInteraction
-  updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
-  updatePurchasedItem(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereUniqueInput!): PurchasedItem
   updatePurchaseableItem(data: PurchaseableItemUpdateInput!, where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
   updatePassiveItemSync(data: PassiveItemSyncUpdateInput!, where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
+  updateAchievement(data: AchievementUpdateInput!, where: AchievementWhereUniqueInput!): Achievement
+  updatePurchasedItem(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereUniqueInput!): PurchasedItem
   updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteUserAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
-  deleteAchievement(where: AchievementWhereUniqueInput!): Achievement
+  updatePetInteraction(data: PetInteractionUpdateInput!, where: PetInteractionWhereUniqueInput!): PetInteraction
+  updateUserAchievement(data: UserAchievementUpdateInput!, where: UserAchievementWhereUniqueInput!): UserAchievement
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
   deletePet(where: PetWhereUniqueInput!): Pet
-  deletePetInteraction(where: PetInteractionWhereUniqueInput!): PetInteraction
-  deleteItem(where: ItemWhereUniqueInput!): Item
-  deletePurchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   deletePurchaseableItem(where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
   deletePassiveItemSync(where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
+  deleteAchievement(where: AchievementWhereUniqueInput!): Achievement
+  deletePurchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   deleteImage(where: ImageWhereUniqueInput!): Image
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertUserAchievement(where: UserAchievementWhereUniqueInput!, create: UserAchievementCreateInput!, update: UserAchievementUpdateInput!): UserAchievement!
-  upsertAchievement(where: AchievementWhereUniqueInput!, create: AchievementCreateInput!, update: AchievementUpdateInput!): Achievement!
+  deletePetInteraction(where: PetInteractionWhereUniqueInput!): PetInteraction
+  deleteUserAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteItem(where: ItemWhereUniqueInput!): Item
   upsertPet(where: PetWhereUniqueInput!, create: PetCreateInput!, update: PetUpdateInput!): Pet!
-  upsertPetInteraction(where: PetInteractionWhereUniqueInput!, create: PetInteractionCreateInput!, update: PetInteractionUpdateInput!): PetInteraction!
-  upsertItem(where: ItemWhereUniqueInput!, create: ItemCreateInput!, update: ItemUpdateInput!): Item!
-  upsertPurchasedItem(where: PurchasedItemWhereUniqueInput!, create: PurchasedItemCreateInput!, update: PurchasedItemUpdateInput!): PurchasedItem!
   upsertPurchaseableItem(where: PurchaseableItemWhereUniqueInput!, create: PurchaseableItemCreateInput!, update: PurchaseableItemUpdateInput!): PurchaseableItem!
   upsertPassiveItemSync(where: PassiveItemSyncWhereUniqueInput!, create: PassiveItemSyncCreateInput!, update: PassiveItemSyncUpdateInput!): PassiveItemSync!
+  upsertAchievement(where: AchievementWhereUniqueInput!, create: AchievementCreateInput!, update: AchievementUpdateInput!): Achievement!
+  upsertPurchasedItem(where: PurchasedItemWhereUniqueInput!, create: PurchasedItemCreateInput!, update: PurchasedItemUpdateInput!): PurchasedItem!
   upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
-  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
-  updateManyUserAchievements(data: UserAchievementUpdateInput!, where: UserAchievementWhereInput): BatchPayload!
-  updateManyAchievements(data: AchievementUpdateInput!, where: AchievementWhereInput): BatchPayload!
+  upsertPetInteraction(where: PetInteractionWhereUniqueInput!, create: PetInteractionCreateInput!, update: PetInteractionUpdateInput!): PetInteraction!
+  upsertUserAchievement(where: UserAchievementWhereUniqueInput!, create: UserAchievementCreateInput!, update: UserAchievementUpdateInput!): UserAchievement!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertItem(where: ItemWhereUniqueInput!, create: ItemCreateInput!, update: ItemUpdateInput!): Item!
   updateManyPets(data: PetUpdateInput!, where: PetWhereInput): BatchPayload!
-  updateManyPetInteractions(data: PetInteractionUpdateInput!, where: PetInteractionWhereInput): BatchPayload!
-  updateManyItems(data: ItemUpdateInput!, where: ItemWhereInput): BatchPayload!
-  updateManyPurchasedItems(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereInput): BatchPayload!
   updateManyPurchaseableItems(data: PurchaseableItemUpdateInput!, where: PurchaseableItemWhereInput): BatchPayload!
-  updateManyItemEffects(data: ItemEffectUpdateInput!, where: ItemEffectWhereInput): BatchPayload!
   updateManyPassiveItemSyncs(data: PassiveItemSyncUpdateInput!, where: PassiveItemSyncWhereInput): BatchPayload!
+  updateManyAchievements(data: AchievementUpdateInput!, where: AchievementWhereInput): BatchPayload!
+  updateManyPurchasedItems(data: PurchasedItemUpdateInput!, where: PurchasedItemWhereInput): BatchPayload!
   updateManyImages(data: ImageUpdateInput!, where: ImageWhereInput): BatchPayload!
+  updateManyPetInteractions(data: PetInteractionUpdateInput!, where: PetInteractionWhereInput): BatchPayload!
+  updateManyUserAchievements(data: UserAchievementUpdateInput!, where: UserAchievementWhereInput): BatchPayload!
+  updateManyItemEffects(data: ItemEffectUpdateInput!, where: ItemEffectWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyWebPushSubscriptionKeyses(data: WebPushSubscriptionKeysUpdateInput!, where: WebPushSubscriptionKeysWhereInput): BatchPayload!
   updateManyWebPushSubscriptions(data: WebPushSubscriptionUpdateInput!, where: WebPushSubscriptionWhereInput): BatchPayload!
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyUserAchievements(where: UserAchievementWhereInput): BatchPayload!
-  deleteManyAchievements(where: AchievementWhereInput): BatchPayload!
+  updateManyItems(data: ItemUpdateInput!, where: ItemWhereInput): BatchPayload!
   deleteManyPets(where: PetWhereInput): BatchPayload!
-  deleteManyPetInteractions(where: PetInteractionWhereInput): BatchPayload!
-  deleteManyItems(where: ItemWhereInput): BatchPayload!
-  deleteManyPurchasedItems(where: PurchasedItemWhereInput): BatchPayload!
   deleteManyPurchaseableItems(where: PurchaseableItemWhereInput): BatchPayload!
-  deleteManyItemEffects(where: ItemEffectWhereInput): BatchPayload!
   deleteManyPassiveItemSyncs(where: PassiveItemSyncWhereInput): BatchPayload!
+  deleteManyAchievements(where: AchievementWhereInput): BatchPayload!
+  deleteManyPurchasedItems(where: PurchasedItemWhereInput): BatchPayload!
   deleteManyImages(where: ImageWhereInput): BatchPayload!
+  deleteManyPetInteractions(where: PetInteractionWhereInput): BatchPayload!
+  deleteManyUserAchievements(where: UserAchievementWhereInput): BatchPayload!
+  deleteManyItemEffects(where: ItemEffectWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyWebPushSubscriptionKeyses(where: WebPushSubscriptionKeysWhereInput): BatchPayload!
   deleteManyWebPushSubscriptions(where: WebPushSubscriptionWhereInput): BatchPayload!
+  deleteManyItems(where: ItemWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1473,6 +1488,9 @@ input PetInteractionSubscriptionWhereInput {
 
 enum PetInteractionType {
   NOOP
+  PET
+  BUY_ITEM
+  USE_ITEM
 }
 
 input PetInteractionUpdateDataInput {
@@ -1584,6 +1602,9 @@ input PetInteractionWhereInput {
 
   """All values that are not contained in given list."""
   type_not_in: [PetInteractionType!]
+  _MagicalBackRelation_PetToPetInteraction_every: PetWhereInput
+  _MagicalBackRelation_PetToPetInteraction_some: PetWhereInput
+  _MagicalBackRelation_PetToPetInteraction_none: PetWhereInput
 }
 
 input PetInteractionWhereUniqueInput {
@@ -2484,6 +2505,9 @@ input PurchasedItemWhereInput {
   usedAt_gte: DateTime
   item: ItemWhereInput
   owner: UserWhereInput
+  _MagicalBackRelation_PassiveItemSyncToPurchasedItem_every: PassiveItemSyncWhereInput
+  _MagicalBackRelation_PassiveItemSyncToPurchasedItem_some: PassiveItemSyncWhereInput
+  _MagicalBackRelation_PassiveItemSyncToPurchasedItem_none: PassiveItemSyncWhereInput
 }
 
 input PurchasedItemWhereUniqueInput {
@@ -2491,42 +2515,42 @@ input PurchasedItemWhereUniqueInput {
 }
 
 type Query {
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  userAchievements(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserAchievement]!
-  achievements(where: AchievementWhereInput, orderBy: AchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Achievement]!
   pets(where: PetWhereInput, orderBy: PetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pet]!
-  petInteractions(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PetInteraction]!
-  items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item]!
-  purchasedItems(where: PurchasedItemWhereInput, orderBy: PurchasedItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchasedItem]!
   purchaseableItems(where: PurchaseableItemWhereInput, orderBy: PurchaseableItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchaseableItem]!
-  itemEffects(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ItemEffect]!
   passiveItemSyncs(where: PassiveItemSyncWhereInput, orderBy: PassiveItemSyncOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PassiveItemSync]!
+  achievements(where: AchievementWhereInput, orderBy: AchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Achievement]!
+  purchasedItems(where: PurchasedItemWhereInput, orderBy: PurchasedItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchasedItem]!
   images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
+  petInteractions(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PetInteraction]!
+  userAchievements(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserAchievement]!
+  itemEffects(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ItemEffect]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   webPushSubscriptionKeyses(where: WebPushSubscriptionKeysWhereInput, orderBy: WebPushSubscriptionKeysOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WebPushSubscriptionKeys]!
   webPushSubscriptions(where: WebPushSubscriptionWhereInput, orderBy: WebPushSubscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WebPushSubscription]!
-  user(where: UserWhereUniqueInput!): User
-  userAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
-  achievement(where: AchievementWhereUniqueInput!): Achievement
+  items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item]!
   pet(where: PetWhereUniqueInput!): Pet
-  petInteraction(where: PetInteractionWhereUniqueInput!): PetInteraction
-  item(where: ItemWhereUniqueInput!): Item
-  purchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   purchaseableItem(where: PurchaseableItemWhereUniqueInput!): PurchaseableItem
   passiveItemSync(where: PassiveItemSyncWhereUniqueInput!): PassiveItemSync
+  achievement(where: AchievementWhereUniqueInput!): Achievement
+  purchasedItem(where: PurchasedItemWhereUniqueInput!): PurchasedItem
   image(where: ImageWhereUniqueInput!): Image
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  userAchievementsConnection(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserAchievementConnection!
-  achievementsConnection(where: AchievementWhereInput, orderBy: AchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AchievementConnection!
+  petInteraction(where: PetInteractionWhereUniqueInput!): PetInteraction
+  userAchievement(where: UserAchievementWhereUniqueInput!): UserAchievement
+  user(where: UserWhereUniqueInput!): User
+  item(where: ItemWhereUniqueInput!): Item
   petsConnection(where: PetWhereInput, orderBy: PetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PetConnection!
-  petInteractionsConnection(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PetInteractionConnection!
-  itemsConnection(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemConnection!
-  purchasedItemsConnection(where: PurchasedItemWhereInput, orderBy: PurchasedItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchasedItemConnection!
   purchaseableItemsConnection(where: PurchaseableItemWhereInput, orderBy: PurchaseableItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchaseableItemConnection!
-  itemEffectsConnection(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemEffectConnection!
   passiveItemSyncsConnection(where: PassiveItemSyncWhereInput, orderBy: PassiveItemSyncOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PassiveItemSyncConnection!
+  achievementsConnection(where: AchievementWhereInput, orderBy: AchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AchievementConnection!
+  purchasedItemsConnection(where: PurchasedItemWhereInput, orderBy: PurchasedItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchasedItemConnection!
   imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
+  petInteractionsConnection(where: PetInteractionWhereInput, orderBy: PetInteractionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PetInteractionConnection!
+  userAchievementsConnection(where: UserAchievementWhereInput, orderBy: UserAchievementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserAchievementConnection!
+  itemEffectsConnection(where: ItemEffectWhereInput, orderBy: ItemEffectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemEffectConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   webPushSubscriptionKeysesConnection(where: WebPushSubscriptionKeysWhereInput, orderBy: WebPushSubscriptionKeysOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WebPushSubscriptionKeysConnection!
   webPushSubscriptionsConnection(where: WebPushSubscriptionWhereInput, orderBy: WebPushSubscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WebPushSubscriptionConnection!
+  itemsConnection(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -2536,19 +2560,19 @@ type Query {
 }
 
 type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  userAchievement(where: UserAchievementSubscriptionWhereInput): UserAchievementSubscriptionPayload
-  achievement(where: AchievementSubscriptionWhereInput): AchievementSubscriptionPayload
   pet(where: PetSubscriptionWhereInput): PetSubscriptionPayload
-  petInteraction(where: PetInteractionSubscriptionWhereInput): PetInteractionSubscriptionPayload
-  item(where: ItemSubscriptionWhereInput): ItemSubscriptionPayload
-  purchasedItem(where: PurchasedItemSubscriptionWhereInput): PurchasedItemSubscriptionPayload
   purchaseableItem(where: PurchaseableItemSubscriptionWhereInput): PurchaseableItemSubscriptionPayload
-  itemEffect(where: ItemEffectSubscriptionWhereInput): ItemEffectSubscriptionPayload
   passiveItemSync(where: PassiveItemSyncSubscriptionWhereInput): PassiveItemSyncSubscriptionPayload
+  achievement(where: AchievementSubscriptionWhereInput): AchievementSubscriptionPayload
+  purchasedItem(where: PurchasedItemSubscriptionWhereInput): PurchasedItemSubscriptionPayload
   image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
+  petInteraction(where: PetInteractionSubscriptionWhereInput): PetInteractionSubscriptionPayload
+  userAchievement(where: UserAchievementSubscriptionWhereInput): UserAchievementSubscriptionPayload
+  itemEffect(where: ItemEffectSubscriptionWhereInput): ItemEffectSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   webPushSubscriptionKeys(where: WebPushSubscriptionKeysSubscriptionWhereInput): WebPushSubscriptionKeysSubscriptionPayload
   webPushSubscription(where: WebPushSubscriptionSubscriptionWhereInput): WebPushSubscriptionSubscriptionPayload
+  item(where: ItemSubscriptionWhereInput): ItemSubscriptionPayload
 }
 
 type User implements Node {
@@ -2762,6 +2786,9 @@ input UserAchievementWhereInput {
   """All values greater than or equal the given value."""
   createdAt_gte: DateTime
   achievement: AchievementWhereInput
+  _MagicalBackRelation_UserToUserAchievement_every: UserWhereInput
+  _MagicalBackRelation_UserToUserAchievement_some: UserWhereInput
+  _MagicalBackRelation_UserToUserAchievement_none: UserWhereInput
 }
 
 input UserAchievementWhereUniqueInput {
@@ -3651,6 +3678,12 @@ input UserWhereInput {
   achievements_none: UserAchievementWhereInput
   webPushSubscription: WebPushSubscriptionWhereInput
   pet: PetWhereInput
+  _MagicalBackRelation_PurchasedItemToUser_every: PurchasedItemWhereInput
+  _MagicalBackRelation_PurchasedItemToUser_some: PurchasedItemWhereInput
+  _MagicalBackRelation_PurchasedItemToUser_none: PurchasedItemWhereInput
+  _MagicalBackRelation_PurchaseableItemToUser_every: PurchaseableItemWhereInput
+  _MagicalBackRelation_PurchaseableItemToUser_some: PurchaseableItemWhereInput
+  _MagicalBackRelation_PurchaseableItemToUser_none: PurchaseableItemWhereInput
 }
 
 input UserWhereUniqueInput {
@@ -3893,6 +3926,9 @@ input WebPushSubscriptionKeysWhereInput {
 
   """All values not ending with the given string."""
   auth_not_ends_with: String
+  _MagicalBackRelation_WebPushSubscriptionToWebPushSubscriptionKeys_every: WebPushSubscriptionWhereInput
+  _MagicalBackRelation_WebPushSubscriptionToWebPushSubscriptionKeys_some: WebPushSubscriptionWhereInput
+  _MagicalBackRelation_WebPushSubscriptionToWebPushSubscriptionKeys_none: WebPushSubscriptionWhereInput
 }
 
 enum WebPushSubscriptionOrderByInput {
@@ -4022,4 +4058,7 @@ input WebPushSubscriptionWhereInput {
   """All values not ending with the given string."""
   endpoint_not_ends_with: String
   keys: WebPushSubscriptionKeysWhereInput
+  _MagicalBackRelation_UserToWebPushSubscription_every: UserWhereInput
+  _MagicalBackRelation_UserToWebPushSubscription_some: UserWhereInput
+  _MagicalBackRelation_UserToWebPushSubscription_none: UserWhereInput
 }

@@ -19,7 +19,8 @@ const getInteractionsMultipler = ({ interactions }) => {
       const interactionValue = INTERACTIONS_VALUE[type];
 
       return totalValue + interactionValue;
-    }
+    },
+    0
   );
 
   return (interactionsValue / MAX_INTERACTIONS_VALUE) * MULTIPLIER_VALUE;

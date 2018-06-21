@@ -84,7 +84,6 @@ type DEMOcreatePassiveItemHT6MutationPayload {
 
 input PetInteractionInput {
   type: PetInteractionType!
-  createdAt: DateTime!
 }
 
 type Mutation {

@@ -244,25 +244,6 @@ export default {
 
           updatePurchaseableItemAsPurchased: updatePurchaseableItemAsPurchased({
             id: args.id
-          }),
-
-          createPetInteraction: getPetFromUserId({ userId }).then(user => {
-            if (user && user.pet.id) {
-              return prisma.mutation.updatePet({
-                where: {
-                  id: user.pet.id
-                },
-                data: {
-                  interactions: {
-                    create: [
-                      {
-                        type: 'BUY_ITEM'
-                      }
-                    ]
-                  }
-                }
-              });
-            }
           })
         });
 

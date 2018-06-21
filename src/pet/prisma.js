@@ -53,7 +53,7 @@ export const createPetInteractions = async ({ interactions, petId }) => {
     },
     data: {
       interactions: {
-        create: [interactions]
+        create: Array.isArray(interactions) ? interactions : [interactions]
       }
     }
   });

@@ -54,7 +54,7 @@ export const useItem = async ({ singleUse, effects }, { userId, petId }) => {
         interactions: {
           create: [
             {
-              type: 'NOOP'
+              type: 'USE_ITEM'
             }
           ]
         }

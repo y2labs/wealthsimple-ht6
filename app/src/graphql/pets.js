@@ -25,3 +25,12 @@ export const createPetMutation = gql`
 
   ${petInfoFragment}
 `;
+
+export const interactWithPetMutation = gql`
+  mutation interactWithPet($interactions: [PetInteractionInput]!) {
+    interactWithPet(interactions: $interactions) {
+      success
+      error
+    }
+  }
+`;

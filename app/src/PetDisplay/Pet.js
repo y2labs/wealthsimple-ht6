@@ -1,6 +1,7 @@
 import './PetDisplay.css';
 
 import React, { Component, createRef } from 'react';
+import PropTypes from 'prop-types';
 import { random } from 'lodash';
 import Pet, {
   STATE_WALKING,
@@ -12,6 +13,14 @@ import Pet, {
 import { delay, animateHop, animateMoveTo, getNextState } from './util';
 
 export default class PetDisplayPet extends Component {
+  static defaultProps = {
+    onInteraction() {}
+  };
+
+  static propTypes = {
+    onInteraction: PropTypes.func
+  };
+
   state = {
     petState: STATE_SITTING
   };
@@ -56,6 +65,8 @@ export default class PetDisplayPet extends Component {
       await animateHop({ ref: this.petRef.current });
 
       this.moveAnimation.resume();
+
+      this.props.onInteraction('PET');
     }
   };
 

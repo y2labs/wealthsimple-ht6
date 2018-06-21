@@ -1,5 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
+import accounting from 'accounting';
 import { Query, Mutation } from 'react-apollo';
 import { getCurrentUserPetQuery } from 'graphql/users';
 import { createPetMutation } from 'graphql/pets';
@@ -77,7 +78,9 @@ const SidebarPetInfo = () => (
                 </div>
 
                 <p className="sidebar-pet-info--attr-title">Size</p>
-                <p className="h4-sans-normal">{pet.size}</p>
+                <p className="h4-sans-normal">
+                  {accounting.formatNumber(pet.size, 2)}
+                </p>
 
                 <div className="sidebar-pet-info--attr-section">
                   <SidebarPetInfoAttribute
