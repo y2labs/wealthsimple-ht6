@@ -85,7 +85,7 @@ export const getNextState = ({ energy = 0, hunger = 0, content = 0 } = {}) => {
 
     ...Array(MAX_ATTRIBUTE_VALUE).fill(STATE_WALKING),
     ...Array(MAX_ATTRIBUTE_VALUE + energy).fill(STATE_RUNNING),
-    ...Array(Math.round((MAX_ATTRIBUTE_VALUE - content) / 3)).fill(STATE_SAD)
+    ...Array(Math.round((MAX_ATTRIBUTE_VALUE - content) / 5)).fill(STATE_SAD)
   ]);
 
   return state;

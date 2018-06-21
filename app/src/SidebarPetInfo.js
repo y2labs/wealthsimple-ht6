@@ -68,15 +68,6 @@ const SidebarPetInfo = () => (
                 <p className="sidebar-pet-info--attr-title">Name</p>
                 <p className="h4-sans-normal">{pet.name}</p>
 
-                <p className="sidebar-pet-info--attr-title">Color</p>
-                <div className="sidebar-pet-info--color-attr-container">
-                  <p className="h4-sans-normal">{pet.color}</p>
-                  <div
-                    className="sidebar-pet-info--color-preview"
-                    style={{ backgroundColor: pet.color }}
-                  />
-                </div>
-
                 <p className="sidebar-pet-info--attr-title">Size</p>
                 <p className="h4-sans-normal">
                   {accounting.formatNumber(pet.size, 2)}

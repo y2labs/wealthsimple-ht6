@@ -142,8 +142,10 @@ export const createDespoit = async ({
       bank_account_id: bankAccountId,
       client_id: personId,
       account_id: accountId,
-      amount: depositAmount,
-      currency: 'CAD'
+      value: {
+        amount: depositAmount,
+        currency: 'CAD'
+      }
     },
     path: '/deposits',
     method: 'POST',
