@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import accounting from 'accounting';
 import { Query } from 'react-apollo';
+import TransferForm from 'TransferForm';
 import { getCurrentUserPetQuery } from 'graphql/users';
 import { getIsEarning } from './utils';
+import { AccountPickerConsumer } from 'MarketPlacePopup';
 
 const Effect = ({ type, value, name, description, warnOnConstraints }) => {
   return (
@@ -72,7 +74,7 @@ export default class ItemPopup extends Component {
           <div>
             {item && (
               <Fragment>
-                {item.image && (
+                {get(item, 'image.uri') && (
                   <div
                     className="marketplace-modal--item-image"
                     style={{ backgroundImage: `url(${item.image.uri})` }}
@@ -102,6 +104,12 @@ export default class ItemPopup extends Component {
               </Fragment>
             )}
 
+            <hr style={{ backgroundColor: '#ebebeb', height: 1, border: 0 }} />
+
+            <p className="uppercase-text marketplace-modal--transfer-header">
+              Make deposit from
+            </p>
+
             {useable &&
               !disabled && (
                 <button
@@ -115,6 +123,12 @@ export default class ItemPopup extends Component {
                   )}
                 </button>
               )}
+
+            {purchaseable && (
+              <AccountPickerConsumer>
+                {props => <TransferForm {...props} />}
+              </AccountPickerConsumer>
+            )}
 
             {purchaseable &&
               !disabled && (

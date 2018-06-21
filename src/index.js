@@ -24,6 +24,12 @@ const server = graphQLServer.createHttpServer({
 
 server.listen(process.env.PORT, () => {
   startLoop();
+
+  if (process.env.FEATURE_ENABLE_ITEM_LOOP) {
+    console.log('Item loop enabled!');
+  }
+
+  console.log(`Server started on port ${process.env.PORT}`);
 });
 
 process.on('SIGTERM', () => {

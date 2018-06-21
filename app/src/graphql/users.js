@@ -39,3 +39,19 @@ export const subscribeToWebPushMutation = gql`
     }
   }
 `;
+
+export const getUserBankAccountsAndAccountsQuery = gql`
+  query getUserBankAccountsAndAccountsQuery {
+    viewer {
+      bankAccounts {
+        id
+        accountNumber
+        accountName
+      }
+
+      accounts {
+        id
+      }
+    }
+  }
+`;

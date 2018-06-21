@@ -5,7 +5,6 @@
   "license": "MIT",
   "dependencies": {
     "accounting": "^0.4.1",
-    "dotenv-cli": "^1.4.0",
     "express": "^4.16.3",
     "faker": "^4.1.0",
     "got": "^8.3.1",
@@ -27,6 +26,7 @@
     "babel-eslint": "^8.2.3",
     "babel-plugin-module-resolver": "^3.1.1",
     "backpack-core": "^0.7.0",
+    "dotenv-cli": "^1.4.0",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
@@ -37,10 +37,14 @@
   },
   "scripts": {
     "start": "node ./build/main.js",
-    "dev": "./node_modules/.bin/dotenv -e ./.env.local backpack dev",
-    "build": "./node_modules/.bin/dotenv -e ./.env backpack build",
-    "deploy:api:prod": "now --dotenv .env.production --public",
+    "dev": "./node_modules/.bin/dotenv -e ./.env.local ./node_modules/.bin/backpack dev",
+    "build": "NODE_ENV=production ./node_modules/.bin/dotenv -e ./.env ./node_modules/.bin/backpack build",
+    "deploy:api:prod": "now --dotenv .env.production --public && now alias && now rm ws --safe -y",
     "deploy:prisma:dev": "prisma deploy",
-    "deploy:prisma:prod": "prisma deploy -e ./.env.production"
+    "deploy:prisma:prod": "prisma deploy -e ./.env.production",
+    "script:seed-normal-items:dev": "dotenv -e ./.env.local node ./scripts/seed-normal-items",
+    "script:seed-normal-items:prod": "dotenv -e ./.env.production node ./scripts/seed-normal-items",
+    "script:remove-all-items:dev": "dotenv -e ./.env.local node ./scripts/remove-all-items",
+    "script:remove-all-items:prod": "dotenv -e ./.env.production node ./scripts/remove-all-items"
   }
 }

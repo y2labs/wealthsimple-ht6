@@ -149,8 +149,11 @@ export default {
         };
       }
 
+      const bankAccountId = args.bankAccountId || user.primaryBankAccountId;
+      const accountId = args.accountId || user.primaryAccountId;
+
       // Not set up a primary bank account id yet!
-      if (!user.primaryBankAccountId) {
+      if (!bankAccountId) {
         return {
           success: false,
           error: 'You must set up a primary bank account first.'
@@ -158,7 +161,7 @@ export default {
       }
 
       // Not set up a primary account id yet!
-      if (!user.primaryAccountId) {
+      if (!accountId) {
         return {
           success: false,
           error: 'You must set up a primary account first'
@@ -173,8 +176,8 @@ export default {
               ({ accessToken }) => {
                 return createDespoit({
                   depositAmount: fromPriceToAmount(purchaseableItem.price),
-                  bankAccountId: user.primaryBankAccountId,
-                  accountId: user.primaryAccountId,
+                  bankAccountId,
+                  accountId,
                   personId: user.personId,
                   accessToken
                 });

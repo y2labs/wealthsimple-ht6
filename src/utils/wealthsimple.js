@@ -7,11 +7,6 @@ import {
 } from '~/user/prisma';
 import { stringify } from 'querystring';
 
-const baseUrl =
-  process.env.NODE_ENV === 'development'
-    ? 'https://api.sandbox.wealthsimple.com/v1'
-    : 'https://api.production.wealthsimple.com/v1';
-
 const request = async ({ path, method = 'GET', body, headers = {} }) => {
   const params = {
     method,
@@ -23,7 +18,7 @@ const request = async ({ path, method = 'GET', body, headers = {} }) => {
     params.headers['Content-Type'] = 'application/json';
   }
 
-  const url = path.includes('://') ? path : `${baseUrl}${path}`;
+  const url = path.includes('://') ? path : `${process.env.WS_API_URL}${path}`;
 
   const res = await fetch(url, params);
   const text = await res.text();

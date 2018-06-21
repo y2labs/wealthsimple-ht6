@@ -58,8 +58,12 @@ export const getCurrentUserPurchaseableItemsQuery = gql`
 `;
 
 export const purchaseItemMutation = gql`
-  mutation purchaseItem($id: ID!) {
-    purchaseItem(id: $id) {
+  mutation purchaseItem($id: ID!, $accountId: ID, $bankAccountId: ID) {
+    purchaseItem(
+      id: $id
+      accountId: $accountId
+      bankAccountId: $bankAccountId
+    ) {
       success
       error
       purchasedItem {

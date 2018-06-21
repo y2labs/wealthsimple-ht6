@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Delicious Pizza",
+        "description": "Pizza so good you'll eat another!",
+        "singleUse": true,
+        "image": "",
+        "effects": [
+            {
+                "type": "HUNGER_INCREASE",
+                "name": "Eat the pizza",
+                "description": "Eat the pizza and feel less hungry.",
+                "value": {
+                    "value": 500
+                }
+            }
+        ]
+    },
+    {
+        "name": "Fun Chew Toy",
+        "description": "Squeaky chew toy for your pet.",
+        "singleUse": true,
+        "image": "",
+        "effects": [
+            {
+                "type": "CONTENT_INCREASE",
+                "name": "Play with toy",
+                "description": "Play with the toy to feel happier!",
+                "value": {
+                    "value": 500
+                }
+            }
+        ]
+    },
+    {
+        "name": "Energy drink",
+        "description": "Energy drink to feed your pet. Not sure if it's safe.",
+        "singleUse": true,
+        "image": "",
+        "effects": [
+            {
+                "type": "ENERGY_INCREASE",
+                "name": "Drink it",
+                "description": "Drink the drink and feel more energetic!",
+                "value": {
+                    "value": 300
+                }
+            }
+        ]
+    }
+]

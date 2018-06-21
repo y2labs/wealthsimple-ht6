@@ -9,6 +9,10 @@ import sendWebPushNotification from '~/web-push/send-web-push-notifiication';
 import { getUserWebPushSubcription } from '~/user/prisma';
 
 const handler = async () => {
+  if (!process.env.FEATURE_ENABLE_ITEM_LOOP) {
+    return;
+  }
+
   console.log('Starting items sync');
 
   const users = await prisma.query.users(

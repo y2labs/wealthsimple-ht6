@@ -90,10 +90,16 @@ type Mutation {
   subscribeToWebPush(
     webPushSubscription: WebPushSubscription!
   ): MutationPayload!
+
+  purchaseItem(
+    id: ID!
+    bankAccountId: ID
+    accountId: ID
+  ): PurchaseItemMutationPayload!
+
   createPet(name: String!, color: String): CreatePetMutationPayload!
   updatePrimaryAccount(accountId: ID!): MutationPayload!
   updatePrimaryBankAccount(accountId: ID!): MutationPayload!
-  purchaseItem(id: ID!): PurchaseItemMutationPayload!
   useItem(id: ID!): MutationPayload!
   interactWithPet(interactions: [PetInteractionInput]!): MutationPayload!
   DEMOcreatePassiveItem: DEMOcreatePassiveItemMutationPayload!
@@ -101,6 +107,4 @@ type Mutation {
   DEMOcreatePassiveItemHT6: DEMOcreatePassiveItemHT6MutationPayload!
   DEMOtriggerHungerWarning: MutationPayload!
   DEMOTriggerPetEarnSync: MutationPayload!
-  DEMORemoveAllPurchaseableItems: MutationPayload!
-  DEMORemoveAllPurchasedItems: MutationPayload!
 }

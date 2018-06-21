@@ -213,39 +213,6 @@ export default {
       };
     },
 
-    DEMORemoveAllPurchaseableItems: async () => {
-      await prisma.mutation.deleteManyPurchaseableItems({
-        where: {
-          NOT: [
-            {
-              id: null
-            }
-          ]
-        }
-      });
-
-      return {
-        success: true
-      };
-    },
-
-    DEMORemoveAllPurchasedItems: async () => {
-      const where = {
-        NOT: [
-          {
-            id: null
-          }
-        ]
-      };
-
-      await prisma.mutation.deleteManyPassiveItemSyncs({ where });
-      await prisma.mutation.deleteManyPurchasedItems({ where });
-
-      return {
-        success: true
-      };
-    },
-
     DEMOTriggerPetEarnSync: async (_, args, context) => {
       const userId = extractFromCtx(context);
 

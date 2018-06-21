@@ -16,12 +16,18 @@
     "react-scripts": "1.1.4",
     "react-sprite-animator": "^1.1.4"
   },
+  "devDependencies": {
+    "offline-plugin": "^5.0.5",
+    "react-app-rewired": "^1.5.2",
+    "sw-precache-webpack-plugin": "^0.11.5"
+  },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && surge ./build"
+    "deploy:copy-index": "cp ./build/index.html ./build/200.html",
+    "deploy": "npm run build && npm run deploy:copy-index && surge ./build"
   },
   "proxy": "http://localhost:3000",
   "eslintConfig": {
@@ -39,10 +45,5 @@
         }
       }
     }
-  },
-  "devDependencies": {
-    "offline-plugin": "^5.0.5",
-    "react-app-rewired": "^1.5.2",
-    "sw-precache-webpack-plugin": "^0.11.5"
   }
 }

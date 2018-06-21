@@ -15,7 +15,7 @@ const SetupPet = () => {
     mutation({
       variables: {
         name: name.value,
-        color: color.value
+        color: color.value || '#000'
       }
     });
   };
@@ -33,13 +33,6 @@ const SetupPet = () => {
                 placeholder="Pet name"
                 type="text"
                 name="name"
-              />
-
-              <input
-                className="form-input-text size-sm"
-                placeholder="Color (#000)"
-                type="text"
-                name="color"
               />
 
               <button className="button primary-action">Create!</button>

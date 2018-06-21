@@ -33,7 +33,7 @@ router.get('/login', (req, res) => {
 const getPerson = async ({ accessToken, personId }) => {
   const person = await requestPerson({ accessToken, personId });
 
-  const phoneNumberObj = person.phone_numbers
+  const phoneNumberObj = [...person.phone_numbers]
     .sort((a, b) => {
       if (a.primary && !b.primary) {
         return 1;
