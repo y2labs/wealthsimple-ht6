@@ -8,7 +8,7 @@ export default {
       const userId = extractFromCtx(context);
 
       if (!userId) {
-        throw new Error('Not Authorized');
+        throw new Error('Authorization required');
       }
 
       const account = await withTokens({ userId }, ({ accessToken }) => {

@@ -13,10 +13,12 @@ const SidebarUserInfo = () => {
         const user = get(data, 'viewer.me');
 
         return (
-          <div className="">
+          <div>
+            <p>Free dollars managed earned</p>
+
             <div>
               <p className="sidebar-pet-info--attr-title">
-                Total earned from caring for pet
+                Through taking care of pet
               </p>
 
               <p className="h4-sans-normal sidebar-pet-info--section">
@@ -26,10 +28,12 @@ const SidebarUserInfo = () => {
                   <Fragment>
                     <span className="sidebar-user-info--dollar-sign">$</span>
                     <span className="sidebar-user-info--dollar">
-                      {accounting.formatNumber(
-                        user.lifetimeDollarsManagedEarned / 100,
-                        '2'
-                      )}
+                      {user
+                        ? accounting.formatNumber(
+                            user.lifetimeDollarsManagedEarned / 100,
+                            '2'
+                          )
+                        : 0}
                     </span>
                   </Fragment>
                 )}
@@ -37,15 +41,16 @@ const SidebarUserInfo = () => {
             </div>
 
             <div className="h4-sans-normal sidebar-pet-info--section">
-              <p className="sidebar-pet-info--attr-title">
-                Total earned from referrals
-              </p>
+              <p className="sidebar-pet-info--attr-title">Through referrals</p>
 
               <span className="sidebar-user-info--dollar-sign">$</span>
               <span className="sidebar-user-info--dollar">
                 {accounting.formatNumber(20000, '2')}
               </span>
-              <a href="/" className="sidebar-pet-info--visit-profile">
+              <a
+                href={process.env.REACT_APP_REFERRAL_PAGE_URL}
+                className="sidebar-pet-info--visit-profile"
+              >
                 Visit your public profile
               </a>
             </div>

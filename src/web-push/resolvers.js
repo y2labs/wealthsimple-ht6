@@ -32,6 +32,7 @@ export default {
       );
 
       if (
+        currentUserSubscription &&
         !isEqual(
           currentUserSubscription.webPushSubscription,
           args.webPushSubscription

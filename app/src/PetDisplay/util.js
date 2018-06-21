@@ -1,5 +1,5 @@
 import { sample } from 'lodash';
-import { STATE_WALKING, STATE_SLEEPING } from 'Pet';
+import { STATE_WALKING, STATE_SLEEPING, STATE_RUNNING, STATE_SAD } from 'Pet';
 import { MAX_ATTRIBUTE_VALUE } from '../constants';
 
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -71,10 +71,21 @@ export const animateHop = async ({ ref }) => {
   });
 };
 
-export const getNextState = ({ energy = 0 } = {}) => {
+export const getNextState = ({ energy = 0, hunger = 0, content = 0 } = {}) => {
   const state = sample([
-    ...Array(MAX_ATTRIBUTE_VALUE - energy).fill(STATE_SLEEPING),
-    ...Array(MAX_ATTRIBUTE_VALUE).fill(STATE_WALKING)
+    ...Array(
+      Math.max(
+        MAX_ATTRIBUTE_VALUE -
+          Math.round((MAX_ATTRIBUTE_VALUE - content) / 4) -
+          Math.round((MAX_ATTRIBUTE_VALUE - content) / 4) -
+          Math.round((MAX_ATTRIBUTE_VALUE - content) / 4),
+        0
+      )
+    ).fill(STATE_SLEEPING),
+
+    ...Array(MAX_ATTRIBUTE_VALUE).fill(STATE_WALKING),
+    ...Array(MAX_ATTRIBUTE_VALUE + energy).fill(STATE_RUNNING),
+    ...Array(Math.round((MAX_ATTRIBUTE_VALUE - content) / 3)).fill(STATE_SAD)
   ]);
 
   return state;

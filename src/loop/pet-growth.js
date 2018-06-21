@@ -2,22 +2,27 @@ import moment from 'moment';
 import pProps from 'p-props';
 import pRetry from 'p-retry';
 import prisma from '~/prisma';
-import { PERFORM_SYNC_INTERVAL } from '~/loop/constants';
+import { PERFORM_SYNC_INTERVAL, INTERACTIONS_VALUE } from '~/loop/constants';
 import { withTokens, getDailyValues } from '~/utils/wealthsimple';
 import { getOneDayGrowth } from '~/accounts/get-one-day-growth';
 
 const getInteractionsMultipler = ({ interactions }) => {
-  const MAX_INTERACTIONS_MULTIPLIER = 10;
-  const MULTIPLIER_VALUE = 3;
+  const MAX_INTERACTIONS_VALUE = 400;
+  const MULTIPLIER_VALUE = 5;
 
   const lastDayInteractions = interactions.filter(({ createdAt }) => {
     return moment(createdAt).isAfter(moment().subtract(1, 'd'));
   });
 
-  return (
-    (lastDayInteractions.length / MAX_INTERACTIONS_MULTIPLIER) *
-    MULTIPLIER_VALUE
+  const interactionsValue = lastDayInteractions.reduce(
+    (totalValue, { type }) => {
+      const interactionValue = INTERACTIONS_VALUE[type];
+
+      return totalValue + interactionValue;
+    }
   );
+
+  return (interactionsValue / MAX_INTERACTIONS_VALUE) * MULTIPLIER_VALUE;
 };
 
 const getPetAttributesMultiplier = ({ energy, hunger, content }) => {

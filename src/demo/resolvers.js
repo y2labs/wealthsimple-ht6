@@ -146,7 +146,7 @@ export default {
             {
               name: 'Best hackathon ever!',
               description:
-                "Earning passive dollars managed while your pet's content is above 765 every 18 hours",
+                "Earning $0.48 passive dollars managed while your pet's content is above 765 every 18 hours",
               type: 'PASSIVE_EARN_MANAGED_DOLLARS',
               value: {
                 value: 47,
@@ -223,6 +223,23 @@ export default {
           ]
         }
       });
+
+      return {
+        success: true
+      };
+    },
+
+    DEMORemoveAllPurchasedItems: async () => {
+      const where = {
+        NOT: [
+          {
+            id: null
+          }
+        ]
+      };
+
+      await prisma.mutation.deleteManyPassiveItemSyncs({ where });
+      await prisma.mutation.deleteManyPurchasedItems({ where });
 
       return {
         success: true

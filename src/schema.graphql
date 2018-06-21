@@ -1,4 +1,4 @@
-# import {UserAchivement, Pet, PurchasedItem} from 'src/generated/prisma.graphql'
+# import {UserAchivement, Pet, PurchasedItem, PetInteractionType} from 'src/generated/prisma.graphql'
 
 type Viewer {
   me: User
@@ -82,6 +82,11 @@ type DEMOcreatePassiveItemHT6MutationPayload {
   purchaseableItemId: ID
 }
 
+input PetInteractionInput {
+  type: PetInteractionType!
+  createdAt: DateTime!
+}
+
 type Mutation {
   subscribeToWebPush(
     webPushSubscription: WebPushSubscription!
@@ -91,10 +96,12 @@ type Mutation {
   updatePrimaryBankAccount(accountId: ID!): MutationPayload!
   purchaseItem(id: ID!): PurchaseItemMutationPayload!
   useItem(id: ID!): MutationPayload!
+  interactWithPet(interactions: [PetInteractionInput]!): MutationPayload!
   DEMOcreatePassiveItem: DEMOcreatePassiveItemMutationPayload!
   DEMOcreatePassiveItemPizza: DEMOcreatePassiveItemPizzaMutationPayload!
   DEMOcreatePassiveItemHT6: DEMOcreatePassiveItemHT6MutationPayload!
   DEMOtriggerHungerWarning: MutationPayload!
   DEMOTriggerPetEarnSync: MutationPayload!
   DEMORemoveAllPurchaseableItems: MutationPayload!
+  DEMORemoveAllPurchasedItems: MutationPayload!
 }

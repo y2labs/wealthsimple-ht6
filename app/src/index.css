@@ -109,6 +109,7 @@ p {
 
 .sidebar-pet-info--visit-profile {
   font-size: 12px;
+  margin-top: 5px;
   display: flex;
 }
 

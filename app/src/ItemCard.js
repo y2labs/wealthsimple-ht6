@@ -36,10 +36,12 @@ const ItemCard = ({
     Parent,
     props,
     <Fragment>
-      <div
-        className="item-card--preview-image"
-        style={{ backgroundImage: image && `url(${image})` }}
-      />
+      {image && (
+        <div
+          className="item-card--preview-image"
+          style={{ backgroundImage: image && `url(${image})` }}
+        />
+      )}
 
       <div className="item-card--content">
         <p className="h4-sans item-card--header">{name}</p>

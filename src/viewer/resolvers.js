@@ -13,6 +13,10 @@ export default {
 
       const user = await findUser({ id: userId }, info);
 
+      if (!user) {
+        throw new Error('Authorization required');
+      }
+
       return user;
     },
 
@@ -20,7 +24,7 @@ export default {
       const userId = extractFromCtx(context);
 
       if (!userId) {
-        throw new Error('Authorization Required');
+        throw new Error('Authorization required');
       }
 
       const accounts = await withTokens({ userId }, ({ accessToken }) => {
@@ -36,7 +40,7 @@ export default {
       const userId = extractFromCtx(context);
 
       if (!userId) {
-        throw new Error('Authorization Required');
+        throw new Error('Authorization required');
       }
 
       const bankAccounts = await withTokens({ userId }, getBankAccounts);

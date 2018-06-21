@@ -14,6 +14,7 @@ import {
   getPurchaseableItem,
   getPurchasedItem
 } from '~/item/prisma';
+import { getPetFromUserId } from '~/pet/prisma';
 
 export default {
   Mutation: {
@@ -80,6 +81,21 @@ export default {
         markPurchasedItemAsUsed: prisma.mutation.updatePurchasedItem({
           where: { id: args.id },
           data: { usedAt: new Date() }
+        }),
+
+        createPetInteraction: prisma.mutation.updatePet({
+          where: {
+            id: user.pet.id
+          },
+          data: {
+            interactions: {
+              create: [
+                {
+                  type: 'USE_ITEM'
+                }
+              ]
+            }
+          }
         })
       });
 
@@ -120,6 +136,7 @@ export default {
             }
           }`
         ),
+
         user: findUser({ id: userId })
       });
 
@@ -218,15 +235,36 @@ export default {
           }`
         );
 
-        await Promise.all([
-          createPassiveItemSyncFromEffects({
+        await pProps({
+          createPassiveItemSync: createPassiveItemSyncFromEffects({
             effects: purchaseableItem.item.effects,
             singleUse: purchaseableItem.item.singleUse,
             purchasedItemId: purchasedItem.id
           }),
 
-          updatePurchaseableItemAsPurchased({ id: args.id })
-        ]);
+          updatePurchaseableItemAsPurchased: updatePurchaseableItemAsPurchased({
+            id: args.id
+          }),
+
+          createPetInteraction: getPetFromUserId({ userId }).then(user => {
+            if (user && user.pet.id) {
+              return prisma.mutation.updatePet({
+                where: {
+                  id: user.pet.id
+                },
+                data: {
+                  interactions: {
+                    create: [
+                      {
+                        type: 'BUY_ITEM'
+                      }
+                    ]
+                  }
+                }
+              });
+            }
+          })
+        });
 
         return {
           purchasedItem,

@@ -19,6 +19,18 @@ const client = new ApolloClient({
         Authorization: `Bearer ${token}`
       }
     });
+  },
+
+  onError: ({ graphQLErrors }) => {
+    if (graphQLErrors && graphQLErrors.length !== 0) {
+      const [error] = graphQLErrors;
+
+      if (error.message.match(/authorization/gi)) {
+        localStorage.removeItem('token');
+
+        window.location.href = '/';
+      }
+    }
   }
 });
 

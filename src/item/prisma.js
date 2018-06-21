@@ -219,7 +219,7 @@ export const getPurchaseableItem = async ({ id, userId }) => {
   `
   );
 
-  if (item.availableForUser.id !== userId) {
+  if (!item || item.availableForUser.id !== userId) {
     return null;
   }
 

@@ -80,20 +80,16 @@ const applyPassiveItemEffects = async (
           const run = async () => {
             await issueFreeDollarsManaged();
 
-            await prisma.mutation
-              .updateUser({
-                where: {
-                  id: ownerId
-                },
-                data: {
-                  lifetimeDollarsManagedEarned:
-                    valueWithPetSizeMultiplier +
-                    ownerCurrentLifetimeDollarsManagedEarned
-                }
-              })
-              .catch(err => {
-                console.log(err);
-              });
+            await prisma.mutation.updateUser({
+              where: {
+                id: ownerId
+              },
+              data: {
+                lifetimeDollarsManagedEarned:
+                  valueWithPetSizeMultiplier +
+                  ownerCurrentLifetimeDollarsManagedEarned
+              }
+            });
           };
 
           await pRetry(run);

@@ -29,8 +29,32 @@ export const createPet = async ({ name, color, ownerId }) => {
         }
       }
     },
-    `{ pet { id } }`
+    `{
+      pet {
+        id
+        createdAt
+        name
+        color
+        content
+        energy
+        hunger
+        size
+      }
+    }`
   );
 
   return pet;
+};
+
+export const createPetInteractions = async ({ interactions, petId }) => {
+  await prisma.mutation.updatePet({
+    where: {
+      id: petId
+    },
+    data: {
+      interactions: {
+        create: [interactions]
+      }
+    }
+  });
 };

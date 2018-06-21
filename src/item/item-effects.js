@@ -1,4 +1,5 @@
 import moment from 'moment';
+import accounting from 'accounting';
 import { random, round } from 'lodash';
 import { pickOption } from '~/item/utils';
 
@@ -86,9 +87,12 @@ const ITEM_EFFECTS = {
 
       return {
         name: 'Special properties',
-        description: `Earning passive dollars managed while your pet's ${
-          value.stat
-        } is above ${value.amount} every ${interval} hours`,
+        description: `Earning $${accounting.formatNumber(
+          value.value / 100,
+          '2'
+        )} passive dollars managed while your pet's ${value.stat} is above ${
+          value.amount
+        } every ${interval} hours`,
         type: 'PASSIVE_EARN_MANAGED_DOLLARS',
         value
       };

@@ -24,7 +24,7 @@ export const getNextPetAttributes = pet => {
   const nextHunger = max([
     round(
       random(
-        pet.hunger - 10 * Math.min(CONSTANTS.maxAttributeValue / pet.hunger, 2),
+        pet.hunger - 6 * Math.min(CONSTANTS.maxAttributeValue / pet.hunger, 2),
         pet.hunger
       )
     ),
@@ -34,14 +34,14 @@ export const getNextPetAttributes = pet => {
   multipliers.hunger = Math.min(CONSTANTS.maxAttributeValue / nextHunger, 2);
 
   const nextEnergy = max([
-    round(random(pet.energy - 10 * multipliers.hunger, pet.energy)),
+    round(random(pet.energy - 6 * multipliers.hunger, pet.energy)),
     0
   ]);
 
   multipliers.energy = Math.min(CONSTANTS.maxAttributeValue / nextEnergy, 2);
 
   const nextContent = round(
-    max([random(pet.content - 10 * multipliers.energy, pet.content), 0])
+    max([random(pet.content - 6 * multipliers.energy, pet.content), 0])
   );
 
   const nextAttributes = {

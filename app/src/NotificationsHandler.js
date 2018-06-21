@@ -5,7 +5,8 @@ const waitForElementOffscreen = selector => {
     const el = document.querySelector(selector);
 
     if (el) {
-      const isElOffscreen = el.offsetTop >= window.innerHeight;
+      // TODO: Try to figure it out
+      const isElOffscreen = el.offsetTop >= window.innerHeight - 200;
 
       if (isElOffscreen) {
         resolve(el);

@@ -1,5 +1,6 @@
 import React, { Component, createRef, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import accounting from 'accounting';
 import { Query } from 'react-apollo';
 import { getCurrentUserPetQuery } from 'graphql/users';
@@ -17,7 +18,11 @@ const Effect = ({ type, value, name, description, warnOnConstraints }) => {
             </p>
 
             {warnOnConstraints &&
-              !getIsEarning({ type, value, pet: data.viewer.me.pet }) && (
+              !getIsEarning({
+                type,
+                value,
+                pet: get(data, 'viewer.me.pet')
+              }) && (
                 <div className="marketplace-modal--effect-not-earning-warning-container">
                   <p className="text-yellow">
                     Warning! You aren't earning rewards on this effect.
@@ -67,24 +72,33 @@ export default class ItemPopup extends Component {
           <div>
             {item && (
               <Fragment>
-                <p className="number-value size-md uppercase-sans-bold base-margin-bottom">
-                  {item.name}
-                </p>
-                <p className="number-title">{item.description}</p>
+                {item.image && (
+                  <div
+                    className="marketplace-modal--item-image"
+                    style={{ backgroundImage: `url(${item.image.uri})` }}
+                  />
+                )}
 
-                <p className="p2 base-margin-top base-margin-bottom">
-                  Item effects
-                </p>
+                <div className="marketplace-modal--content">
+                  <p className="number-value size-md uppercase-sans-bold base-margin-bottom">
+                    {item.name}
+                  </p>
+                  <p className="number-title">{item.description}</p>
 
-                <ul className="marketplace-modal--list">
-                  {item.effects.map((effect, index) => (
-                    <Effect
-                      key={`${index}`}
-                      {...effect}
-                      warnOnConstraints={useable && !item.singleUse}
-                    />
-                  ))}
-                </ul>
+                  <p className="p2 base-margin-top base-margin-bottom">
+                    Item effects
+                  </p>
+
+                  <ul className="marketplace-modal--list">
+                    {item.effects.map((effect, index) => (
+                      <Effect
+                        key={`${index}`}
+                        {...effect}
+                        warnOnConstraints={useable && !item.singleUse}
+                      />
+                    ))}
+                  </ul>
+                </div>
               </Fragment>
             )}
 

@@ -8,7 +8,7 @@ export default {
       const userId = extractFromCtx(context);
 
       if (!userId) {
-        throw new Error('Unauthorized');
+        throw new Error('Authorization required');
       }
 
       const bankAccount = await withTokens(

@@ -7,7 +7,7 @@ import {
   getCurrentUserPurchasedItemsQuery
 } from 'graphql/items';
 import ItemPopup from 'ItemPopup';
-import { getCurrentUserQuery, getCurrentUserPetQuery } from 'graphql/users';
+import { getCurrentUserPetQuery } from 'graphql/users';
 
 const createUseItemMutationUpdate = ({ itemId }) => (
   cache,

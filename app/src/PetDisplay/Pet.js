@@ -2,7 +2,13 @@ import './PetDisplay.css';
 
 import React, { Component, createRef } from 'react';
 import { random } from 'lodash';
-import Pet, { STATE_WALKING, STATE_SLEEPING, STATE_SITTING } from 'Pet';
+import Pet, {
+  STATE_WALKING,
+  STATE_SLEEPING,
+  STATE_SITTING,
+  STATE_RUNNING,
+  STATE_SAD
+} from 'Pet';
 import { delay, animateHop, animateMoveTo, getNextState } from './util';
 
 export default class PetDisplayPet extends Component {
@@ -57,7 +63,9 @@ export default class PetDisplayPet extends Component {
     this.safeSetState({ petState: STATE_SITTING });
 
     const nextState = getNextState({
-      energy: this.props.energy
+      content: this.props.content,
+      energy: this.props.energy,
+      hunger: this.props.hunger
     });
 
     await delay(1000);
@@ -70,7 +78,10 @@ export default class PetDisplayPet extends Component {
 
     await this.nextStateThink();
 
-    if (this.state.petState === STATE_WALKING) {
+    if (
+      this.state.petState === STATE_WALKING ||
+      this.state.petState === STATE_RUNNING
+    ) {
       const nextTargetX = random(0, 95);
       const nextTargetY = random(0, 80);
 
@@ -79,7 +90,7 @@ export default class PetDisplayPet extends Component {
         prevY: this.prevY,
         x: nextTargetX,
         y: nextTargetY,
-        speed: 5
+        speed: this.state.petState === STATE_RUNNING ? 10 : 5
       });
 
       if (!this.moveAnimation) {
@@ -92,7 +103,10 @@ export default class PetDisplayPet extends Component {
       this.prevY = nextTargetY;
     }
 
-    if (this.state.petState === STATE_SLEEPING) {
+    if (
+      this.state.petState === STATE_SLEEPING ||
+      this.state.petState === STATE_SAD
+    ) {
       await delay(10000);
     }
 

@@ -9,7 +9,7 @@ export default class Display extends Component {
     return (
       <Query query={getCurrentUserPetQuery}>
         {props => {
-          const pet = get(props, 'data.viewer.pet');
+          const pet = get(props.data, 'viewer.me.pet');
 
           return (
             <div className="pet-display--container">

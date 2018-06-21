@@ -50,6 +50,9 @@ type Pet {
 
 enum PetInteractionType {
   NOOP
+  PET
+  BUY_ITEM
+  USE_ITEM
 }
 
 type PetInteraction {
