@@ -15,7 +15,7 @@ const SetupPet = () => {
     mutation({
       variables: {
         name: name.value,
-        color: color.value || '#000'
+        color: '#000'
       }
     });
   };

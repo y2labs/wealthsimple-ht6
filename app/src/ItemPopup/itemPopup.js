@@ -104,12 +104,6 @@ export default class ItemPopup extends Component {
               </Fragment>
             )}
 
-            <hr style={{ backgroundColor: '#ebebeb', height: 1, border: 0 }} />
-
-            <p className="uppercase-text marketplace-modal--transfer-header">
-              Make deposit from
-            </p>
-
             {useable &&
               !disabled && (
                 <button
@@ -125,9 +119,19 @@ export default class ItemPopup extends Component {
               )}
 
             {purchaseable && (
-              <AccountPickerConsumer>
-                {props => <TransferForm {...props} />}
-              </AccountPickerConsumer>
+              <Fragment>
+                <hr
+                  style={{ backgroundColor: '#ebebeb', height: 1, border: 0 }}
+                />
+
+                <p className="uppercase-text marketplace-modal--transfer-header">
+                  Make deposit from
+                </p>
+
+                <AccountPickerConsumer>
+                  {props => <TransferForm {...props} />}
+                </AccountPickerConsumer>
+              </Fragment>
             )}
 
             {purchaseable &&
