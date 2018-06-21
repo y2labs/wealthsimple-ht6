@@ -4,3 +4,18 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
+
+.inventory--empty-state-container {
+  padding: 40px 20px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  color: #999999;
+  border: 1px solid #eeeeee;
+  flex-direction: column;
+}
+
+.inventory--empty-state-button {
+  margin-top: 20px;
+}

@@ -42,7 +42,7 @@ const ItemCard = ({
       />
 
       <div className="item-card--content">
-        <p className="h4-sans">{name}</p>
+        <p className="h4-sans item-card--header">{name}</p>
         <p className="item-card--description">{truncate(description)}</p>
 
         <div className="item-card--footer">

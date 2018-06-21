@@ -1,1 +1,2 @@
 export const PERFORM_SYNC_INTERVAL = 20000;
+export const PET_UNHEALTHY_VALUE = 500;

@@ -6,6 +6,19 @@ import { get } from 'lodash';
 import { getCurrentUserPurchasedItemsQuery } from 'graphql/items';
 import ItemCard from 'ItemCard';
 
+const EmptyState = () => (
+  <div className="inventory--empty-state-container">
+    <p>You haven't purchased any items.</p>
+
+    <a
+      href="#marketplace"
+      className="button primary-action inventory--empty-state-button"
+    >
+      Visit Marketplace
+    </a>
+  </div>
+);
+
 const sortByPurchaseDate = (a, b) => (a.createdAt > b.createdAt ? -1 : 1);
 
 const Inventory = () => (
@@ -19,6 +32,10 @@ const Inventory = () => (
         const useableItems = props.data.purchasedItems
           .filter(({ usedAt }) => !usedAt)
           .sort(sortByPurchaseDate);
+
+        if (useableItems.length === 0) {
+          return <EmptyState />;
+        }
 
         return useableItems.map(purchasedItem => {
           return (

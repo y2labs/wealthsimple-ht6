@@ -19,7 +19,7 @@ const SidebarUserInfo = () => {
                 Total earned from caring for pet
               </p>
 
-              <p className="h4-sans-normal">
+              <p className="h4-sans-normal sidebar-pet-info--section">
                 {loading ? (
                   'Loading'
                 ) : (
@@ -36,10 +36,18 @@ const SidebarUserInfo = () => {
               </p>
             </div>
 
-            <div>
+            <div className="h4-sans-normal sidebar-pet-info--section">
               <p className="sidebar-pet-info--attr-title">
                 Total earned from referrals
               </p>
+
+              <span className="sidebar-user-info--dollar-sign">$</span>
+              <span className="sidebar-user-info--dollar">
+                {accounting.formatNumber(20000, '2')}
+              </span>
+              <a href="#" className="sidebar-pet-info--visit-profile">
+                Visit your public profile
+              </a>
             </div>
           </div>
         );

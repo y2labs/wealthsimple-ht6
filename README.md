@@ -21,12 +21,12 @@
 [x] Add mutation to delete all purchaseable items
 [x] Add ability to trigger a sync request (Maybe even multiple times)
 [x] Make sure that purchasing is working (Look into usedAt bug)
-[] Make sure Add in referal $ earned
-[] Add description for what each type of $ earned is "Free Dollars earned from ..."
+[x] Make sure Add in referal $ earned
+[x] Add description for what each type of $ earned is "Free Dollars earned from ..."
 [] Add in image on pop up for market item
 [] Add some inventory items
 [] Add food in market place (Seed)
-[] Add button below referral earn amount linking to referal page
-[] Make sure referral is 20000
+[x] Add button below referral earn amount linking to referal page
+[x] Make sure referral is 20000
 [] Add fake interaction for tapping on pet
 [] Manually assign primary (bank) acccount when signing up

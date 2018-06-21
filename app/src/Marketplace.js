@@ -7,6 +7,12 @@ import { get } from 'lodash';
 import { getCurrentUserPurchaseableItemsQuery } from 'graphql/items';
 import ItemCard from 'ItemCard';
 
+const EmptyState = () => (
+  <div className="inventory--empty-state-container">
+    <p>No items can be found in the marketplace - check back later!</p>
+  </div>
+);
+
 const itemSort = (a, b) =>
   new Date(a.expiresAt).getTime() - new Date(b.expiresAt).getTime();
 
@@ -21,6 +27,10 @@ const MarketPlace = () => (
         const purchaseableItems = props.data.purchaseableItems
           .filter(({ expiresAt }) => moment(expiresAt).isAfter(moment()))
           .sort(itemSort);
+
+        if (purchaseableItems.length === 0) {
+          return <EmptyState />;
+        }
 
         return purchaseableItems.map(purchaseableItem => {
           return (

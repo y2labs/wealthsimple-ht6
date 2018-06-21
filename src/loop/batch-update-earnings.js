@@ -62,6 +62,14 @@ const applyPassiveItemEffects = async (
         const { amount, value, stat } = effect.value;
         const valueWithPetSizeMultiplier = Math.round(petSize * value);
 
+        console.log(
+          `Issuing free dollars managed to owner=${ownerId} pet=${
+            pet.id
+          } amount=${fromPriceToAmount(
+            valueWithPetSizeMultiplier
+          )} stat=${stat} constraint=${amount}`
+        );
+
         if ((!ignoreConstraints && pet[stat] > amount) || ignoreConstraints) {
           console.log(
             `Issuing ${fromPriceToAmount(
@@ -89,6 +97,18 @@ const applyPassiveItemEffects = async (
           };
 
           await pRetry(run);
+
+          return;
+        }
+
+        if (pet[stat] <= amount) {
+          console.log(
+            `Pet did not meet stat requirement owner=${ownerId} pet=${
+              pet.id
+            } amount=${fromPriceToAmount(
+              valueWithPetSizeMultiplier
+            )} stat=${stat} constraint=${amount}`
+          );
         }
 
         if (sendNotifications) {
